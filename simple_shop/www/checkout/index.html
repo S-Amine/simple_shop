@@ -1,0 +1,12 @@
+{% extends 'templates/shop_base.html' %}
+{% block centent %}
+{% set csrf_token = frappe.session.csrf_token %}
+<form class="" action="index.html" method="post">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+  <input type="text" name="customer" value="Palmer Productions Ltd.">
+  <input type="text" name="item_code" value="SKU008">
+  <input type="date" name="date" value="">
+  <input type="number" name="qty" value=1>
+  <button type="submit" name="button"></button>
+</form>
+{% endblock %}

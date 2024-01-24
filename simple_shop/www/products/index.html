@@ -1,0 +1,9 @@
+{% extends 'templates/shop_base.html' %}
+{% block centent %}
+{% for item in items %}
+<h1>{{item.item_code}}</h1>
+<div class="">
+  <img src="{{item.image}}" style="height: 50vh" alt="">
+</div>
+{% endfor %}
+{% endblock %}

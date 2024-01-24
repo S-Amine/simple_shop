@@ -8,6 +8,9 @@ app_license = "mit"
 
 # Includes in <head>
 # ------------------
+website_route_rules = [
+    {"from_route": "/product/<item_code>", "to_route": "product_detail", "defaults": {"doctype": "Item"}},
+]
 
 # include js, css files in header of desk.html
 # app_include_css = "/assets/simple_shop/css/simple_shop.css"
@@ -226,4 +229,3 @@ app_license = "mit"
 # default_log_clearing_doctypes = {
 # 	"Logging DocType Name": 30  # days to retain logs
 # }
-
