@@ -16,12 +16,16 @@ def get_context(context):
             {'description': ['like', f'%{query}%']}
         ])
 
+
     # Specify additional filters using logical AND
     filters = {}
 
     if item_group:
         # Add filter for item_group
         filters['item_group'] = item_group
+        # Add this for a frontend condition
+        group = frappe.get_doc('Item Group', item_group)
+        context.item_group = group
 
     # Fetch documents from the database using specified filters
     items = frappe.get_all("Item",
