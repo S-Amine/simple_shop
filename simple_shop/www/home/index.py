@@ -9,7 +9,8 @@ def get_context(context):
                                   filters={'show_in_website': True}
                                   )
     recent_items = frappe.db.get_list("Item",
-                                      fields="*"
+                                      fields="*",
+                                      filters={'variant_of': ""}
                                       )
     # context.collections = collections
     context.categories = categories

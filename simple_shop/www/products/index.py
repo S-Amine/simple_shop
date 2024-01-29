@@ -6,7 +6,7 @@ def get_context(context):
     item_group = frappe.local.form_dict.get('category')
 
     # Specify filters for the search using logical OR
-    or_filters = []
+    or_filters = [{'variant_of': ""}]
 
     if query:
         # Add search filters for item_code, item_name, and description
