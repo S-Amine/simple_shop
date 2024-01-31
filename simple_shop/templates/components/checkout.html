@@ -1,0 +1,157 @@
+<form name="checkout-form" action="./shop_order_complete.html">
+    <div class="checkout-form">
+      <div class="billing-info__wrapper">
+        <h4>BILLING DETAILS</h4>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-floating my-3">
+              <input type="text" class="form-control" id="checkout_first_name" placeholder="First Name">
+              <label for="checkout_first_name">First name</label>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-floating my-3">
+              <input type="text" class="form-control" id="checkout_first_name" placeholder="First Name">
+              <label for="checkout_first_name">Last name</label>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="search-field my-3">
+              <div class="form-label-fixed hover-container">
+                <label for="search-dropdown" class="form-label">Wilaya*</label>
+                <div class="js-hover__open">
+                  <input type="text" class="form-control form-control-lg search-field__actor search-field__arrow-down"  id="search-dropdown" name="search-keyword" readonly="" placeholder="Choose a location...">
+                </div>
+                <div class="filters-container js-hidden-content mt-2">
+                  <div class="search-field__input-wrapper">
+                    <input type="text" oninput="filterLiElements(this.value,'wilayaList')" class="search-field__input form-control form-control-sm bg-lighter border-lighter" placeholder="Search">
+                  </div>
+                  <ul class="search-suggestion list-unstyled" id="wilayaList">
+                    <li class="search-suggestion__item js-search-select" onclick="removeContentVisibleClass(this)">Australia</li>
+                    <li class="search-suggestion__item js-search-select" onclick="removeContentVisibleClass(this)">Canada</li>
+                    <li class="search-suggestion__item js-search-select" onclick="removeContentVisibleClass(this)">United Kingdom</li>
+                    <li class="search-suggestion__item js-search-select" onclick="removeContentVisibleClass(this)">United States</li>
+                    <li class="search-suggestion__item js-search-select" onclick="removeContentVisibleClass(this)">Turkey</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="search-field my-3">
+                <div class="form-label-fixed hover-container">
+                    <label for="search-dropdown" class="form-label">Region*</label>
+                    <div class="js-hover__open">
+                        <input type="text" class="form-control form-control-lg search-field__actor search-field__arrow-down" id="search-dropdown-region" name="search-keyword" readonly="" placeholder="Choose a location...">
+                    </div>
+                    <div class="filters-container js-hidden-content mt-2">
+                        <div class="search-field__input-wrapper">
+                            <input type="text" oninput="filterLiElements(this.value,'baladiaList')" class="search-field__input form-control form-control-sm bg-lighter border-lighter" placeholder="Search">
+                        </div>
+                        <ul class="search-suggestion list-unstyled" id="baladiaList">
+                            <li class="search-suggestion__item js-search-select" onclick="removeContentVisibleClass(this)">Australia</li>
+                            <li class="search-suggestion__item js-search-select" onclick="removeContentVisibleClass(this)">Canada</li>
+                            <li class="search-suggestion__item js-search-select" onclick="removeContentVisibleClass(this)">United Kingdom</li>
+                            <li class="search-suggestion__item js-search-select" onclick="removeContentVisibleClass(this)">United States</li>
+                            <li class="search-suggestion__item js-search-select" onclick="removeContentVisibleClass(this)">Turkey</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+          <div class="col-md-12">
+            <div class="form-floating my-3">
+              <input type="text" class="form-control" id="checkout_phone" placeholder="Phone *">
+              <label for="checkout_phone">Street address</label>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-floating my-3">
+              <input type="text" class="form-control" id="checkout_phone" placeholder="Phone *">
+              <label for="checkout_phone">Phone *</label>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="checkout__totals-wrapper">
+        <div class="sticky-content">
+          <div class="checkout__totals">
+            <h3>Your Order</h3>
+            <table class="checkout-cart-items">
+              <thead>
+                <tr>
+                  <th>PRODUCT</th>
+                  <th>SUBTOTAL</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    Zessi Dresses x 2
+                  </td>
+                  <td>
+                    DA 32.50
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    Kirby T-Shirt
+                  </td>
+                  <td>
+                    DA 29.90
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <table class="checkout-totals">
+              <tbody>
+                <tr>
+                  <th>SUBTOTAL</th>
+                  <td>DA 62.40</td>
+                </tr>
+                <tr>
+                  <th>SHIPPING</th>
+                  <td>Free shipping</td>
+                </tr>
+                <tr>
+                  <th>VAT</th>
+                  <td>DA 19</td>
+                </tr>
+                <tr>
+                  <th>TOTAL</th>
+                  <td>DA 81.40</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+   
+          <button class="btn btn-primary btn-checkout">PLACE ORDER</button>
+        </div>
+      </div>
+    </div>
+  </form>
+  <script>
+    function filterLiElements(input,list_id) {
+        let filter, ul, li, a, i;
+        filter = input.toUpperCase();
+        ul = document.getElementById(list_id);
+        li = ul.getElementsByTagName("li");
+
+        for (i = 0; i < li.length; i++) {
+            console.log(i)
+            a = li[i];
+            if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                li[i].style.display = "";
+            } else {
+                li[i].style.display = "none";
+            }
+        }
+    }
+    function removeContentVisibleClass(li) {
+    let parent = li.closest('.form-label-fixed.hover-container');
+    parent.classList.remove('js-content_visible');
+}
+
+</script>

@@ -7,7 +7,7 @@ def get_context(context):
     if item_code:
         item = frappe.get_doc('Item', item_code)
         recommendations = frappe.get_list('Item', fields="*",
-                                        filters=[{'item_code': ['not like', f'%{item_code}%']},{'item_group': ['like', f'%{item.item_group}%']}, {'variant_of': ""}]
+                                       # filters=[{'item_code': ['not like', f'%{item_code}%']},{'item_group': ['like', f'%{item.item_group}%']}, {'variant_of': ""}]
                                         )
         context.recommendations = recommendations
         context.item = item
