@@ -1,0 +1,92 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-02-01 23:01:18.206727",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "order",
+  "first_name",
+  "last_name",
+  "phone",
+  "status",
+  "street_address",
+  "wilaya",
+  "commun"
+ ],
+ "fields": [
+  {
+   "fieldname": "order",
+   "fieldtype": "Section Break",
+   "label": "Order"
+  },
+  {
+   "fieldname": "first_name",
+   "fieldtype": "Data",
+   "label": "first name",
+   "length": 250
+  },
+  {
+   "fieldname": "last_name",
+   "fieldtype": "Data",
+   "label": "last name",
+   "length": 250
+  },
+  {
+   "fieldname": "phone",
+   "fieldtype": "Data",
+   "label": "Phone",
+   "length": 10
+  },
+  {
+   "default": "created",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "status",
+   "length": 20,
+   "options": "confirmed\npending\ncancelled\ncreated"
+  },
+  {
+   "fieldname": "street_address",
+   "fieldtype": "Data",
+   "label": "street address",
+   "length": 250
+  },
+  {
+   "fieldname": "wilaya",
+   "fieldtype": "Data",
+   "label": "wilaya",
+   "length": 50
+  },
+  {
+   "fieldname": "commun",
+   "fieldtype": "Data",
+   "label": "commun",
+   "length": 50
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-02-01 23:27:47.414012",
+ "modified_by": "Administrator",
+ "module": "Simple Shop",
+ "name": "Order",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
