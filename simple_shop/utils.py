@@ -1,5 +1,6 @@
 import frappe
 
+@frappe.whitelist()
 def build_variant_data(item, item_variants):
     data = []
 

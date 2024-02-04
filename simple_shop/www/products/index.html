@@ -70,59 +70,10 @@
 
   <div class="products-grid row row-cols-2 row-cols-md-3 row-cols-lg-4" id="products-grid" >
     {% for item in items %}
-    <div class="product-card-wrapper">
-      <div class="product-card mb-3 mb-md-4 mb-xxl-5">
-        <div class="pc__img-wrapper">
-          <div class="swiper-container background-img js-swiper-slider" data-settings='{"resizeObserver": true}'>
-            <div class="swiper-wrapper">
-              <div class="swiper-slide">
-                <a href="/product/{{item.item_code}}"><img loading="lazy" src="{{item.image}}" width="330" height="400" alt="Cropped Faux leather Jacket" class="pc__img"></a>
-              </div><!-- /.pc__img-wrapper -->
-              <div class="swiper-slide">
-                <a href="/product/{{item.item_code}}"><img loading="lazy" src="{{item.image}}" width="330" height="400" alt="Cropped Faux leather Jacket" class="pc__img"></a>
-              </div><!-- /.pc__img-wrapper -->
-            </div>
-            <span class="pc__img-prev"><svg width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg"><use href="#icon_prev_sm" /></svg></span>
-            <span class="pc__img-next"><svg width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg"><use href="#icon_next_sm" /></svg></span>
-          </div>
-          <button class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium js-add-cart js-open-aside" data-aside="cartDrawer" title="Add To Cart">Add To Cart</button>
-        </div>
-
-        <div class="pc__info position-relative">
-          <p class="pc__category">{{item.item_group}}</p>
-          <h6 class="pc__title"><a href="product1_simple.html">{{item.item_name}}</a></h6>
-          <div class="product-card__price d-flex">
-            <span class="money price price-old">{{item.price}}</span>
-            <span class="money price price-sale">{{item.price}}</span>
-          </div>
-
-          <div class="d-flex align-items-center mt-1">
-            <a href="shop1.html#" class="swatch-color pc__swatch-color" style="color: #222222"></a>
-            <a href="shop1.html#" class="swatch-color swatch_active pc__swatch-color" style="color: #b9a16b"></a>
-            <a href="shop1.html#" class="swatch-color pc__swatch-color" style="color: #f5e6e0"></a>
-          </div>
-
-          <button class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist" title="Add To Wishlist">
-            <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><use href="#icon_heart" /></svg>
-          </button>
-        </div>
-
-        <div class="pc-labels position-absolute top-0 start-0 w-100 d-flex justify-content-between">
-          <div class="pc-labels__right ms-auto">
-            <span class="pc-label pc-label_sale d-block text-white">-67%</span>
-          </div>
-        </div>
-      </div>
-    </div>
+    {% include "templates/components/product.html" %}
     {% endfor %}
 
   </div><!-- /.products-grid row -->
-
-  <p class="mb-1 text-center fw-medium">SHOWING 36 of 497 items</p>
-  <div class="progress progress_uomo mb-3 ms-auto me-auto" style="width: 300px;">
-    <div class="progress-bar" role="progressbar" style="width: 39%;" aria-valuenow="39" aria-valuemin="0" aria-valuemax="100"></div>
-  </div>
-
   <div class="text-center">
     <a class="btn-link btn-link_lg text-uppercase fw-medium" href="shop1.html#">Show More</a>
   </div>

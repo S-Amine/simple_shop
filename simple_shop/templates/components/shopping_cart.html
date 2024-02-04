@@ -32,7 +32,7 @@
           <hr class="cart-drawer-divider">
           <div class="d-flex justify-content-between">
             <h6 class="fs-base fw-medium">SUBTOTAL:</h6>
-            <span class="cart-subtotal fw-medium" id="sub-total-count">0 DA</span>
+            <span class="cart-subtotal fw-medium sub-total-count" id="sub-total-count">0 DA</span>
           </div><!-- /.d-flex justify-content-between -->
           <a href="shop_cart.html" class="btn btn-light mt-3 d-block">View Cart</a>
           <a href="shop_checkout.html" class="btn btn-primary mt-3 d-block">Checkout</a>
@@ -44,8 +44,12 @@
 const fillCheckoutItems = () =>{
 let existingCartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
 let parentCartItems = document.getElementById('checkout-cart-items');
-let subTotalCount = document.getElementById('checkout-total-amount');
-subTotalCount.innerHTML = `${localStorage.getItem('cart-total-prices',0)} DA`
+let subTotalCount = document.querySelectorAll('.sub-total-count');
+subTotalCount.forEach(e=>{
+  e.innerHTML = `${localStorage.getItem('cart-total-prices',0)} DA`
+  e.setAttribute('data-subtotal',getTotalePrices())
+
+})
 parentCartItems.innerHTML = '';
 existingCartItems.forEach(item =>{
     parentCartItems.innerHTML += `
@@ -64,12 +68,12 @@ const fillCartItem = () =>{
 let existingCartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
 let parentCartItems = document.getElementById('cart-drawer-items-list');
 let cartItemsCount = document.getElementById('cart-items-count');
-let subTotalCount = document.getElementById('sub-total-count');
+let subTotalCount = document.querySelectorAll('.sub-total-count');
 let htmlInnerContent = '';
 cartItemsCount.innerHTML =existingCartItems.length;
 existingCartItems.forEach(item => {
     htmlInnerContent +=`
-    <div class="cart-drawer-item d-flex position-relative">
+    <div class="cart-drawer-item d-flex position-relative" data-item-id="${item.id}" data-item-name="${item.name}" data-item-color="${item.color}" data-item-size="${item.size}">
             <div class="position-relative">
               <img loading="lazy" class="cart-drawer-item__img" src="${item.image}" alt="">
             </div>
@@ -86,7 +90,7 @@ existingCartItems.forEach(item => {
             <span class="cart-drawer-item__price money price item-sub-price" data-price="${item.price*item.qty}">${item.price*item.qty} DA</span>
               </div>
             </div>
-            <button class="btn-close-xs position-absolute top-0 end-0 js-cart-item-remove"></button>
+            <button class="btn-close-xs position-absolute top-0 end-0 js-cart-item-remove" onclick="removeItemFromCart(this)"></button>
           </div>
           <hr class="cart-drawer-divider">
 
@@ -94,13 +98,13 @@ existingCartItems.forEach(item => {
 });
 parentCartItems.innerHTML = htmlInnerContent
 
-let subTotalPrices = document.querySelectorAll('.item-sub-price');
-let totalPrices = 0;
-subTotalPrices.forEach(e=>{
-totalPrices+= parseInt(e.getAttribute('data-price'))
+
+subTotalCount.forEach(e=>{
+  e.innerHTML = `${localStorage.getItem('cart-total-prices',0)} DA`
+  e.setAttribute('data-subtotal',getTotalePrices())
+
 })
-subTotalCount.innerHTML = `${totalPrices} DA`;
-localStorage.setItem('cart-total-prices', totalPrices);
+localStorage.setItem('cart-total-prices', getTotalePrices());
 fillCheckoutItems()
 }
 
@@ -109,7 +113,50 @@ fillCheckoutItems()
 document.addEventListener('DOMContentLoaded',e=>{
 fillCartItem()
 fillCheckoutItems()
+setCheckoutTotal();
+
 })
+
+const getTotalePrices = ()=>{
+let subTotalPrices = document.querySelectorAll('.item-sub-price');
+let totalPrices = 0;
+subTotalPrices.forEach(e=>{
+totalPrices+= parseInt(e.getAttribute('data-price'))
+})
+return totalPrices
+}
+
+const removeItemFromCart = (element) => {
+    // Get the closest parent with class 'cart-drawer-item'
+    const parentItem = element.closest('.cart-drawer-item');
+
+    if (parentItem) {
+        // Get data attributes from the parent item
+        const itemId = parentItem.getAttribute('data-item-id');
+        const itemName = parentItem.getAttribute('data-item-name');
+        const itemColor = parentItem.getAttribute('data-item-color');
+        const itemSize = parentItem.getAttribute('data-item-size');
+
+        // Remove the item from localStorage
+        let existingCartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+        existingCartItems = existingCartItems.filter(item => (
+            item.id !== itemId ||
+            item.name !== itemName ||
+            item.color !== itemColor ||
+            item.size !== itemSize
+        ));
+
+        // Update localStorage with the modified cart items array
+        localStorage.setItem('cartItems', JSON.stringify(existingCartItems));
+
+        // Remove the item's HTML from the DOM
+        parentItem.remove();
+
+        console.log('Item removed from cart:', itemId);
+    } else {
+        console.log('Unable to find parent cart item');
+    }
+};
 
 
 </script>

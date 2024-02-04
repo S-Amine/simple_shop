@@ -10,7 +10,10 @@ app_license = "mit"
 # ------------------
 website_route_rules = [
     {"from_route": "/product/<item_code>", "to_route": "product_detail", "defaults": {"doctype": "Item"}},
+    #{"from_route": "/products-items/", "to_route": "products",},
+
 ]
+
 
 # include js, css files in header of desk.html
 # app_include_css = "/assets/simple_shop/css/simple_shop.css"

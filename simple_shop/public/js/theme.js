@@ -1331,13 +1331,8 @@ function pureFadeOut(e) {
     return new bootstrap.Popover(popoverTriggerEl, {'html':true})
   });
 
-  $('.shopping-cart .btn-checkout').on('click', function() {
-    window.location.href='./shop_checkout.html';
-  });
 
-  $('.checkout-form .btn-checkout').on('click', function() {
-    window.location.href='./shop_order_complete.html';
-  });
+
 
   document.querySelector('.js-show-register').addEventListener('click', function(e) {
     document.querySelector(this.getAttribute("href")).click();
