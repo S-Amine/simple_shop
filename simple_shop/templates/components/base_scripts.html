@@ -1,0 +1,101 @@
+<script>
+    const setNewNumberToCartIcon = ()=>{
+      console.log('setNewNumberToCartIcon')
+      // SET NEW VALUE TO navbar header
+        // Try to get existing cart items array from localStorage
+      let existingCartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+      console.log(existingCartItems)
+      let cartItemNumber = document.querySelectorAll(".cart_number");
+      let totalQty = existingCartItems.reduce(
+          (total, item) => total + item.qty,
+          0
+        );
+      console.log(cartItemNumber)
+      cartItemNumber.forEach((e) => {
+      e.innerHTML = totalQty;
+    });
+  }
+      const getTotalePrices = ()=>{
+  let subTotalPrices = document.querySelectorAll('.item-sub-price');
+  let totalPrices = 0;
+  subTotalPrices.forEach(e=>{
+  totalPrices+= parseInt(e.getAttribute('data-price'))
+  })
+  return totalPrices
+  }
+  setNewNumberToCartIcon()
+  </script>
+
+<script>
+
+    const setItemToCartGlobal = (item, operation) => {
+        // Get item ID
+        let itemID = item.getAttribute("data-item-id");
+        let itemImage = item.getAttribute("data-item-image");
+        let itemPrice = item.getAttribute("data-item-price");
+        let itemName = item.getAttribute("data-item-name");
+        let cartItemNumber = document.querySelectorAll(".cart_number");
+    
+        // Check if both color and size are selected
+          // Get the data attributes from the selected elements
+          let colorVariant = '';
+          let sizeVariant = '';
+    
+          // Try to get existing cart items array from localStorage
+          let existingCartItems =
+            JSON.parse(localStorage.getItem("cartItems")) || [];
+    
+          // Check if an item with the same ID, color, and size already exists in the cart
+          let existingItemIndex = existingCartItems.findIndex(
+            (item) =>
+              item.id === itemID &&
+              item.color === colorVariant &&
+              item.size === sizeVariant
+          );
+    
+          if (existingItemIndex !== -1) {
+            // If item exists, update quantity based on the operation
+            if (operation === "add") {
+              existingCartItems[existingItemIndex].qty += 1;
+            } else if (operation === "subtraction") {
+              existingCartItems[existingItemIndex].qty -= 1;
+    
+              // Ensure quantity doesn't go below 0
+              existingCartItems[existingItemIndex].qty = Math.max(
+                0,
+                existingCartItems[existingItemIndex].qty
+              );
+            } else {
+              console.log("operation not supported");
+            }
+          } else {
+            // If item doesn't exist, add it to the array
+            existingCartItems.push({
+              id: itemID,
+              color: colorVariant,
+              size: sizeVariant,
+              price: itemPrice,
+              image: itemImage,
+              name: itemName,
+              qty:1,
+            });
+          }
+    
+          // Convert the cart items array to JSON string and store it in localStorage
+          localStorage.setItem("cartItems", JSON.stringify(existingCartItems));
+    
+          // Calculate total quantity
+          let totalQty = existingCartItems.reduce(
+            (total, item) => total + item.qty,
+            0
+          );
+          // SET NEW VALUE TO navbar header
+          cartItemNumber.forEach((e) => {
+            e.innerHTML = totalQty;
+          });
+          console.log("Item added/removed from cart:", existingCartItems);
+          fillCartItem('global')
+      };
+    
+    document.addEventListener("DOMContentLoaded", fillCartItem())
+    </script>

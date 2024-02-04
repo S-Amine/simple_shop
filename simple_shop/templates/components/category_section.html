@@ -49,16 +49,18 @@
               <a href="/product/{{item.item_code}}">
                 <img loading="lazy" src="{{item.image}}" width="330" height="400" alt="Cropped Faux leather Jacket" class="pc__img">
               </a>
-              <button class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium js-add-cart js-open-aside" data-aside="cartDrawer" title="Add To Cart">Add To Cart</button>
+              <button class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium js-add-cart js-open-aside" data-aside="cartDrawer" 
+              data-item-id="{{item.item_code}}" data-item-name="{{item.name}} - {{item.item_name}}" data-item-price ="{{item.custom_price}}" data-item-image="{{item.image}}" 
+              onclick="setItemToCartGlobal(this,'add')" title="Add To Cart">Add To Cart</button>
             </div>
 
             <div class="pc__info position-relative">
               <p class="pc__category">{{item.item_name}}</p>
               <h6 class="pc__title"><a href="/product/{{item.item_code}}">{{item.description}}</a></h6>
               <div class="product-card__price d-flex">
-                {% if  item.promo_price %}
-                <del class="money price">{{item.custom_price}} DA</del>
-                <span class="mx-2 money price">{{item.promo_price}} DA</span>
+                {% if  item.custom_promo_price %}
+                <del class="money price ">{{item.custom_price}} DA</del>
+                <span class="mx-2 money price fw-bold" style="color: rgba(11, 141, 76, 0.712);">{{item.custom_promo_price}} DA</span>
                 {% else %}
                 <span class="money price">{{item.custom_price}} DA</span>
                 {% endif %}

@@ -41,29 +41,10 @@
       <!-- /.aside -->
   
 <script>
-const fillCheckoutItems = () =>{
-let existingCartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-let parentCartItems = document.getElementById('checkout-cart-items');
-let subTotalCount = document.querySelectorAll('.sub-total-count');
-subTotalCount.forEach(e=>{
-  e.innerHTML = `${localStorage.getItem('cart-total-prices',0)} DA`
-  e.setAttribute('data-subtotal',getTotalePrices())
 
-})
-parentCartItems.innerHTML = '';
-existingCartItems.forEach(item =>{
-    parentCartItems.innerHTML += `
-    <tr>
-            <td>
-            ${item.name} x ${item.qty}
-            </td>
-            <td>
-            DA ${item.price*item.qty}
-            </td>
-    </tr>
-    `
-})
-}
+
+
+
 const fillCartItem = () =>{
 let existingCartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
 let parentCartItems = document.getElementById('cart-drawer-items-list');
@@ -105,26 +86,19 @@ subTotalCount.forEach(e=>{
 
 })
 localStorage.setItem('cart-total-prices', getTotalePrices());
-fillCheckoutItems()
+
 }
 
 
 // initialize cart items on page load
 document.addEventListener('DOMContentLoaded',e=>{
+  console.log('fillCartItem()')
 fillCartItem()
-fillCheckoutItems()
-setCheckoutTotal();
+
 
 })
 
-const getTotalePrices = ()=>{
-let subTotalPrices = document.querySelectorAll('.item-sub-price');
-let totalPrices = 0;
-subTotalPrices.forEach(e=>{
-totalPrices+= parseInt(e.getAttribute('data-price'))
-})
-return totalPrices
-}
+
 
 const removeItemFromCart = (element) => {
     // Get the closest parent with class 'cart-drawer-item'

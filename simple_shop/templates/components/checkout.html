@@ -293,6 +293,35 @@
   }
 </script>
 <script>
+  const fillCheckoutItems = (source) =>{
+    if (source == 'global'){
+
+    }
+    else{
+      let existingCartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+let parentCartItems = document.getElementById('checkout-cart-items');
+let subTotalCount = document.querySelectorAll('.sub-total-count');
+subTotalCount.forEach(e=>{
+  e.innerHTML = `${localStorage.getItem('cart-total-prices',0)} DA`
+  e.setAttribute('data-subtotal',getTotalePrices())
+
+})
+parentCartItems.innerHTML = '';
+existingCartItems.forEach(item =>{
+    parentCartItems.innerHTML += `
+    <tr>
+            <td>
+            ${item.name} x ${item.qty}
+            </td>
+            <td>
+            DA ${item.price*item.qty}
+            </td>
+    </tr>
+    `
+})
+    }
+
+}
   const setItemToCart = (item, operation) => {
     // Get item ID
     let itemID = item.getAttribute("data-item-id");
@@ -304,7 +333,6 @@
     let itemColor = document.querySelector('input[name="color"]:checked');
     let itemSize = document.querySelector('input[name="size"]:checked');
     let itemQty = document.getElementById("qty").value;
-    let cartItemNumber = document.querySelectorAll(".cart_number");
 
     // Check if both color and size are selected
     if (itemColor && itemSize) {
@@ -362,13 +390,11 @@
       );
 
       // SET NEW VALUE TO navbar header
-      cartItemNumber.forEach((e) => {
-        e.innerHTML = totalQty;
-      });
-
+      setNewNumberToCartIcon()
       console.log("Item added/removed from cart:", existingCartItems);
     } else {
-      console.log("Please select both color and size");
+      console.log("NO both color and size");
+      setItemToCartGlobal(item, operation)
     }
     fillCartItem();
     setCheckoutTotal();
@@ -516,4 +542,6 @@
   document.getElementById('place_order').addEventListener('click',e=>{   
     placeOrderItems(e,'product')
   });
+fillCheckoutItems()
+setCheckoutTotal();
 </script>

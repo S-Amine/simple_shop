@@ -219,6 +219,7 @@ let cartItemNumber = document.querySelectorAll('.cart_number');
     <!-- csrf_token -->
     {%- block body_include %}{{ body_include or "" }}{% endblock -%}
     <!-- External JavaScripts -->
+    {% include "templates/components/base_scripts.html" %}
     <script src="/assets/simple_shop/js/plugins/jquery.min.js"></script>
     <script src="/assets/simple_shop/js/plugins/bootstrap.bundle.min.js"></script>
     <script src="/assets/simple_shop/js/plugins/bootstrap-slider.min.js"></script>

@@ -10,7 +10,7 @@ def get_context(context):
                                   )
     home_categories = frappe.db.get_all("Item Group",
                                         fields="*",
-                                        filters={'show_in_home': True})
+                                        filters={'custom_show_in_home': True})
     recent_items = frappe.db.get_list("Item",
                                       fields="*",
                                       filters={'variant_of': ""}

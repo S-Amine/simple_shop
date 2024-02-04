@@ -4,7 +4,8 @@ import requests
 @frappe.whitelist(allow_guest=True)
 def get_data():
     """Returns all yalidin wilaya"""
-    settings = frappe.get_single("Settings")
+    settings = frappe.get_single("Yalidin")
+    print(settings)
     headers = {"X-API-ID": settings.api_key,"X-API-TOKEN": settings.api_token }
     response = requests.get(settings.base_url+"wilayas/", headers=headers)
     wilayas = response.json()
