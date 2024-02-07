@@ -34,5 +34,8 @@ def get_communs_true():
 
 
 @frappe.whitelist(allow_guest=True)
-def set_order():
+def post_order(**args):
     """Set the order"""
+    data = frappe._dict(args)
+    print(data)
+    return {"success": True, "data": data}

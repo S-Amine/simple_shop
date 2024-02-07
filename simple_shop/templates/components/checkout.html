@@ -162,8 +162,7 @@
                   </div>
                   <div class="form-check">
                     <input
-                    onchange="setDeleveryFees();ToggleStreetInput('hidden')"
-
+                      onchange="setDeleveryFees();ToggleStreetInput('hidden')"
                       class="form-check-input form-check-input_fill"
                       type="radio"
                       name="checkout_shipping_type"
@@ -180,13 +179,15 @@
               </tr>
               <tr>
                 <th>TOTAL</th>
-                <td id="total-checkout-amount">DA 81.40</td>
+                <td id="total-checkout-amount">DA 0</td>
               </tr>
             </tbody>
           </table>
         </div>
 
-        <button class="btn btn-primary btn-checkout" id="place_order">PLACE ORDER</button>
+        <button class="btn btn-primary btn-checkout" id="place_order">
+          PLACE ORDER
+        </button>
       </div>
     </div>
   </div>
@@ -293,35 +294,32 @@
   }
 </script>
 <script>
-  const fillCheckoutItems = (source) =>{
-    if (source == 'global'){
-
-    }
-    else{
-      let existingCartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-let parentCartItems = document.getElementById('checkout-cart-items');
-let subTotalCount = document.querySelectorAll('.sub-total-count');
-subTotalCount.forEach(e=>{
-  e.innerHTML = `${localStorage.getItem('cart-total-prices',0)} DA`
-  e.setAttribute('data-subtotal',getTotalePrices())
-
-})
-parentCartItems.innerHTML = '';
-existingCartItems.forEach(item =>{
-    parentCartItems.innerHTML += `
+  const fillCheckoutItems = (source) => {
+    if (source == "global") {
+    } else {
+      let existingCartItems =
+        JSON.parse(localStorage.getItem("cartItems")) || [];
+      let parentCartItems = document.getElementById("checkout-cart-items");
+      let subTotalCount = document.querySelectorAll(".sub-total-count");
+      subTotalCount.forEach((e) => {
+        e.innerHTML = `${localStorage.getItem("cart-total-prices", 0)} DA`;
+        e.setAttribute("data-subtotal", getTotalePrices());
+      });
+      parentCartItems.innerHTML = "";
+      existingCartItems.forEach((item) => {
+        parentCartItems.innerHTML += `
     <tr>
             <td>
             ${item.name} x ${item.qty}
             </td>
             <td>
-            DA ${item.price*item.qty}
+            DA ${item.price * item.qty}
             </td>
     </tr>
-    `
-})
+    `;
+      });
     }
-
-}
+  };
   const setItemToCart = (item, operation) => {
     // Get item ID
     let itemID = item.getAttribute("data-item-id");
@@ -390,55 +388,51 @@ existingCartItems.forEach(item =>{
       );
 
       // SET NEW VALUE TO navbar header
-      setNewNumberToCartIcon()
+      setNewNumberToCartIcon();
       console.log("Item added/removed from cart:", existingCartItems);
     } else {
       console.log("NO both color and size");
-      setItemToCartGlobal(item, operation)
+      setItemToCartGlobal(item, operation);
     }
     fillCartItem();
     setCheckoutTotal();
   };
 
-
-
-
   const setDeleveryFees = (element) => {
-    if (element) { // select wilaya from user
+    if (element) {
+      // select wilaya from user
       let wilaya_id = element.getAttribute("data-wilaya");
       localStorage.setItem("selected_wilaya", wilaya_id);
     }
 
-      let shipping_fees = document.getElementById("shipping_fees");
-      let storeddeleveryFeesData = localStorage.getItem("deleveryFees");
-      let deleveryFees = JSON.parse(storeddeleveryFeesData);
-      let checkout_shipping_type_home = document.getElementById(
-        "checkout_shipping_type_home"
-      );
-      let checkout_shipping_type_office = document.getElementById(
-        "checkout_shipping_type_office"
-      );
-      deleveryFees.forEach((e) => {
-        if (e.wilaya_id == localStorage.getItem("selected_wilaya")) {
-          checkout_shipping_type_home.setAttribute("data-fee", e.home_fee);
-          checkout_shipping_type_office.setAttribute("data-fee", e.desk_fee);
-          shipping_fees.innerHTML =
-            getShippingTypeOption() === "checkout_shipping_type_home"
-              ? `${e.home_fee} DA`
-              : `${e.desk_fee} DA`;
-          shipping_fees.setAttribute(
-            "data-shipping-fee",
-            getShippingTypeOption() === "checkout_shipping_type_home"
-              ? e.home_fee
-              : e.desk_fee
-          );
-        }
-      });
+    let shipping_fees = document.getElementById("shipping_fees");
+    let storeddeleveryFeesData = localStorage.getItem("deleveryFees");
+    let deleveryFees = JSON.parse(storeddeleveryFeesData);
+    let checkout_shipping_type_home = document.getElementById(
+      "checkout_shipping_type_home"
+    );
+    let checkout_shipping_type_office = document.getElementById(
+      "checkout_shipping_type_office"
+    );
+    deleveryFees.forEach((e) => {
+      if (e.wilaya_id == localStorage.getItem("selected_wilaya")) {
+        checkout_shipping_type_home.setAttribute("data-fee", e.home_fee);
+        checkout_shipping_type_office.setAttribute("data-fee", e.desk_fee);
+        shipping_fees.innerHTML =
+          getShippingTypeOption() === "checkout_shipping_type_home"
+            ? `${e.home_fee} DA`
+            : `${e.desk_fee} DA`;
+        shipping_fees.setAttribute(
+          "data-shipping-fee",
+          getShippingTypeOption() === "checkout_shipping_type_home"
+            ? e.home_fee
+            : e.desk_fee
+        );
+      }
+    });
 
     setCheckoutTotal();
   };
-
-
 
   const setCheckoutTotal = () => {
     let sub_total = document
@@ -454,8 +448,6 @@ existingCartItems.forEach(item =>{
     } DA`;
   };
 
-
-
   const getShippingTypeOption = () => {
     let checkedShippingType = document.querySelector(
       'input[name="checkout_shipping_type"]:checked'
@@ -463,85 +455,128 @@ existingCartItems.forEach(item =>{
     return checkedShippingType.getAttribute("id");
   };
 
-
-
-  const ToggleStreetInput=(option) => {
+  const ToggleStreetInput = (option) => {
     /* Toggle display street address field input depending at shipping type*/
     let street = document.getElementById("checkout_street_address");
-     const hidden =  option == "hidden"? street.classList.add("d-none") : street.classList.remove("d-none");
-  }
+    const hidden =
+      option == "hidden"
+        ? street.classList.add("d-none")
+        : street.classList.remove("d-none");
+  };
 
-  const validateInputs = () => {
+  const validateInput = () => {
     // Get references to the input fields
-    const checkoutStreetAddress = document.getElementById('checkout_input_street_address');
-    const phoneField = document.getElementById('checkout_input_phone_field');
-    const firstNameField = document.getElementById('checkout_first_name');
-    const lastNameField = document.getElementById('checkout_last_name');
-    const wilayaField = document.getElementById('wilaya-dropdown');
-    const communField = document.getElementById('communs-dropdown');
+    const checkoutStreetAddress = document.getElementById(
+      "checkout_input_street_address"
+    );
+    const phoneField = document.getElementById("checkout_input_phone_field");
+    const firstNameField = document.getElementById("checkout_first_name");
+    const lastNameField = document.getElementById("checkout_last_name");
+    const wilayaField = document.getElementById("wilaya-dropdown");
+    const communField = document.getElementById("communs-dropdown");
 
     // Validate street address
-    if (checkoutStreetAddress.value.trim() === '') {
-        alert('Please enter a valid street address');
-        return false;
+    if (checkoutStreetAddress.value.trim() === "") {
+      alert("Please enter a valid street address");
+      return false;
     }
 
     // Validate phone number
     const phoneRegex = /^[0-9]{10}$/; // Example: 1234567890 (10 digits)
     if (!phoneRegex.test(phoneField.value)) {
-        alert('Please enter a valid phone number');
-        return false;
+      alert("Please enter a valid phone number");
+      return false;
     }
 
     // Validate first name
-    if (firstNameField.value.trim() === '') {
-        alert('Please enter your first name');
-        return false;
+    if (firstNameField.value.trim() === "") {
+      alert("Please enter your first name");
+      return false;
     }
 
     // Validate last name
-    if (lastNameField.value.trim() === '') {
-        alert('Please enter your last name');
-        return false;
+    if (lastNameField.value.trim() === "") {
+      alert("Please enter your last name");
+      return false;
     }
 
     // Validate wilaya selection
-    if (wilayaField.value === '0') {
-        alert('Please select a wilaya');
-        return false;
+    if (wilayaField.value === "0") {
+      alert("Please select a wilaya");
+      return false;
     }
 
     // Validate commun selection
-    if (communField.value === '0') {
-        alert('Please select a commun');
-        return false;
+    if (communField.value === "0") {
+      alert("Please select a commun");
+      return false;
     }
 
     // If all validations pass, return true or perform additional actions
     return true;
-};
+  };
 
+  const sendRequest = (rawData)=> {
+  let myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+  myHeaders.append("X-Frappe-CSRF-Token", frappe.csrf_token);
 
-  const placeOrderItems = (element,orderType) =>{
+  let requestOptions = {
+    method: 'POST',
+    headers: myHeaders,
+    body: JSON.stringify(rawData),
+  };
+
+  return fetch("/api/method/simple_shop.api.post_order", requestOptions)
+    .then(response => response.text())
+    .catch(error => {
+      console.log('error', error);
+      throw error; // Rethrow the error to be caught by the caller if needed
+    });
+}
+
+  const placeOrderItems = (element, orderType) => {
     element.preventDefault();
-    
-  // OrderType may be 'product' or 'cart' depending on the order type
-  if (orderType === 'product'){
-    const checkoutStreetAddress = document.getElementById('checkout_input_street_address').value;
-    const phoneField = document.getElementById('checkout_input_phone_field').value;
-    const firstNameField = document.getElementById('checkout_first_name').value;
-    const lastNameField = document.getElementById('checkout_last_name').value;
-    const wilayaField = document.getElementById('wilaya-dropdown').value;
-    const communField = document.getElementById('communs-dropdown').value;
-    validateInputs()
-    console.log(firstNameField,phoneField,wilayaField,lastNameField,communField)
 
-  }
-  }
+    // OrderType may be 'product' or 'cart' depending on the order type
+    if (orderType === "product") {
+      const checkoutStreetAddress = document.getElementById(
+        "checkout_input_street_address"
+      ).value;
+      const phoneField = document.getElementById(
+        "checkout_input_phone_field"
+      ).value;
+      const firstNameField = document.getElementById(
+        "checkout_first_name"
+      ).value;
+      const lastNameField = document.getElementById("checkout_last_name").value;
+      const wilayaField = document.getElementById("wilaya-dropdown").value;
+      const communField = document.getElementById("communs-dropdown").value;
+      //validateInputs();
+      console.log(
+        firstNameField,
+        phoneField,
+        wilayaField,
+        lastNameField,
+        communField
+      );
+      let orderData = {
+        "firstName": firstNameField,
+        "lastName": lastNameField,
+        "phone": phoneField,
+        "wilaya": wilayaField,
+        "commun":communField,
+        "product":"{{item.item_code}}",
+        "qty":1
+      }
+      sendRequest(orderData)
+    }
 
-  document.getElementById('place_order').addEventListener('click',e=>{   
-    placeOrderItems(e,'product')
+  };
+
+  document.getElementById("place_order").addEventListener("click", (e) => {
+    placeOrderItems(e, "product");
   });
-fillCheckoutItems()
-setCheckoutTotal();
+  fillCheckoutItems();
+  setCheckoutTotal();
 </script>
