@@ -7,12 +7,17 @@
  "field_order": [
   "order",
   "first_name",
-  "last_name",
   "phone",
+  "column_break_dwff",
+  "last_name",
   "status",
-  "street_address",
+  "section_break_hsuo",
   "wilaya",
-  "commun"
+  "street_address",
+  "column_break_jnzr",
+  "commun",
+  "items_section",
+  "items"
  ],
  "fields": [
   {
@@ -63,11 +68,34 @@
    "fieldtype": "Data",
    "label": "commun",
    "length": 50
+  },
+  {
+   "fieldname": "column_break_dwff",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_hsuo",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_jnzr",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "items_section",
+   "fieldtype": "Section Break",
+   "label": "Items"
+  },
+  {
+   "fieldname": "items",
+   "fieldtype": "Table",
+   "label": "Items",
+   "options": "Order Item"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-02-01 23:27:47.414012",
+ "modified": "2024-02-07 17:37:37.221673",
  "modified_by": "Administrator",
  "module": "Simple Shop",
  "name": "Order",
