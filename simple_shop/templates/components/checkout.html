@@ -1,29 +1,25 @@
+<style>
+  .billing-info__wrapper {
+    padding: 20px;
+    border: 7px solid #990d0d;
+    box-shadow: 0px 1px 18px 9px #0000001f;
+    border-radius: 25px;
+  }
+</style>
 <form>
   <div class="checkout-form">
     <div class="billing-info__wrapper">
       <h4>BILLING DETAILS</h4>
       <div class="row">
-        <div class="col-md-6">
-          <div class="form-floating my-3">
-            <input
-              type="text"
-              class="form-control"
-              id="checkout_first_name"
-              placeholder="First Name"
-            />
-            <label for="checkout_first_name">First name</label>
-          </div>
-        </div>
-        <div class="col-md-6">
+        <div class="col-md-12">
           <div class="form-floating my-3">
             <input
               type="text"
               class="form-control"
               id="checkout_last_name"
               placeholder="First Name"
-              onchange="validateInput(this)"
             />
-            <label for="checkout_first_name">Last name</label>
+            <label for="checkout_first_name">Full name</label>
           </div>
         </div>
         <div class="col-md-12">
@@ -32,6 +28,7 @@
               <label for="search-dropdown" class="form-label">Wilaya*</label>
               <div class="js-hover__open">
                 <input
+                required
                   type="text"
                   class="form-control form-control-lg search-field__actor search-field__arrow-down"
                   id="wilaya-dropdown"
@@ -42,6 +39,7 @@
               <div class="filters-container js-hidden-content mt-2">
                 <div class="search-field__input-wrapper">
                   <input
+                  
                     type="text"
                     oninput="filterLiElements(this.value,'wilayaList')"
                     class="search-field__input form-control form-control-sm bg-lighter border-lighter"
@@ -63,6 +61,7 @@
               <label for="search-dropdown" class="form-label">Region*</label>
               <div class="js-hover__open">
                 <input
+                required
                   type="text"
                   class="form-control form-control-lg search-field__actor search-field__arrow-down"
                   id="communs-dropdown"
@@ -74,6 +73,7 @@
               <div class="filters-container js-hidden-content mt-2">
                 <div class="search-field__input-wrapper">
                   <input
+                  
                     type="text"
                     oninput="filterLiElements(this.value,'baladiaList')"
                     class="search-field__input form-control form-control-sm bg-lighter border-lighter"
@@ -91,6 +91,7 @@
         <div class="col-md-12" id="checkout_street_address">
           <div class="form-floating my-3">
             <input
+            
               type="text"
               class="form-control"
               id="checkout_input_street_address"
@@ -102,6 +103,7 @@
         <div class="col-md-12">
           <div class="form-floating my-3">
             <input
+              maxlength="10"
               type="text"
               class="form-control"
               id="checkout_input_phone_field"
@@ -111,20 +113,9 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class="checkout__totals-wrapper">
-      <div class="sticky-content">
-        <div class="checkout__totals">
-          <h3>Your Order</h3>
-          <table class="checkout-cart-items">
-            <thead>
-              <tr>
-                <th>PRODUCT</th>
-                <th>SUBTOTAL</th>
-              </tr>
-            </thead>
-            <tbody id="checkout-cart-items"></tbody>
-          </table>
+    <div class="checkout__totals-wrapper w-100"  >
+      <div class="sticky-content" style="width: 100% !important;">
+        <div class="checkout__totals" style="width: 100% !important;border: none;">
           <table class="checkout-totals">
             <tbody>
               <tr>
@@ -162,6 +153,7 @@
                   </div>
                   <div class="form-check">
                     <input
+                    
                       onchange="setDeleveryFees();ToggleStreetInput('hidden')"
                       class="form-check-input form-check-input_fill"
                       type="radio"
@@ -184,13 +176,18 @@
             </tbody>
           </table>
         </div>
-
-        <button class="btn btn-primary btn-checkout" id="place_order">
-          PLACE ORDER
-        </button>
+        <button class="btn btn-primary btn-checkout" id="place_order" style="
+        border-radius: 30px;
+        background: #870404;
+        border: 2px solid #870404;
+    ">
+              PLACE ORDER
+            </button>
       </div>
     </div>
   </div>
+</div>
+
 </form>
 <script>
   function filterLiElements(input, list_id) {
@@ -464,59 +461,9 @@
         : street.classList.remove("d-none");
   };
 
-  const validateInput = () => {
-    // Get references to the input fields
-    const checkoutStreetAddress = document.getElementById(
-      "checkout_input_street_address"
-    );
-    const phoneField = document.getElementById("checkout_input_phone_field");
-    const firstNameField = document.getElementById("checkout_first_name");
-    const lastNameField = document.getElementById("checkout_last_name");
-    const wilayaField = document.getElementById("wilaya-dropdown");
-    const communField = document.getElementById("communs-dropdown");
 
-    // Validate street address
-    if (checkoutStreetAddress.value.trim() === "") {
-      alert("Please enter a valid street address");
-      return false;
-    }
 
-    // Validate phone number
-    const phoneRegex = /^[0-9]{10}$/; // Example: 1234567890 (10 digits)
-    if (!phoneRegex.test(phoneField.value)) {
-      alert("Please enter a valid phone number");
-      return false;
-    }
-
-    // Validate first name
-    if (firstNameField.value.trim() === "") {
-      alert("Please enter your first name");
-      return false;
-    }
-
-    // Validate last name
-    if (lastNameField.value.trim() === "") {
-      alert("Please enter your last name");
-      return false;
-    }
-
-    // Validate wilaya selection
-    if (wilayaField.value === "0") {
-      alert("Please select a wilaya");
-      return false;
-    }
-
-    // Validate commun selection
-    if (communField.value === "0") {
-      alert("Please select a commun");
-      return false;
-    }
-
-    // If all validations pass, return true or perform additional actions
-    return true;
-  };
-
-  const sendRequest = (rawData)=> {
+  const sendRequest = (rawData) => {
   let myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
   myHeaders.append("X-Frappe-CSRF-Token", frappe.csrf_token);
@@ -528,12 +475,55 @@
   };
 
   return fetch("/api/method/simple_shop.api.post_order", requestOptions)
-    .then(response => response.text())
+    .then(response => response.json()) // Parse JSON response
+    .then(data => {
+      if (data.message.success) {
+        const orderId = data.message.data.order_id;
+        // Redirect to success page with order_id
+        window.location.href = `/success_page/?id=${orderId}`;
+      } else {
+        // Handle other cases where success is not true if needed
+        console.log('Request was not successful:', data);
+      }
+    })
     .catch(error => {
       console.log('error', error);
       throw error; // Rethrow the error to be caught by the caller if needed
     });
-}
+};
+
+
+const verifyOrderInputs = (orderData) => {
+    const { lastName, phone, wilaya, commun } = orderData;
+
+    const isEmpty = (value) => value.trim().length < 1;
+
+    if (isEmpty(lastName.value)) {
+        handleInvalidInput(lastName, 'full name must be filled');
+    } else if (isEmpty(phone.value) || phone.value.trim().length < 10) {
+        handleInvalidInput(phone, 'Phone number must be at least 10 characters');
+    } else if (!wilaya.value.trim() || !commun.value.trim()) {
+        handleInvalidInput(wilaya, 'State and city must be provided');
+    } else {
+        handleValidInput([lastName, phone, wilaya, commun]);
+        return [true, 'order sent successfully'];
+    }
+
+    return [false, '']; // Return a default error message for invalid cases
+
+    function handleInvalidInput(element, errorMessage) {
+        element.classList.add('is-invalid');
+        element.classList.remove('is-valid');
+        return [false, errorMessage];
+    }
+
+    function handleValidInput(elements) {
+        elements.forEach((element) => {
+            element.classList.remove('is-invalid');
+            element.classList.add('is-valid');
+        });
+    }
+};
 
   const placeOrderItems = (element, orderType) => {
     element.preventDefault();
@@ -542,34 +532,39 @@
     if (orderType === "product") {
       const checkoutStreetAddress = document.getElementById(
         "checkout_input_street_address"
-      ).value;
+      );
       const phoneField = document.getElementById(
         "checkout_input_phone_field"
-      ).value;
-      const firstNameField = document.getElementById(
-        "checkout_first_name"
-      ).value;
-      const lastNameField = document.getElementById("checkout_last_name").value;
-      const wilayaField = document.getElementById("wilaya-dropdown").value;
-      const communField = document.getElementById("communs-dropdown").value;
+      );
+      const lastNameField = document.getElementById("checkout_last_name");
+      const wilayaField = document.getElementById("wilaya-dropdown");
+      const communField = document.getElementById("communs-dropdown");
       //validateInputs();
       console.log(
-        firstNameField,
-        phoneField,
-        wilayaField,
-        lastNameField,
-        communField
+        phoneField.value,
+        wilayaField.value,
+        lastNameField.value,
+        communField.value
       );
-      let orderData = {
-        "firstName": firstNameField,
+      let orderData = { 
         "lastName": lastNameField,
         "phone": phoneField,
         "wilaya": wilayaField,
         "commun":communField,
+      }
+      const [success,msg] = verifyOrderInputs(orderData);
+      console.log(success,msg);
+      if (success){
+        orderData={
+        "lastName": lastNameField.value,
+        "phone": phoneField.value,
+        "wilaya": wilayaField.value,
+        "commun":communField.value,
         "product":"{{item.item_code}}",
         "qty":1
+        }
+        sendRequest(orderData)
       }
-      sendRequest(orderData)
     }
 
   };

@@ -1,5 +1,6 @@
 import frappe
 import requests
+from frappe.model.document import get_doc
 
 @frappe.whitelist(allow_guest=True)
 def get_data():
@@ -38,4 +39,13 @@ def post_order(**args):
     """Set the order"""
     data = frappe._dict(args)
     print(data)
-    return {"success": True, "data": data}
+    new_order = frappe.new_doc("Wooliz Order")
+    new_order.last_name = data['lastName']
+    new_order.phone = data['phone']
+    new_order.wilaya = data['wilaya']
+    new_order.commun = data['commun']
+    product = get_doc("Item",data['product'])
+    new_order.append("products",{"item": product,"unit_price":product.custom_price,"qty":data['qty'],"total":product.custom_price})
+    new_order.save()
+    created_sales_order_id = new_order.name
+    return {"success": True, "data": {"order_id":created_sales_order_id}}

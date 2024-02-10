@@ -75,6 +75,7 @@ function getCookie(name) {
 
 
   <body>
+    {% include "templates/components/base_scripts.html" %}
 
 {% include "templates/components/svg_icons.html" %}
 {% include "templates/components/mobile_navbar.html" %}
@@ -225,7 +226,6 @@ function getCookie(name) {
     <!-- csrf_token -->
     {%- block body_include %}{{ body_include or "" }}{% endblock -%}
     <!-- External JavaScripts -->
-    {% include "templates/components/base_scripts.html" %}
     <script src="/assets/simple_shop/js/plugins/jquery.min.js"></script>
     <script src="/assets/simple_shop/js/plugins/bootstrap.bundle.min.js"></script>
     <script src="/assets/simple_shop/js/plugins/bootstrap-slider.min.js"></script>

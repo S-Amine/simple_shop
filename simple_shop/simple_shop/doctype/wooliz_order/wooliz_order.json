@@ -39,7 +39,7 @@
    "fieldname": "products",
    "fieldtype": "Table",
    "label": "Products",
-   "options": "Item Default"
+   "options": "Order Item"
   },
   {
    "fieldname": "wilaya",
@@ -54,7 +54,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-02-07 08:26:34.495909",
+ "modified": "2024-02-10 17:48:06.510664",
  "modified_by": "Administrator",
  "module": "Simple Shop",
  "name": "Wooliz Order",
