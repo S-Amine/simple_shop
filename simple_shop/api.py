@@ -1,3 +1,4 @@
+import json
 import frappe
 import requests
 from frappe.model.document import get_doc
@@ -44,8 +45,29 @@ def post_order(**args):
     new_order.phone = data['phone']
     new_order.wilaya = data['wilaya']
     new_order.commun = data['commun']
+    new_order.custom_stop_desk_bureau = data['is_stop_desk']
     product = get_doc("Item",data['product'])
     new_order.append("products",{"item": product,"unit_price":product.custom_price,"qty":data['qty'],"total":product.custom_price})
     new_order.save()
     created_sales_order_id = new_order.name
     return {"success": True, "data": {"order_id":created_sales_order_id}}
+
+@frappe.whitelist()
+def generate_bordereau(**args):
+    """Set the order"""
+    print("Generating bordereau ........")
+    print(args)
+
+    # Convert the string representation of the document to a dictionary
+    doc_dict = json.loads(args["doc"])
+
+    # Access the custom_bordereau field
+    pdf = doc_dict.get("custom_bordereau")
+
+    print("PDF URL:", pdf)
+
+    if pdf:
+        # Return JavaScript code for redirection
+        return f"window.location.href = '{pdf}';"
+    else:
+        frappe.msgprint("The custom_bordereau field is empty.")

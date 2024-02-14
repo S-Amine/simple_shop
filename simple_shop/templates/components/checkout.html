@@ -539,13 +539,8 @@ const verifyOrderInputs = (orderData) => {
       const lastNameField = document.getElementById("checkout_last_name");
       const wilayaField = document.getElementById("wilaya-dropdown");
       const communField = document.getElementById("communs-dropdown");
-      //validateInputs();
-      console.log(
-        phoneField.value,
-        wilayaField.value,
-        lastNameField.value,
-        communField.value
-      );
+      const shippingField = document.getElementById("checkout_shipping_type_office");
+
       let orderData = { 
         "lastName": lastNameField,
         "phone": phoneField,
@@ -561,6 +556,7 @@ const verifyOrderInputs = (orderData) => {
         "wilaya": wilayaField.value,
         "commun":communField.value,
         "product":"{{item.item_code}}",
+        "is_stop_desk":shippingField.checked,
         "qty":1
         }
         sendRequest(orderData)
