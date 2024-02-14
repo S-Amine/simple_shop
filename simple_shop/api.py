@@ -7,7 +7,6 @@ from frappe.model.document import get_doc
 def get_data():
     """Returns all yalidin wilaya"""
     settings = frappe.get_single("Yalidin")
-    print(settings)
     headers = {"X-API-ID": settings.api_key,"X-API-TOKEN": settings.api_token }
     response = requests.get(settings.base_url+"wilayas/", headers=headers)
     wilayas = response.json()
@@ -17,8 +16,8 @@ def get_data():
 
 @frappe.whitelist(allow_guest=True)
 def get_communs_true():
-    """Returns cities which have official office"""
-    settings = frappe.get_single("Settings")
+    settings = frappe.get_single("Yalidin")
+    print(settings)
     headers = {"X-API-ID": settings.api_key,"X-API-TOKEN": settings.api_token }
     try:
         response = requests.get(settings.base_url+"communes/?has_stop_desk=true&page_size=2000", headers=headers)
@@ -32,6 +31,47 @@ def get_communs_true():
         result,result_2={},{}
 
     return {"communs": result, "deliveryfees": result_2}
+
+@frappe.whitelist(allow_guest=True)
+def get_communs():
+    settings = frappe.get_single("Yalidin")
+    headers = {"X-API-ID": settings.api_key,"X-API-TOKEN": settings.api_token }
+    data=[]
+    next=True
+    index = 1
+    try:
+        while next:
+            response = requests.get(settings.base_url+f"communes/?fields=wilaya_name,name&page={index}", headers=headers)
+            communs = response.json()
+            result = communs.get('data',None)
+            next = communs.get('links',{}).get('next',None)
+            for commun in result:
+                data.append(commun)
+            index+=1
+            
+    except Exception as e:
+        print(e)
+        data={}
+    print(data)
+    return {"communs":data}
+
+
+@frappe.whitelist(allow_guest=True)
+def get_centers():
+    settings = frappe.get_single("Yalidin")
+    print(settings)
+    headers = {"X-API-ID": settings.api_key,"X-API-TOKEN": settings.api_token }
+    try:
+        response = requests.get(settings.base_url+"centers/", headers=headers)
+        response_delevery = requests.get(settings.base_url+"deliveryfees/", headers=headers)
+        print(response_delevery.text)
+        communs = response.json()
+        result = communs.get('data',None)
+    except:
+        result={}
+
+    return {"centers": result}
+
 
 
 
