@@ -16,6 +16,9 @@ def get_data():
 
 @frappe.whitelist(allow_guest=True)
 def get_communs_true():
+    """
+    Get desk stop yalidin communs
+    """
     settings = frappe.get_single("Yalidin")
     print(settings)
     headers = {"X-API-ID": settings.api_key,"X-API-TOKEN": settings.api_token }
@@ -34,6 +37,9 @@ def get_communs_true():
 
 @frappe.whitelist(allow_guest=True)
 def get_communs():
+    """
+    Get all yalidine communs
+    """
     settings = frappe.get_single("Yalidin")
     headers = {"X-API-ID": settings.api_key,"X-API-TOKEN": settings.api_token }
     data=[]

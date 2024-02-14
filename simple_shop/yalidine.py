@@ -6,13 +6,9 @@ from frappe.model.document import get_doc
 import requests
 
 
-def create_yalidin_order(order_id):
-    ...
-
-
 def get_order_total_price(order_id):
     """
-    Returns the total price with the 
+    Returns the total price with the shipping fees
     """
     order = get_doc("Wooliz Order", order_id)
     # Calculate order total using lambda function and sum
@@ -45,7 +41,6 @@ def send_yalidin_order(order_id):
     settings = frappe.get_single("Yalidin")
     headers = {"X-API-ID": settings.api_key,"X-API-TOKEN": settings.api_token }
     url = settings.base_url+"parcels/"
-
     order_obj = get_doc("Wooliz Order",order_id)
     get_cart_total=get_order_total_price(order_id)
     product_list=get_product_list(order_id)
@@ -71,8 +66,39 @@ def send_yalidin_order(order_id):
 
     return my_response
 
+def delete_yalidine_order(tracking_id):
+    """Delete order"""
+    settings = frappe.get_single("Yalidin")
+    headers = {"X-API-ID": settings.api_key,"X-API-TOKEN": settings.api_token }
+    url = f"{settings.base_url}parcels/{tracking_id}"
+    response = requests.delete(url=url, headers=headers)
+    return response
 
-
+def update_yalidine_order(order_id):
+    """Update the order"""
+    settings = frappe.get_single("Yalidin")
+    order_obj = get_doc("Wooliz Order",order_id)
+    product_list=get_product_list(order_id)
+    get_cart_total=get_order_total_price(order_id)
+    tracking_id=order_obj.custom_tracking_id
+    headers = {"X-API-ID": settings.api_key,"X-API-TOKEN": settings.api_token }
+    url = f"{settings.base_url}parcels/{tracking_id}"
+    data = OrderedDict(
+            [("order_id", order_obj.name), 
+            ("firstname", order_obj.last_name),
+            ("familyname", order_obj.last_name),
+            ("contact_phone",  order_obj.phone),
+            ("address", order_obj.custom_address if order_obj.custom_address is not None else order_obj.commun + order_obj.wilaya),
+            ("to_commune_name", order_obj.commun),
+            ("to_wilaya_name", extract_alpha_chars(order_obj.wilaya)),
+            ("product_list", str(product_list)),
+            ("price", int(get_cart_total)),
+            ("freeshipping", False), 
+            ("is_stopdesk", order_obj.custom_stop_desk_bureau), 
+            ("has_exchange", False),
+            ("product_to_collect", str(product_list) if product_list else "product_to_collect does not exist" )])
+    requests.patch(url=url, headers=headers, data=json.dumps((data)))
+                   
 
 def extract_alpha_chars(input_string):
     # Remove numbers from the string
