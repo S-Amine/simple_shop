@@ -1,30 +1,3 @@
-<script>
-    const setNewNumberToCartIcon = ()=>{
-      console.log('setNewNumberToCartIcon')
-      // SET NEW VALUE TO navbar header
-        // Try to get existing cart items array from localStorage
-      let existingCartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
-      console.log(existingCartItems)
-      let cartItemNumber = document.querySelectorAll(".cart_number");
-      let totalQty = existingCartItems.reduce(
-          (total, item) => total + item.qty,
-          0
-        );
-      console.log(cartItemNumber)
-      cartItemNumber.forEach((e) => {
-      e.innerHTML = totalQty;
-    });
-  }
-  const getTotalePrices = ()=>{
-  let subTotalPrices = document.querySelectorAll('.item-sub-price');
-  let totalPrices = 0;
-  subTotalPrices.forEach(e=>{
-  totalPrices+= parseInt(e.getAttribute('data-price'))
-  })
-  return totalPrices
-  }
-  setNewNumberToCartIcon()
-  </script>
 
 <script>
 
@@ -35,16 +8,13 @@
         let itemPrice = item.getAttribute("data-item-price");
         let itemName = item.getAttribute("data-item-name");
         let cartItemNumber = document.querySelectorAll(".cart_number");
-    
         // Check if both color and size are selected
           // Get the data attributes from the selected elements
           let colorVariant = '';
           let sizeVariant = '';
-    
           // Try to get existing cart items array from localStorage
           let existingCartItems =
             JSON.parse(localStorage.getItem("cartItems")) || [];
-    
           // Check if an item with the same ID, color, and size already exists in the cart
           let existingItemIndex = existingCartItems.findIndex(
             (item) =>
@@ -80,10 +50,8 @@
               qty:1,
             });
           }
-    
           // Convert the cart items array to JSON string and store it in localStorage
           localStorage.setItem("cartItems", JSON.stringify(existingCartItems));
-    
           // Calculate total quantity
           let totalQty = existingCartItems.reduce(
             (total, item) => total + item.qty,
@@ -94,15 +62,23 @@
             e.innerHTML = totalQty;
           });
           console.log("Item added/removed from cart:", existingCartItems);
-          fillCartItem('global')
+          fillCartItem()
       };
-      const fillCartItem = () =>{
-let existingCartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-let parentCartItems = document.getElementById('cart-drawer-items-list');
-let cartItemsCount = document.getElementById('cart-items-count');
-let subTotalCount = document.querySelectorAll('.sub-total-count');
-let htmlInnerContent = '';
-cartItemsCount.innerHTML =existingCartItems.length;
+
+
+
+const fillCartItem = () =>{
+  /*
+ ****** Fill the cart item with Locale storage ******
+  */
+    const existingCartItems = JSON.parse(localStorage.getItem('cartItems'));
+    let cartItemsCount = document.querySelectorAll('.cart_number');
+    let subTotalCount = document.querySelectorAll('.sub-total-count');
+    var htmlInnerContent = '';
+    cartItemsCount.forEach(e=>{
+      e.innerHTML =existingCartItems.length;
+
+    })
 existingCartItems.forEach(item => {
     htmlInnerContent +=`
     <div class="cart-drawer-item d-flex position-relative" data-item-id="${item.id}" data-item-name="${item.name}" data-item-color="${item.color}" data-item-size="${item.size}">
@@ -133,11 +109,10 @@ parentCartItems.innerHTML = htmlInnerContent
 
 subTotalCount.forEach(e=>{
   e.innerHTML = `${localStorage.getItem('cart-total-prices',0)} DA`
-  e.setAttribute('data-subtotal',getTotalePrices())
+  e.setAttribute('data-subtotal',getSubTotal())
 
 })
-localStorage.setItem('cart-total-prices', getTotalePrices());
+localStorage.setItem('cart-total-prices', getSubTotal());
 
 }
-    document.addEventListener("DOMContentLoaded", fillCartItem())
     </script>

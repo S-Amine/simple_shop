@@ -17,7 +17,7 @@
         </div>
         <div class="order-info__item">
           <label>Date</label>
-          <span>{{order.custom_created_at}}</span>
+          <span>{{ frappe.format_date(order.creation) }}</span>
         </div>
         <div class="order-info__item">
           <label>Total</label>

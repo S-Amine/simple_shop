@@ -24,3 +24,8 @@ def get_context(context):
     else:
         frappe.local.flags.redirect_location = '/'
         raise frappe.Redirect
+    categories = frappe.db.get_all("Item Group",
+                                  fields="*",
+                                  filters={'show_in_website': True}
+                                  )
+    context.categories = categories

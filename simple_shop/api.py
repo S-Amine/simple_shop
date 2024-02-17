@@ -47,7 +47,7 @@ def get_communs():
     index = 1
     try:
         while next:
-            response = requests.get(settings.base_url+f"communes/?fields=wilaya_name,name&page={index}", headers=headers)
+            response = requests.get(settings.base_url+f"communes/?fields=wilaya_name,name,wilaya_id&page={index}", headers=headers)
             communs = response.json()
             result = communs.get('data',None)
             next = communs.get('links',{}).get('next',None)
@@ -58,7 +58,6 @@ def get_communs():
     except Exception as e:
         print(e)
         data={}
-    print(data)
     return {"communs":data}
 
 
@@ -67,16 +66,22 @@ def get_centers():
     settings = frappe.get_single("Yalidin")
     print(settings)
     headers = {"X-API-ID": settings.api_key,"X-API-TOKEN": settings.api_token }
+    data=[]
+    next=True
+    index = 1
     try:
-        response = requests.get(settings.base_url+"centers/", headers=headers)
-        response_delevery = requests.get(settings.base_url+"deliveryfees/", headers=headers)
-        print(response_delevery.text)
-        communs = response.json()
-        result = communs.get('data',None)
+        while next:
+            response = requests.get(f"{settings.base_url}centers/?page={index}", headers=headers)
+            communs = response.json()
+            result = communs.get('data',None)
+            next = communs.get('links',{}).get('next',None)
+            for commun in result:
+                data.append(commun)
+            index+=1
     except:
         result={}
 
-    return {"centers": result}
+    return {"centers": data}
 
 
 
@@ -85,13 +90,15 @@ def get_centers():
 def post_order(**args):
     """Set the order"""
     data = frappe._dict(args)
-    print(data)
     new_order = frappe.new_doc("Wooliz Order")
     new_order.last_name = data['lastName']
     new_order.phone = data['phone']
     new_order.wilaya = data['wilaya']
     new_order.commun = data['commun']
     new_order.custom_stop_desk_bureau = data['is_stop_desk']
+    if data['is_stop_desk']:
+        new_order.custom_center_id = data['center_id'] # IN YALIDIN this field is required if stop_desk is true
+        new_order.custom_center = data['commun']
     product = get_doc("Item",data['product'])
     new_order.append("products",{"item": product,"unit_price":product.custom_price,"qty":data['qty'],"total":product.custom_price})
     new_order.save()

@@ -1,274 +1,4 @@
-<style>
-  .billing-info__wrapper {
-    padding: 20px;
-    border: 7px solid #990d0d;
-    box-shadow: 0px 1px 18px 9px #0000001f;
-    border-radius: 25px;
-  }
-
-</style>
-<form>
-  <div class="checkout-form" id="billing">
-    <div class="billing-info__wrapper">
-      <h4 >BILLING DETAILS</h4>
-      <div class="row">
-        <div class="col-md-12">
-          <div class="form-floating my-3">
-            <input
-              type="text"
-              class="form-control"
-              id="checkout_last_name"
-              placeholder="First Name"
-            />
-            <label for="checkout_first_name">Full name</label>
-          </div>
-        </div>
-        <div class="col-md-12">
-          <div class="search-field my-3">
-            <div class="form-label-fixed hover-container">
-              <label for="search-dropdown" class="form-label">Wilaya*</label>
-              <div class="js-hover__open">
-                <input
-                  required
-                  type="text"
-                  class="form-control form-control-lg search-field__actor search-field__arrow-down"
-                  id="wilaya-dropdown"
-                  name="search-keyword"
-                  placeholder="Enter your wilaya..."
-                />
-              </div>
-              <div class="filters-container js-hidden-content mt-2">
-                <div class="search-field__input-wrapper">
-                  <input
-                    type="text"
-                    oninput="filterLiElements(this.value,'wilayaList')"
-                    class="search-field__input form-control form-control-sm bg-lighter border-lighter"
-                    placeholder="Enter your city"
-                  />
-                </div>
-                <ul
-                  class="search-suggestion list-unstyled"
-                  id="wilayaList"
-                  style="max-height: 200px; overflow-y: scroll"
-                ></ul>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-12">
-          <div class="shipping_type mx-2">
-            <div class="form-check">
-              <input
-                class="form-check-input form-check-input_fill"
-                type="radio"
-                onchange="setDeleveryFees();ToggleStreetInput('display');renderCommunsView(this);"
-                name="checkout_shipping_type"
-                checked
-                data-wilaya="16"
-
-                id="checkout_shipping_type_home"
-              />
-              <label class="form-check-label" for="checkout_shipping_type_home">
-                Home
-              </label>
-            </div>
-            <div class="form-check">
-              <input
-                onchange="setDeleveryFees();ToggleStreetInput('hidden');renderCentersListView(this)"
-                class="form-check-input form-check-input_fill"
-                type="radio"
-                data-wilaya="16"
-                name="checkout_shipping_type"
-                id="checkout_shipping_type_office"
-              />
-              <label
-                class="form-check-label"
-                for="checkout_shipping_type_office"
-              >
-                Office
-              </label>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-12">
-          <div class="search-field my-3">
-            <div class="form-label-fixed hover-container">
-              <label for="search-dropdown" class="form-label">Region*</label>
-              <div class="js-hover__open">
-                <input
-                  required
-                  type="text"
-                  class="form-control form-control-lg search-field__actor search-field__arrow-down"
-                  id="communs-dropdown"
-                  name="search-keyword"
-                  readonly=""
-                  placeholder="Enter your city..."
-                />
-              </div>
-              <div class="filters-container js-hidden-content mt-2">
-                <div class="search-field__input-wrapper">
-                  <input
-                    type="text"
-                    oninput="filterLiElements(this.value,'baladiaList')"
-                    class="search-field__input form-control form-control-sm bg-lighter border-lighter"
-                    placeholder="Search"
-                  />
-                </div>
-                <ul
-                  class="search-suggestion list-unstyled"
-                  id="baladiaList"
-                  style="max-height: 200px; overflow-y: scroll"
-
-                ></ul>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-12" id="checkout_street_address">
-          <div class="form-floating my-3">
-            <input
-              type="text"
-              class="form-control"
-              id="checkout_input_street_address"
-              placeholder="Phone *"
-            />
-            <label for="checkout_phone">Street address</label>
-          </div>
-        </div>
-        <div class="col-md-12">
-          <div class="form-floating my-3">
-            <input
-              maxlength="10"
-              type="text"
-              class="form-control"
-              id="checkout_input_phone_field"
-              placeholder="Phone *"
-            />
-            <label for="checkout_phone">Phone *</label>
-          </div>
-        </div>
-      </div>
-      <div class="checkout__totals-wrapper w-100">
-        <div class="sticky-content" style="width: 100% !important">
-          <div
-            class="checkout__totals"
-            style="width: 100% !important; border: none"
-          >
-            <table class="checkout-totals">
-              <tbody>
-                <tr>
-                  <th>SUBTOTAL</th>
-                  <td
-                    id="checkout-total-amount"
-                    class="sub-total-count"
-                    data-subtotal="{{item.custom_price}}"
-                  >
-                     {{item.custom_price}} DA
-                  </td>
-                </tr>
-                <tr>
-                  <th>SHIPPING</th>
-                  <td id="shipping_fees" data-shipping-fee="0">0 DA</td>
-                </tr>
-                <tr>
-                  <th>TOTAL</th>
-                  
-                  <td id="total-checkout-amount">{{item.custom_price}} DA</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <button
-            class="btn btn-primary btn-checkout fw-bold"
-            id="place_order"
-            style="
-              border-radius: 30px;
-              background: #870404;
-              border: 2px solid #870404;
-            "
-          >
-            PLACE ORDER
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-</form>
-<script>
-  const setNewNumberToCartIcon = ()=>{
-    console.log('setNewNumberToCartIcon')
-    // SET NEW VALUE TO navbar header
-      // Try to get existing cart items array from localStorage
-    let existingCartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
-    console.log(existingCartItems)
-    let cartItemNumber = document.querySelectorAll(".cart_number");
-    let totalQty = existingCartItems.reduce(
-        (total, item) => total + item.qty,
-        0
-      );
-    console.log(cartItemNumber)
-    cartItemNumber.forEach((e) => {
-    e.innerHTML = totalQty;
-  });
-}
-const getSubTotal = ()=>{
-// get total elements
-let subTotalPrices = document.querySelectorAll('.item-sub-price');
-// initialize total
-let totalPrices = 0;
-// calculate total prices by iteration
-subTotalPrices.forEach(e=>{
-totalPrices+= parseInt(e.getAttribute('data-price'))
-})
-// return total prices
-return totalPrices ? totalPrices:"{{item.custom_price}}" // if client doesn't select an item in cart
-}
-// set total items to cart icons
-setNewNumberToCartIcon()
-</script>
-
-<script>
-  console.log("{{item}}")
-  function filterLiElements(input, list_id) {
-    let filter, ul, li, a, i;
-    filter = input.toUpperCase();
-    ul = document.getElementById(list_id);
-    li = ul.getElementsByTagName("li");
-
-    for (i = 0; i < li.length; i++) {
-      console.log(i);
-      a = li[i];
-      if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
-        li[i].style.display = "";
-      } else {
-        li[i].style.display = "none";
-      }
-    }
-  }
-  function removeContentVisibleClass(li, list_id) {
-    let parent = li.closest(".form-label-fixed.hover-container");
-    parent.classList.remove("js-content_visible");
-    // set and render wilaya in input field
-    setDropDownValue(li, list_id);
-  }
-  function setDropDownValue(element, list_id) {
-    let homeChecked = document.getElementById("checkout_shipping_type_home").checked;
-
-    const itemName = element.getAttribute("data-item-name");
-    if (list_id == "wilayaList") {
-      document.getElementById("wilaya-dropdown").value = itemName;
-      if (homeChecked) 
-      renderCommunsView(element);
-      else
-      renderCentersListView(element);
-    } else {
-      document.getElementById("communs-dropdown").value = itemName;
-    }
-  }
-</script>
-
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function () {
     // Fetch data from the API
     fetch("/api/method/simple_shop.api.get_data")
       .then((response) => response.json())
@@ -276,7 +6,9 @@ setNewNumberToCartIcon()
         // Get the ul element
         const ul = document.getElementById("wilayaList");
         const result = data["message"];
+
         let htmlContent = "";
+
         // Loop through the data and create li elements
         result.forEach((item) => {
           htmlContent += `<li class="search-suggestion__item js-search-select" data-wilaya="${item.id}" data-item-name="${item.id} ${item.name}" onclick="removeContentVisibleClass(this,'wilayaList');setDeleveryFees(this)">${item.id} ${item.name}</li>`;
@@ -288,13 +20,16 @@ setNewNumberToCartIcon()
   });
   const getCommunsList = (has_stop_desk) => {
     // Check if data is already in localStorage
+
     const storedData = localStorage.getItem("communsList");
     const storeddeleveryFeesData = localStorage.getItem("deleveryFees");
+
     if (storedData && storeddeleveryFeesData) {
       let communs = JSON.parse(storedData);
       let deleveryFees = JSON.parse(storeddeleveryFeesData);
       return { communs: communs, deliveryfees: deleveryFees };
     }
+
     // If data is not in localStorage, fetch it from the API
     return fetch("/api/method/simple_shop.api.get_communs_true", {
       // Include any headers if needed
@@ -307,6 +42,7 @@ setNewNumberToCartIcon()
         // Store the data in localStorage for future use
         localStorage.setItem("communsList", JSON.stringify(communs));
         localStorage.setItem("deleveryFees", JSON.stringify(deleveryFees));
+
         // Return the fetched data
         return { communs: communs, deliveryfees: deleveryFees };
       })
@@ -315,7 +51,6 @@ setNewNumberToCartIcon()
         throw error;
       });
   }
-
   const getAllCommunsList = () => {
     let storedData = localStorage.getItem("allCommunsList");
     if (storedData) {
@@ -339,8 +74,6 @@ setNewNumberToCartIcon()
       });
 
   }
-
-
   const renderCommunsView = (element) => {
     let communs = getAllCommunsList();
     let baladiaUlList = document.getElementById("baladiaList");
@@ -358,11 +91,6 @@ setNewNumberToCartIcon()
     });
     baladiaUlList.innerHTML = htmlContent;
   }
-
-
-</script>
-
-<script>
 
   const getCentresList = () => {
     let centers;
@@ -393,7 +121,6 @@ setNewNumberToCartIcon()
     console.log(centers);
   };
 
-
   const renderCentersListView = (element) => {
     let centers = getCentresList();
     let baladiaUlList = document.getElementById("baladiaList");
@@ -417,7 +144,6 @@ setNewNumberToCartIcon()
     let centerId = element.getAttribute("data-item-id");
     localStorage.setItem("currentCenter", centerId);
   }
-
 
 
   const fillCheckoutItems = (source) => {
@@ -457,7 +183,6 @@ setNewNumberToCartIcon()
   }
 };
 
-
   const setDeleveryFees = (element) => {
     if (element) {
       // select wilaya from user
@@ -493,7 +218,6 @@ setNewNumberToCartIcon()
     setCheckoutTotal();
   };
 
-
   const setCheckoutTotal = () => {
     let sub_total = document
       .getElementById("checkout-total-amount")
@@ -507,8 +231,6 @@ setNewNumberToCartIcon()
       parseFloat(sub_total) + parseFloat(shipping_fees)
     } DA`;
   };
-
-
 
   const getShippingTypeOption = () => {
     let checkedShippingType = document.querySelector(
@@ -525,8 +247,6 @@ setNewNumberToCartIcon()
         ? street.classList.add("d-none")
         : street.classList.remove("d-none");
   };
-
-
 
   const sendRequest = (rawData) => {
     let myHeaders = new Headers();
@@ -559,8 +279,6 @@ setNewNumberToCartIcon()
       });
   };
 
-
-
   const verifyOrderInputs = (orderData) => {
     const { lastName, phone, wilaya, commun } = orderData;
 
@@ -592,7 +310,6 @@ setNewNumberToCartIcon()
       });
     }
   };
-
 
   const placeOrderItems = (element, orderType) => {
     element.preventDefault();
@@ -634,11 +351,8 @@ setNewNumberToCartIcon()
     }
   };
 
-
-
   document.getElementById("place_order").addEventListener("click", (e) => {
     placeOrderItems(e, "product");
   });
   //fillCheckoutItems();
-  //setCheckoutTotal();
-</script>
+  setCheckoutTotal();

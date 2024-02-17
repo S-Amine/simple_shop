@@ -37,3 +37,8 @@ def get_context(context):
 
     # Add the search results to the context
     context.items = items
+    categories = frappe.db.get_all("Item Group",
+                                  fields="*",
+                                  filters={'show_in_website': True}
+                                  )
+    context.categories = categories

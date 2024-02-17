@@ -4,6 +4,12 @@ from frappe.model.mapper import get_mapped_doc
 
 def get_context(context):
     # Check if it's a POST request
+    categories = frappe.db.get_all("Item Group",
+                                  fields="*",
+                                  filters={'show_in_website': True}
+                                  )
+    context.categories = categories
+
     if frappe.request.method == "POST":
         # Get the post request data
         post_data = frappe.local.form_dict
