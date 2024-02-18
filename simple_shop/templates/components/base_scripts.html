@@ -115,4 +115,56 @@ subTotalCount.forEach(e=>{
 localStorage.setItem('cart-total-prices', getSubTotal());
 
 }
+
+const getTotalOfItems = () => {
+  // Retrieve the array of items from local storage
+  const cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+
+  // Calculate the total price
+  const totalPrice = cartItems.reduce((total, item) => {
+    // Ensure item.price and item.qty are numbers
+    const price = parseFloat(item.price) || 0;
+    const qty = parseInt(item.qty) || 0;
+
+    // Add the product of price and quantity to the total
+    return total + price * qty;
+  }, 0);
+
+  // Return the total price
+  return totalPrice;
+};
+
+const sendRequest = (url,rawData) => {
+    let myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("X-Frappe-CSRF-Token", frappe.csrf_token);
+
+    let requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: JSON.stringify(rawData),
+    };
+
+    return fetch(url, requestOptions)
+      .then((response) => response.json()) // Parse JSON response
+      .then((data) => {
+        if (data.message.success) {
+          const orderId = data.message.data.order_id;
+          // remove cart items after successful processing
+          localStorage.removeItem("cartItems");
+          // Redirect to success page with order_id
+          window.location.href = `/success_page/?id=${orderId}`;
+        } else {
+          // Handle other cases where success is not true if needed
+          console.log("Request was not successful:", data);
+        }
+      })
+      .catch((error) => {
+        console.log("error", error);
+        throw error; // Rethrow the error to be caught by the caller if needed
+      });
+  };
+
+
+
     </script>

@@ -15,6 +15,7 @@ class WoolizOrder(Document):
         if self.custom_tracking_id in ["",None] and self.custom_status=="En préparation":
             print("send yalidine order ................")
             my_response=send_yalidin_order(self.name)
+            print(my_response)
             tracking=my_response[self.name]['tracking']
             label=my_response[self.name]['label']
             self.custom_tracking_id=tracking

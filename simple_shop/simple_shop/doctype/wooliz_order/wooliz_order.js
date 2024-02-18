@@ -95,7 +95,7 @@ const renderCentersView = (frm) => {
   const centers = getCentersList();
   let centerOptions = [];
   centers.forEach((item) => {
-    if (item.wilaya_name === frm.selected_doc.wilaya) {
+    if (item.wilaya_name === frm.selected_doc.wilaya.replace(/\d/g, '').trim()) {
       let centerOption = `${item.center_id} - ${item.name}`;
       centerOptions.push(centerOption);
     }
@@ -111,7 +111,7 @@ const renderWilayaView = (frm) => {
       const result = data["message"];
       let options = [];
       result.forEach((item) => {
-        options.push(item.name);
+        options.push(`${item.id} ${item.name}`);
       });
       frm.set_df_property("wilaya", "options", options);
 
@@ -128,7 +128,7 @@ const renderCommunView = (frm) => {
   frm.set_df_property("commun", "options", ["loading..."]);
   let communs = getCommunsList((has_stop_desk = false))["communs"];
   communs.forEach((e) => {
-    if (e.wilaya_name === frm.selected_doc.wilaya) {
+    if (e.wilaya_name === frm.selected_doc.wilaya.replace(/\d/g, '').trim()) {
       filteredCommuns.push(e.name);
     }
   });

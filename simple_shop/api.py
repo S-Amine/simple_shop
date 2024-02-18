@@ -2,6 +2,7 @@ import json
 import frappe
 import requests
 from frappe.model.document import get_doc
+from simple_shop.utils import rehandling_checkout_products, remove_numbers
 
 @frappe.whitelist(allow_guest=True)
 def get_data():
@@ -99,28 +100,35 @@ def post_order(**args):
     if data['is_stop_desk']:
         new_order.custom_center_id = data['center_id'] # IN YALIDIN this field is required if stop_desk is true
         new_order.custom_center = data['commun']
+    
     product = get_doc("Item",data['product'])
     new_order.append("products",{"item": product,"unit_price":product.custom_price,"qty":data['qty'],"total":product.custom_price})
     new_order.save()
     created_sales_order_id = new_order.name
     return {"success": True, "data": {"order_id":created_sales_order_id}}
 
-@frappe.whitelist()
-def generate_bordereau(**args):
+
+@frappe.whitelist(allow_guest=True)
+def post_order_checkout(**args):
     """Set the order"""
-    print("Generating bordereau ........")
-    print(args)
+    data = frappe._dict(args)
+    print(data)
+    new_order = frappe.new_doc("Wooliz Order")
+    new_order.last_name = data['lastName']
+    new_order.phone = data['phone']
+    new_order.wilaya = data['wilaya']
+    new_order.commun = data['commun']
+    new_order.custom_stop_desk_bureau = data['is_stop_desk']
+    products = data['products']
+    if data['is_stop_desk']:
+        new_order.custom_center_id = data['center_id'] # IN YALIDIN this field is required if stop_desk is true
+        new_order.custom_center = f"{data['center_id']} - {data['commun']}"
+        new_order.commun = remove_numbers(data['wilaya']).lstrip()
+    items = rehandling_checkout_products(products)
+    for item in items:
 
-    # Convert the string representation of the document to a dictionary
-    doc_dict = json.loads(args["doc"])
+        new_order.append("products",item)
+    new_order.save()
+    created_sales_order_id = new_order.name
+    return {"success": True, "data": {"order_id":created_sales_order_id}}
 
-    # Access the custom_bordereau field
-    pdf = doc_dict.get("custom_bordereau")
-
-    print("PDF URL:", pdf)
-
-    if pdf:
-        # Return JavaScript code for redirection
-        return f"window.location.href = '{pdf}';"
-    else:
-        frappe.msgprint("The custom_bordereau field is empty.")

@@ -6,26 +6,7 @@
         </div><!-- /.aside-header -->
   
         <div class="aside-content cart-drawer-items-list" id="cart-drawer-items-list" >
-          <div class="cart-drawer-item d-flex position-relative">
-            <div class="position-relative">
-              <img loading="lazy" class="cart-drawer-item__img" src="../images/cart-item-1.jpg" alt="">
-            </div>
-            <div class="cart-drawer-item__info flex-grow-1">
-              <h6 class="cart-drawer-item__title fw-normal">Zessi Dresses</h6>
-              <p class="cart-drawer-item__option text-secondary">Color: Yellow</p>
-              <p class="cart-drawer-item__option text-secondary">Size: L</p>
-              <div class="d-flex align-items-center justify-content-between mt-1">
-                <div class="qty-control position-relative">
-                  <input type="number" name="quantity" value="1" min="1" class="qty-control__number border-0 text-center">
-                  <div class="qty-control__reduce text-start">-</div>
-                  <div class="qty-control__increase text-end">+</div>
-                </div><!-- .qty-control -->
-                <span class="cart-drawer-item__price money price">$99</span>
-              </div>
-            </div>
-            <button class="btn-close-xs position-absolute top-0 end-0 js-cart-item-remove"></button>
-          </div><!-- /.cart-drawer-item d-flex -->
-  
+
         </div><!-- /.aside-content -->
   
         <div class="cart-drawer-actions position-absolute start-0 bottom-0 w-100">
@@ -34,8 +15,8 @@
             <h6 class="fs-base fw-medium">SUBTOTAL:</h6>
             <span class="cart-subtotal fw-medium sub-total-count" id="sub-total-count">0 DA</span>
           </div><!-- /.d-flex justify-content-between -->
-          <a href="shop_cart.html" class="btn btn-light mt-3 d-block">View Cart</a>
-          <a href="shop_checkout.html" class="btn btn-primary mt-3 d-block">Checkout</a>
+          <a href="/cart/" class="btn btn-light mt-3 d-block">View Cart</a>
+          <a href="/checkout/" class="btn btn-primary mt-3 d-block">Checkout</a>
         </div><!-- /.aside-content -->
       </div>
       <!-- /.aside -->
@@ -73,13 +54,11 @@ const removeItemFromCart = (element) => {
             item.color !== itemColor ||
             item.size !== itemSize
         ));
-
         // Update localStorage with the modified cart items array
         localStorage.setItem('cartItems', JSON.stringify(existingCartItems));
-
         // Remove the item's HTML from the DOM
         parentItem.remove();
-
+        //
         console.log('Item removed from cart:', itemId);
     } else {
         console.log('Unable to find parent cart item');

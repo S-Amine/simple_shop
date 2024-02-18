@@ -64,8 +64,9 @@
             <p>{{item.description}}</p>
           </div>
 
-          {% if item.has_variants %}
 
+
+          {% if item.has_variants %}
           <form name="addtocart-form" method="post">
             <div class="product-single__swatches">
               {% for item_variants_value in item_variants_values %}
@@ -97,13 +98,26 @@
 
                   {% endfor %}
               </div>
-              
+
               </div>
               {% endif %}
             {% endfor %}
             </div>
             {% endif %}
+            <hr>
 
+            <p class="fw-bold">Hurry! Only 5 pieces left in stock !!</p>
+            <p class="fw-bold"><span class="p-2" id="countdown" style="background-color: #eb2d2d; color: white;">1550</span>  watches this product now</p>
+            <script>
+const getRandomInteger = () => {
+  return Math.floor(Math.random() * 2040) + 1;
+};
+
+setInterval(() => {
+  document.getElementById("countdown").textContent = getRandomInteger().toString();
+}, 2000); //
+            </script>
+            {% include "templates/components/countdown.html" %}
             <div class="product-single__addtocart">
               <div class="qty-control position-relative">
                 <input type="number" name="quantity" value="1" min="1" id="qty" class="qty-control__number text-center">
@@ -119,6 +133,7 @@
    
         </div>
       </div>
+      
       {% if  item.description %}
       <div class="product-single__details-tab">
           <ul class="nav nav-tabs" id="myTab1" role="tablist">
@@ -129,6 +144,7 @@
         <div class="tab-content">
           <div class="tab-pane fade show active" id="tab-description" role="tabpanel" aria-labelledby="tab-description-tab">
             <div class="product-single__description">
+              
               {{item.description}}
             </div>
           </div>

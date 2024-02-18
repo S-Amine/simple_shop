@@ -221,7 +221,7 @@ subTotalPrices.forEach(e=>{
 totalPrices+= parseInt(e.getAttribute('data-price'))
 })
 // return total prices
-return totalPrices ? totalPrices:"{{item.custom_price}}" // if client doesn't select an item in cart
+return "{{item.custom_price}}" // if client doesn't select an item in cart
 }
 // set total items to cart icons
 setNewNumberToCartIcon()
@@ -528,36 +528,6 @@ setNewNumberToCartIcon()
 
 
 
-  const sendRequest = (rawData) => {
-    let myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    myHeaders.append("X-Frappe-CSRF-Token", frappe.csrf_token);
-
-    let requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: JSON.stringify(rawData),
-    };
-
-    return fetch("/api/method/simple_shop.api.post_order", requestOptions)
-      .then((response) => response.json()) // Parse JSON response
-      .then((data) => {
-        if (data.message.success) {
-          const orderId = data.message.data.order_id;
-          // remove cart items after successful processing
-          localStorage.removeItem("cartItems");
-          // Redirect to success page with order_id
-          window.location.href = `/success_page/?id=${orderId}`;
-        } else {
-          // Handle other cases where success is not true if needed
-          console.log("Request was not successful:", data);
-        }
-      })
-      .catch((error) => {
-        console.log("error", error);
-        throw error; // Rethrow the error to be caught by the caller if needed
-      });
-  };
 
 
 
@@ -629,7 +599,7 @@ setNewNumberToCartIcon()
           qty: 1,
           center_id: localStorage.getItem("currentCenter")
         };
-        sendRequest(orderData);
+        sendRequest("/api/method/simple_shop.api.post_order",orderData);
       }
     }
   };

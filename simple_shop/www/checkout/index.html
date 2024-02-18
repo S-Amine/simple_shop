@@ -1,12 +1,666 @@
 {% extends 'templates/shop_base.html' %}
 {% block centent %}
 {% set csrf_token = frappe.session.csrf_token %}
-<form class="" action="index.html" method="post">
-  <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-  <input type="text" name="customer" value="Palmer Productions Ltd.">
-  <input type="text" name="item_code" value="SKU008">
-  <input type="date" name="date" value="">
-  <input type="number" name="qty" value=1>
-  <button type="submit" name="button"></button>
-</form>
+<section class="shop-checkout container">
+  <h2 class="page-title">Cart</h2>
+  <div class="checkout-steps">
+    <a href="/cart/" class="checkout-steps__item ">
+      <span class="checkout-steps__item-number">01</span>
+      <span class="checkout-steps__item-title">
+        <span>Shopping Bag</span>
+        <em>Manage Your Items List</em>
+      </span>
+    </a>
+    <a href="/checkout/" class="checkout-steps__item active">
+      <span class="checkout-steps__item-number">02</span>
+      <span class="checkout-steps__item-title">
+        <span>Shipping and Checkout</span>
+        <em>Checkout Your Items List</em>
+      </span>
+    </a>
+  </div>
+  <form class="py-5">
+    <div class="checkout-form" id="billing">
+      <div class="billing-info__wrapper">
+        <h4 >BILLING DETAILS</h4>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-floating my-3">
+              <input
+                type="text"
+                class="form-control"
+                id="checkout_last_name"
+                placeholder="First Name"
+              />
+              <label for="checkout_first_name">Full name</label>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="search-field my-3">
+              <div class="form-label-fixed hover-container">
+                <label for="search-dropdown" class="form-label">Wilaya*</label>
+                <div class="js-hover__open">
+                  <input
+                    required
+                    type="text"
+                    class="form-control form-control-lg search-field__actor search-field__arrow-down"
+                    id="wilaya-dropdown"
+                    name="search-keyword"
+                    placeholder="Enter your wilaya..."
+                  />
+                </div>
+                <div class="filters-container js-hidden-content mt-2">
+                  <div class="search-field__input-wrapper">
+                    <input
+                      type="text"
+                      oninput="filterLiElements(this.value,'wilayaList')"
+                      class="search-field__input form-control form-control-sm bg-lighter border-lighter"
+                      placeholder="Enter your city"
+                    />
+                  </div>
+                  <ul
+                    class="search-suggestion list-unstyled"
+                    id="wilayaList"
+                    style="max-height: 200px; overflow-y: scroll"
+                  ></ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="shipping_type mx-2">
+              <div class="form-check">
+                <input
+                  class="form-check-input form-check-input_fill"
+                  type="radio"
+                  onchange="setDeleveryFees();ToggleStreetInput('display');renderCommunsView(this);"
+                  name="checkout_shipping_type"
+                  checked
+                  data-wilaya="16"
+  
+                  id="checkout_shipping_type_home"
+                />
+                <label class="form-check-label" for="checkout_shipping_type_home">
+                  Home
+                </label>
+              </div>
+              <div class="form-check">
+                <input
+                  onchange="setDeleveryFees();ToggleStreetInput('hidden');renderCentersListView(this)"
+                  class="form-check-input form-check-input_fill"
+                  type="radio"
+                  data-wilaya="16"
+                  name="checkout_shipping_type"
+                  id="checkout_shipping_type_office"
+                />
+                <label
+                  class="form-check-label"
+                  for="checkout_shipping_type_office"
+                >
+                  Office
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="search-field my-3">
+              <div class="form-label-fixed hover-container">
+                <label for="search-dropdown" class="form-label">Region*</label>
+                <div class="js-hover__open">
+                  <input
+                    required
+                    type="text"
+                    class="form-control form-control-lg search-field__actor search-field__arrow-down"
+                    id="communs-dropdown"
+                    name="search-keyword"
+                    readonly=""
+                    placeholder="Enter your city..."
+                  />
+                </div>
+                <div class="filters-container js-hidden-content mt-2">
+                  <div class="search-field__input-wrapper">
+                    <input
+                      type="text"
+                      oninput="filterLiElements(this.value,'baladiaList')"
+                      class="search-field__input form-control form-control-sm bg-lighter border-lighter"
+                      placeholder="Search"
+                    />
+                  </div>
+                  <ul
+                    class="search-suggestion list-unstyled"
+                    id="baladiaList"
+                    style="max-height: 200px; overflow-y: scroll"
+  
+                  ></ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12" id="checkout_street_address">
+            <div class="form-floating my-3">
+              <input
+                type="text"
+                class="form-control"
+                id="checkout_input_street_address"
+                placeholder="Phone *"
+              />
+              <label for="checkout_phone">Street address</label>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-floating my-3">
+              <input
+                maxlength="10"
+                type="text"
+                class="form-control"
+                id="checkout_input_phone_field"
+                placeholder="Phone *"
+              />
+              <label for="checkout_phone">Phone *</label>
+            </div>
+          </div>
+        </div>
+        <div class="checkout__totals-wrapper w-100">
+          <div class="sticky-content" style="width: 100% !important">
+            <div
+              class="checkout__totals"
+              style="width: 100% !important; border: none"
+            >
+            <table class="checkout-cart-items">
+              <thead>
+                <tr>
+                  <th>PRODUCT</th>
+                  <th>SUBTOTAL</th>
+                </tr>
+              </thead>
+              <tbody id="checkout-cart-items">
+                <tr>
+                  <td>
+                    Zessi Dresses x 2
+                  </td>
+                  <td>
+                    $32.50
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    Kirby T-Shirt
+                  </td>
+                  <td>
+                    $29.90
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+              <table class="checkout-totals">
+                <tbody>
+                  <tr>
+                    <th>SUBTOTAL</th>
+                    <td
+                      id="checkout-total-amount"
+                      class="sub-total-count"
+                      data-subtotal="0"
+                    >
+                       0DA
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>SHIPPING</th>
+                    <td id="shipping_fees" data-shipping-fee="0">0 DA</td>
+                  </tr>
+                  <tr>
+                    <th>TOTAL</th>
+                    
+                    <td id="total-checkout-amount">0 DA</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <button
+              class="btn btn-primary btn-checkout fw-bold"
+              id="place_order"
+              style="
+                border-radius: 30px;
+                background: #870404;
+                border: 2px solid #870404;
+              "
+            >
+              PLACE ORDER
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</section>
+<style>
+  .billing-info__wrapper {
+    padding: 20px;
+    border: 7px solid #990d0d;
+    box-shadow: 0px 1px 18px 9px #0000001f;
+    border-radius: 25px;
+  }
+
+</style>
+
+<script>
+  const setNewNumberToCartIcon = ()=>{
+    console.log('setNewNumberToCartIcon')
+    // SET NEW VALUE TO navbar header
+      // Try to get existing cart items array from localStorage
+    let existingCartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+    console.log(existingCartItems)
+    let cartItemNumber = document.querySelectorAll(".cart_number");
+    let totalQty = existingCartItems.reduce(
+        (total, item) => total + item.qty,
+        0
+      );
+    console.log(cartItemNumber)
+    cartItemNumber.forEach((e) => {
+    e.innerHTML = totalQty;
+  });
+}
+const getSubTotal = ()=>{
+// get total elements
+let subTotalPrices = document.querySelectorAll('.item-sub-price');
+// initialize total
+let totalPrices = 0;
+// calculate total prices by iteration
+subTotalPrices.forEach(e=>{
+totalPrices+= parseInt(e.getAttribute('data-price'))
+})
+// return total prices
+return totalPrices// if client doesn't select an item in cart
+}
+// set total items to cart icons
+setNewNumberToCartIcon()
+</script>
+
+<script>
+  console.log("{{item}}")
+  function filterLiElements(input, list_id) {
+    let filter, ul, li, a, i;
+    filter = input.toUpperCase();
+    ul = document.getElementById(list_id);
+    li = ul.getElementsByTagName("li");
+
+    for (i = 0; i < li.length; i++) {
+      console.log(i);
+      a = li[i];
+      if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+        li[i].style.display = "";
+      } else {
+        li[i].style.display = "none";
+      }
+    }
+  }
+  function removeContentVisibleClass(li, list_id) {
+    let parent = li.closest(".form-label-fixed.hover-container");
+    parent.classList.remove("js-content_visible");
+    // set and render wilaya in input field
+    setDropDownValue(li, list_id);
+  }
+  function setDropDownValue(element, list_id) {
+    let homeChecked = document.getElementById("checkout_shipping_type_home").checked;
+
+    const itemName = element.getAttribute("data-item-name");
+    if (list_id == "wilayaList") {
+      document.getElementById("wilaya-dropdown").value = itemName;
+      if (homeChecked) 
+      renderCommunsView(element);
+      else
+      renderCentersListView(element);
+    } else {
+      document.getElementById("communs-dropdown").value = itemName;
+    }
+  }
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // Fetch data from the API
+    fetch("/api/method/simple_shop.api.get_data")
+      .then((response) => response.json())
+      .then((data) => {
+        // Get the ul element
+        const ul = document.getElementById("wilayaList");
+        const result = data["message"];
+        let htmlContent = "";
+        // Loop through the data and create li elements
+        result.forEach((item) => {
+          htmlContent += `<li class="search-suggestion__item js-search-select" data-wilaya="${item.id}" data-item-name="${item.id} ${item.name}" onclick="removeContentVisibleClass(this,'wilayaList');setDeleveryFees(this)">${item.id} ${item.name}</li>`;
+        });
+        ul.innerHTML = htmlContent;
+      })
+      .catch((error) => console.error("Error fetching data:", error));
+    getCommunsList((has_stop_desk = true));
+  });
+  const getCommunsList = (has_stop_desk) => {
+    // Check if data is already in localStorage
+    const storedData = localStorage.getItem("communsList");
+    const storeddeleveryFeesData = localStorage.getItem("deleveryFees");
+    if (storedData && storeddeleveryFeesData) {
+      let communs = JSON.parse(storedData);
+      let deleveryFees = JSON.parse(storeddeleveryFeesData);
+      return { communs: communs, deliveryfees: deleveryFees };
+    }
+    // If data is not in localStorage, fetch it from the API
+    return fetch("/api/method/simple_shop.api.get_communs_true", {
+      // Include any headers if needed
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        let communs = data["message"]["communs"];
+        let deleveryFees = data["message"]["deliveryfees"];
+
+        // Store the data in localStorage for future use
+        localStorage.setItem("communsList", JSON.stringify(communs));
+        localStorage.setItem("deleveryFees", JSON.stringify(deleveryFees));
+        // Return the fetched data
+        return { communs: communs, deliveryfees: deleveryFees };
+      })
+      .catch((error) => {
+        console.error("Error fetching or storing data:", error);
+        throw error;
+      });
+  }
+
+  const getAllCommunsList = () => {
+    let storedData = localStorage.getItem("allCommunsList");
+    if (storedData) {
+      let communs = JSON.parse(storedData);
+      return communs
+    }
+    // If data is not in localStorage, fetch it from the API
+    return fetch("/api/method/simple_shop.api.get_communs", {
+      // Include any headers if needed
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        let communs = data["message"]["communs"];
+        // Store the data in localStorage for future use
+        localStorage.setItem("allCommunsList", JSON.stringify(communs));
+        return communs;
+      })
+      .catch((error) => {
+        console.error("Error fetching or storing data:", error);
+        throw error;
+      });
+
+  }
+
+
+  const renderCommunsView = (element) => {
+    let communs = getAllCommunsList();
+    let baladiaUlList = document.getElementById("baladiaList");
+    let wilayaID = element.getAttribute("data-wilaya");
+    let homeShipping = document.getElementById("checkout_shipping_type_home");
+    let officeShipping = document.getElementById("checkout_shipping_type_office");
+    officeShipping.setAttribute("data-wilaya", wilayaID);
+    homeShipping.setAttribute("data-wilaya", wilayaID);
+    document.getElementById("communs-dropdown").value = "";
+    let htmlContent = "";
+    // Loop through the data and create li elements
+    communs.forEach((item) => {
+      if (item.wilaya_id == wilayaID)
+        htmlContent += `<li class="search-suggestion__item js-search-select"  data-item-name="${item.name}" onclick="removeContentVisibleClass(this,'baladiaList')">${item.name}</li>`;
+    });
+    baladiaUlList.innerHTML = htmlContent;
+  }
+
+
+</script>
+
+<script>
+
+  const getCentresList = () => {
+    let centers;
+    const storedDataCenters = localStorage.getItem("centers");
+
+    if (storedDataCenters) {
+      centers = JSON.parse(storedDataCenters);
+      return centers;
+    }
+
+    // If data is not in localStorage, fetch it from the API
+    return fetch("/api/method/simple_shop.api.get_centers", {
+      // Include any headers if needed
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        centers = data["message"]["centers"];
+
+        // Store the data in localStorage for future use
+        localStorage.setItem("centers", JSON.stringify(centers));
+        // Return the fetched data
+        return centers;
+      })
+      .catch((error) => {
+        console.error("Error fetching or storing data:", error);
+        throw error;
+      });
+    console.log(centers);
+  };
+
+
+  const renderCentersListView = (element) => {
+    let centers = getCentresList();
+    let baladiaUlList = document.getElementById("baladiaList");
+    let wilayaID = element.getAttribute("data-wilaya");
+    let homeShipping = document.getElementById("checkout_shipping_type_home");
+    let officeShipping = document.getElementById("checkout_shipping_type_office");
+    officeShipping.setAttribute("data-wilaya", wilayaID);
+    homeShipping.setAttribute("data-wilaya", wilayaID);
+    document.getElementById("communs-dropdown").value = "";
+    let htmlContent = "";
+    // Loop through the data and create li elements
+    centers.forEach((item) => {
+      if (item.wilaya_id == wilayaID)
+        htmlContent += `<li class="search-suggestion__item js-search-select" data-item-id="${item.center_id}"  data-item-name="${item.name}" onclick="removeContentVisibleClass(this,'baladiaList');setCurrentCenter(this)">${item.name}</li>`;
+    });
+    baladiaUlList.innerHTML = htmlContent;
+  };
+
+
+  const setCurrentCenter = (element) =>{
+    let centerId = element.getAttribute("data-item-id");
+    localStorage.setItem("currentCenter", centerId);
+  }
+
+
+  const fillCheckoutItems = (source) => {
+  if (source === "global") {
+    // Handle global source if needed in the future
+  } else {
+    // Retrieve existing cart items from local storage
+    const existingCartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+
+    // Get references to DOM elements
+    const parentCartItemsCheckout = document.getElementById("checkout-cart-items");
+    const subTotalCountElements = document.querySelectorAll(".sub-total-count");
+
+    // Update subtotal and data attributes for each sub-total count element
+    subTotalCountElements.forEach((subTotalElement) => {
+      const cartTotalPrices = localStorage.getItem("cart-total-prices") || 0;
+      subTotalElement.innerHTML = `DA ${cartTotalPrices} `;
+      subTotalElement.setAttribute("data-subtotal", getTotalOfItems());
+    });
+
+    // Clear existing content in the checkout table
+    parentCartItemsCheckout.innerHTML = "";
+
+    // Populate checkout table with cart items
+    existingCartItems.forEach((item) => {
+      parentCartItemsCheckout.innerHTML += `
+        <tr>
+          <td>
+            ${item.name} x ${item.qty}
+          </td>
+          <td>
+             ${item.price * item.qty} DA
+          </td>
+        </tr>
+      `;
+    });
+  }
+};
+
+
+  const setDeleveryFees = (element) => {
+    if (element) {
+      // select wilaya from user
+      let wilaya_id = element.getAttribute("data-wilaya");
+      localStorage.setItem("selected_wilaya", wilaya_id);
+    }
+    let shipping_fees = document.getElementById("shipping_fees");
+    let storeddeleveryFeesData = localStorage.getItem("deleveryFees");
+    let deleveryFees = JSON.parse(storeddeleveryFeesData);
+    let checkout_shipping_type_home = document.getElementById(
+      "checkout_shipping_type_home"
+    );
+    let checkout_shipping_type_office = document.getElementById(
+      "checkout_shipping_type_office"
+    );
+    deleveryFees.forEach((e) => {
+      if (e.wilaya_id == localStorage.getItem("selected_wilaya")) {
+        checkout_shipping_type_home.setAttribute("data-fee", e.home_fee);
+        checkout_shipping_type_office.setAttribute("data-fee", e.desk_fee);
+        shipping_fees.innerHTML =
+          getShippingTypeOption() === "checkout_shipping_type_home"
+            ? `${e.home_fee} DA`
+            : `${e.desk_fee} DA`;
+        shipping_fees.setAttribute(
+          "data-shipping-fee",
+          getShippingTypeOption() === "checkout_shipping_type_home"
+            ? e.home_fee
+            : e.desk_fee
+        );
+      }
+    });
+
+    setCheckoutTotal();
+  };
+
+
+  const setCheckoutTotal = () => {
+    let sub_total = document
+      .getElementById("checkout-total-amount")
+      .getAttribute("data-subtotal");
+      console.log(sub_total);
+    let shipping_fees = document
+      .getElementById("shipping_fees")
+      .getAttribute("data-shipping-fee");
+    let totalAmount = document.getElementById("total-checkout-amount");
+    totalAmount.innerHTML = `${
+      parseFloat(sub_total) + parseFloat(shipping_fees)
+    } DA`;
+  };
+
+
+
+  const getShippingTypeOption = () => {
+    let checkedShippingType = document.querySelector(
+      'input[name="checkout_shipping_type"]:checked'
+    );
+    return checkedShippingType.getAttribute("id");
+  };
+
+  const ToggleStreetInput = (option) => {
+    /* Toggle display street address field input depending at shipping type*/
+    let street = document.getElementById("checkout_street_address");
+    const hidden =
+      option == "hidden"
+        ? street.classList.add("d-none")
+        : street.classList.remove("d-none");
+  };
+
+
+
+
+
+  const verifyOrderInputs = (orderData) => {
+    const { lastName, phone, wilaya, commun } = orderData;
+
+    const isEmpty = (value) => value.trim().length < 1;
+
+    if (isEmpty(lastName.value)) {
+      handleInvalidInput(lastName, "full name must be filled");
+    } else if (isEmpty(phone.value) || phone.value.trim().length < 10) {
+      handleInvalidInput(phone, "Phone number must be at least 10 characters");
+    } else if (!wilaya.value.trim() || !commun.value.trim()) {
+      handleInvalidInput(wilaya, "State and city must be provided");
+    } else {
+      handleValidInput([lastName, phone, wilaya, commun]);
+      return [true, "order sent successfully"];
+    }
+
+    return [false, ""]; // Return a default error message for invalid cases
+
+    function handleInvalidInput(element, errorMessage) {
+      element.classList.add("is-invalid");
+      element.classList.remove("is-valid");
+      return [false, errorMessage];
+    }
+
+    function handleValidInput(elements) {
+      elements.forEach((element) => {
+        element.classList.remove("is-invalid");
+        element.classList.add("is-valid");
+      });
+    }
+  };
+
+
+  const placeOrderItems = (element, orderType) => {
+    element.preventDefault();
+
+    // OrderType may be 'product' or 'cart' depending on the order type
+    if (orderType === "product") {
+      const checkoutStreetAddress = document.getElementById(
+        "checkout_input_street_address"
+      );
+      const phoneField = document.getElementById("checkout_input_phone_field");
+      const lastNameField = document.getElementById("checkout_last_name");
+      const wilayaField = document.getElementById("wilaya-dropdown");
+      const communField = document.getElementById("communs-dropdown");
+      const shippingField = document.getElementById(
+        "checkout_shipping_type_office"
+      );
+
+      let orderData = {
+        lastName: lastNameField,
+        phone: phoneField,
+        wilaya: wilayaField,
+        commun: communField,
+      };
+      const [success, msg] = verifyOrderInputs(orderData);
+      console.log(success, msg);
+      if (success) {
+        orderData = {
+          lastName: lastNameField.value,
+          phone: phoneField.value,
+          wilaya: wilayaField.value,
+          commun: communField.value,
+          products: localStorage.getItem("cartItems"),
+          is_stop_desk: shippingField.checked,
+          center_id: localStorage.getItem("currentCenter")
+        };
+        sendRequest("/api/method/simple_shop.api.post_order_checkout",orderData);
+      }
+    }
+  };
+
+
+
+  document.getElementById("place_order").addEventListener("click", (e) => {
+    placeOrderItems(e, "product");
+  });
+  //fillCheckoutItems();
+  //setCheckoutTotal();
+  document.addEventListener("DOMContentLoaded",e=>{
+fillCheckoutItems()
+
+  })
+</script>
+
 {% endblock %}
