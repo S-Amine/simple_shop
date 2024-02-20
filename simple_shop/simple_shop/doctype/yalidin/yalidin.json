@@ -1,0 +1,64 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-02-20 21:31:04.371143",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "yalidin_section",
+  "api_key",
+  "api_token",
+  "base_url",
+  "webhook"
+ ],
+ "fields": [
+  {
+   "fieldname": "yalidin_section",
+   "fieldtype": "Section Break",
+   "label": "Yalidin"
+  },
+  {
+   "fieldname": "api_key",
+   "fieldtype": "Data",
+   "label": "Api key"
+  },
+  {
+   "fieldname": "api_token",
+   "fieldtype": "Data",
+   "label": "Api token"
+  },
+  {
+   "fieldname": "base_url",
+   "fieldtype": "Data",
+   "label": "Base url"
+  },
+  {
+   "fieldname": "webhook",
+   "fieldtype": "Data",
+   "label": "Webhook"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2024-02-20 21:36:06.836260",
+ "modified_by": "Administrator",
+ "module": "Simple Shop",
+ "name": "Yalidin",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
