@@ -11,7 +11,9 @@
   "phone",
   "products",
   "wilaya",
-  "commun"
+  "commun",
+  "total_price",
+  "total_qty"
  ],
  "fields": [
   {
@@ -50,11 +52,21 @@
    "fieldname": "commun",
    "fieldtype": "Data",
    "label": "Commun"
+  },
+  {
+   "fieldname": "total_price",
+   "fieldtype": "Currency",
+   "label": "Total Price"
+  },
+  {
+   "fieldname": "total_qty",
+   "fieldtype": "Float",
+   "label": "Total Qty"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-02-10 17:48:06.510664",
+ "modified": "2024-02-27 11:05:41.637778",
  "modified_by": "Administrator",
  "module": "Simple Shop",
  "name": "Wooliz Order",
