@@ -1,48 +1,49 @@
 {
  "actions": [],
  "allow_rename": 1,
- "creation": "2024-02-04 11:52:40.014430",
+ "creation": "2024-02-27 18:49:14.603955",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "yalidin_section",
-  "api_id",
-  "api_key"
+  "default_warehouse",
+  "pending_warehouse",
+  "resturn_warehouse"
  ],
  "fields": [
   {
-   "fieldname": "yalidin_section",
-   "fieldtype": "Section Break",
-   "label": "YALIDIN"
+   "fieldname": "default_warehouse",
+   "fieldtype": "Link",
+   "label": "Default Warehouse",
+   "options": "Warehouse"
   },
   {
-   "fieldname": "api_id",
-   "fieldtype": "Data",
-   "label": "API ID"
+   "fieldname": "pending_warehouse",
+   "fieldtype": "Link",
+   "label": "Pending Warehouse",
+   "options": "Warehouse"
   },
   {
-   "fieldname": "api_key",
-   "fieldtype": "Data",
-   "label": "API KEY"
+   "fieldname": "resturn_warehouse",
+   "fieldtype": "Link",
+   "label": "Resturn Warehouse",
+   "options": "Warehouse"
   }
  ],
  "index_web_pages_for_search": 1,
- "is_virtual": 1,
+ "issingle": 1,
  "links": [],
- "modified": "2024-02-04 11:53:25.030064",
+ "modified": "2024-02-27 21:02:58.803798",
  "modified_by": "Administrator",
  "module": "Simple Shop",
- "name": "Shop settings",
+ "name": "Shop Settings",
  "owner": "Administrator",
  "permissions": [
   {
    "create": 1,
    "delete": 1,
    "email": 1,
-   "export": 1,
    "print": 1,
    "read": 1,
-   "report": 1,
    "role": "System Manager",
    "share": 1,
    "write": 1

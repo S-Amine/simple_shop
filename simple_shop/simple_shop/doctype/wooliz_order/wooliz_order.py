@@ -92,12 +92,26 @@ class WoolizOrder(Document):
             elif self.woolize_status == "returned":
                 if old_status == "delivered" or old_status == "paid":
                     self.check_if_delivered()
+                    self.return_items()
                 else:
                     self.woolize_status = old_status
                     frappe.throw("You can't return a document in '{}' status. You can return a delivered document.".format(old_status))
         
     def move_stock_to_pending_warehouse(self):
         print("Moving stock to pending warehouse")
+        stock_settings = frappe.get_doc("Shop Settings")
+        stock_entry = frappe.new_doc("Stock Entry")
+        stock_entry.from_warehouse = stock_settings.default_warehouse
+        stock_entry.to_warehouse = stock_settings.pending_warehouse
+        
+        for item in self.products :
+            stock_entry.append("items", {"item_code": item.item,
+                                        "qty": item.qty                                        })
+        stock_entry.stock_entry_type = "Material Transfer"
+        stock_entry.insert(
+            ignore_permissions=True,
+        )
+        print("Done")
 
 
     
@@ -109,6 +123,19 @@ class WoolizOrder(Document):
     
     def return_products_to_public_warehouse(self):
         print("Returning products to public warehouse")
+        stock_settings = frappe.get_doc("Shop Settings")
+        stock_entry = frappe.new_doc("Stock Entry")
+        stock_entry.from_warehouse = stock_settings.pending_warehouse
+        stock_entry.to_warehouse = stock_settings.default_warehouse
+        
+        for item in self.products :
+            stock_entry.append("items", {"item_code": item.item,
+                                        "qty": item.qty                                        })
+        stock_entry.stock_entry_type = "Material Transfer"
+        stock_entry.insert(
+            ignore_permissions=True,
+        )
+        print("Done")
     
     def check_quantity_in_pending_warehouse(self):
         print("Checking quantity in pending warehouse")
@@ -122,9 +149,36 @@ class WoolizOrder(Document):
     
     def create_delivery_note(self):
         print("Creating a delivery note")
+        stock_settings = frappe.get_doc("Shop Settings")
+        stock_entry = frappe.new_doc("Stock Entry")
+        stock_entry.from_warehouse = stock_settings.pending_warehouse
+        
+        for item in self.products :
+            stock_entry.append("items", {"item_code": item.item,
+                                        "qty": item.qty                                        })
+        stock_entry.stock_entry_type = "Material Issue"
+        stock_entry.insert(
+            ignore_permissions=True,
+        )
+        print("Done")
     
     def check_if_delivered(self):
         print("Checking if delivered")
+    def return_items(self):
+        print("Returning items")
+        stock_settings = frappe.get_doc("Shop Settings")
+        stock_entry = frappe.new_doc("Stock Entry")
+        stock_entry.to_warehouse = stock_settings.resturn_warehouse
+        
+        for item in self.products :
+            stock_entry.append("items", {"item_code": item.item,
+                                        "qty": item.qty                                        })
+        stock_entry.stock_entry_type = "Material Receipt"
+        stock_entry.insert(
+            ignore_permissions=True,
+        )
+        print("Done")
+        
     def after_delete(self):
         print("After deleting ................")
         if self.custom_tracking_id:

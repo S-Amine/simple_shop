@@ -1,7 +1,7 @@
 // Copyright (c) 2024, The Zoldycks and contributors
 // For license information, please see license.txt
 
-// frappe.ui.form.on("Shop settings", {
+// frappe.ui.form.on("Shop Settings", {
 // 	refresh(frm) {
 
 // 	},
