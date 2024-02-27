@@ -1,13 +1,19 @@
 # Copyright (c) 2024, The Zoldycks and contributors
 # For license information, please see license.txt
 
-# import frappe
+import frappe
 from frappe.model.document import Document
 from simple_shop.yalidine import delete_yalidine_order, extract_first_number, send_yalidin_order, update_yalidine_order
 
 
 class WoolizOrder(Document):
+
     def before_save(self):
+        if self.is_new():
+            old_status = None  # No old value for new documents
+        else:
+            old_doc = frappe.get_doc(self.doctype, self.name)
+            old_status = old_doc.woolize_status
         print("Before saving order................")
         #extract number from center 
         if self.custom_stop_desk_bureau:
@@ -23,6 +29,102 @@ class WoolizOrder(Document):
         elif self.custom_tracking_id is not None:
             print("Update yalidine order ................")
             update_yalidine_order(self.name)
+        
+        if self.woolize_status != old_status :
+            print(f"The previous status was: {old_status}")
+            if self.woolize_status == "created":
+                if old_status is None:
+                    pass
+                else:
+                    self.woolize_status = old_status
+                    frappe.throw("You can't change the status to 'created' because this document is already created.")
+            elif self.woolize_status == "pending":
+                if old_status is None or old_status == "created" or old_status == "cancelled":
+                    print(self.products)
+                    self.move_stock_to_pending_warehouse()
+                    self.create_raw_sales_order()
+                    self.save_sales_order()
+                else:
+                    if old_status == "confirmed":
+                        frappe.throw("You can't change the status to 'pending' from 'confirmed' status. You can cancel the existing one or pack it for delivery.")
+                    else:
+                        self.woolize_status = old_status
+                        frappe.throw("You can't change the status to 'pending' from '{}' status. You can create a new document or cancel the existing one.".format(old_status))
+            elif self.woolize_status == "cancelled":
+                if old_status == "pending" or old_status == "confirmed" or old_status == "packed":
+                    self.return_products_to_public_warehouse()
+                else:
+                    self.woolize_status = old_status
+                    frappe.throw("You can't cancel a document in '{}' status. You can cancel a pending or confirmed document.".format(old_status))
+            elif self.woolize_status == "confirmed":
+                if old_status == "pending":
+                    self.check_quantity_in_pending_warehouse()
+                    if not self.is_quantity_in_pending_warehouse():
+                        self.move_stock_to_pending_warehouse()
+                    self.submit_sales_order()
+                else:
+                    self.woolize_status = old_status
+                    frappe.throw("You can't confirm a document in '{}' status. You can confirm a pending document.".format(old_status))
+            elif self.woolize_status == "packed":
+                if old_status == "confirmed":
+                    self.check_quantity_in_pending_warehouse()
+                    if not self.is_quantity_in_pending_warehouse():
+                        self.move_stock_to_pending_warehouse()
+                    self.submit_sales_order()
+                else:
+                    self.woolize_status = old_status
+                    frappe.throw("You can't pack a document in '{}' status. You can pack a confirmed document.".format(old_status))
+            elif self.woolize_status == "delivered":
+                if old_status == "packed":
+                    self.check_quantity_in_pending_warehouse()
+                    if not self.is_quantity_in_pending_warehouse():
+                        self.move_stock_to_pending_warehouse()
+                    self.create_delivery_note()
+                else:
+                    self.woolize_status = old_status
+                    frappe.throw("You can't mark a document as delivered in '{}' status. You can mark a packed document as delivered.".format(old_status))
+            elif self.woolize_status == "paid":
+                if old_status == "delivered":
+                    self.check_if_delivered()
+                else:
+                    self.woolize_status = old_status
+                    frappe.throw("You can't mark a document as 'paid on delivery' in '{}' status. You can only mark a delivered document as 'paid on delivery'.".format(old_status))
+            elif self.woolize_status == "returned":
+                if old_status == "delivered" or old_status == "paid":
+                    self.check_if_delivered()
+                else:
+                    self.woolize_status = old_status
+                    frappe.throw("You can't return a document in '{}' status. You can return a delivered document.".format(old_status))
+        
+    def move_stock_to_pending_warehouse(self):
+        print("Moving stock to pending warehouse")
+
+
+    
+    def create_raw_sales_order(self):
+        print("Creating the raw sales order")
+    
+    def save_sales_order(self):
+        print("Saving the sales order")
+    
+    def return_products_to_public_warehouse(self):
+        print("Returning products to public warehouse")
+    
+    def check_quantity_in_pending_warehouse(self):
+        print("Checking quantity in pending warehouse")
+    
+    def is_quantity_in_pending_warehouse(self):
+        print("Checking if quantity is in pending warehouse")
+        # Placeholder for actual logic
+    
+    def submit_sales_order(self):
+        print("Submitting the sales order")
+    
+    def create_delivery_note(self):
+        print("Creating a delivery note")
+    
+    def check_if_delivered(self):
+        print("Checking if delivered")
     def after_delete(self):
         print("After deleting ................")
         if self.custom_tracking_id:
