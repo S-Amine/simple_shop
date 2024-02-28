@@ -36,15 +36,12 @@
         <div class="col-lg-5">
           <div class="d-flex justify-content-between mb-4 pb-md-2">
             <div class="breadcrumb mb-0 d-none d-md-block flex-grow-1">
-              <a href="product2_variable.html#" class="menu-link menu-link_us-s text-uppercase fw-medium">Home</a>
+              <a href="product2_variable.html#" class="menu-link menu-link_us-s text-uppercase fw-medium">الرئيسية</a>
               <span class="breadcrumb-separator menu-link fw-medium ps-1 pe-1">/</span>
-              <a href="product2_variable.html#" class="menu-link menu-link_us-s text-uppercase fw-medium">The Shop</a>
+              <a href="product2_variable.html#" class="menu-link menu-link_us-s text-uppercase fw-medium">تسوق</a>
             </div><!-- /.breadcrumb -->
 
-            <div class="product-single__prev-next d-flex align-items-center justify-content-between justify-content-md-end flex-grow-1">
-              <a href="product2_variable.html#" class="text-uppercase fw-medium"><svg width="10" height="10" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg"><use href="#icon_prev_md" /></svg><span class="menu-link menu-link_us-s">Prev</span></a>
-              <a href="product2_variable.html#" class="text-uppercase fw-medium"><span class="menu-link menu-link_us-s">Next</span><svg width="10" height="10" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg"><use href="#icon_next_md" /></svg></a>
-            </div><!-- /.shop-acs -->
+
           </div>
           <h1 class="product-single__name">{{item.item_name}}</h1>
           <div class="product-single__rating">
@@ -55,10 +52,10 @@
               <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg"><use href="#icon_star" /></svg>
               <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg"><use href="#icon_star" /></svg>
             </div>
-            <span class="reviews-note text-lowercase text-secondary ms-1">8k+ reviews</span>
+            <span class="reviews-note text-lowercase text-secondary ms-1">8k+ تقييم</span>
           </div>
           <div class="product-single__price">
-            <span class="current-price">{{item.custom_price}} DA</span>
+            <span class="current-price">{{item.custom_price}} دج</span>
           </div>
           <div class="product-single__short-desc">
             <p>{{item.description}}</p>
@@ -70,12 +67,12 @@
           <form name="addtocart-form" method="post">
             <div class="product-single__swatches">
               {% for item_variants_value in item_variants_values %}
-              {% if item_variants_value.Attribute != 'Colour' %}
+              {% if item_variants_value.Attribute != 'اللون' %}
               <div class="product-swatch text-swatches">
                 <label>{{item_variants_value.Attribute}}</label>
                 <div class="swatch-list">
                   {% for item in item_variants_values %}
-                  {% if item.Attribute == 'Size' %}
+                  {% if item.Attribute == 'المقاس' %}
                   {% for value in item.Values %}
                   <input type="radio" data-item-size="{{ value }}" name="size" id="swatch-size-{{ loop.index }}" {% if loop.first %}checked{% endif %}>
                   <label class="swatch js-swatch" for="swatch-size-{{ loop.index }}" aria-label="{{ value }}" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ value }}">{{ value }}</label>
@@ -86,10 +83,10 @@
               </div>
               {% else %}
               <div class="product-swatch color-swatches">
-                <label>Color</label>
+                <label>{{item_variants_value.Attribute}}</label>
                 <div class="swatch-list">
                   {% for item in item_variants_values %}
-                  {% if item.Attribute == 'Colour' %}
+                  {% if item.Attribute == 'اللون' %}
                   {% for value in item.Values %}
                   <input type="radio" data-item-color="{{ value }}" name="color" id="swatch-{{ loop.index }}" {% if loop.first %}checked{% endif %}>
                   <label class="swatch swatch-color js-swatch" for="swatch-{{ loop.index }}" aria-label="{{ value }}" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ value }}" style="color: {{ value|lower }}"></label>
@@ -106,8 +103,8 @@
             {% endif %}
             <hr>
 
-            <p class="fw-bold">Hurry! Only 5 pieces left in stock !!</p>
-            <p class="fw-bold"><span class="p-2" id="countdown" style="background-color: #eb2d2d; color: white;">1550</span>  watches this product now</p>
+            <p class="fw-bold">سارع! فقط 5 قطعة متبقية في المخزن!</p>
+            <p class="fw-bold">يشاهد <span class="p-2" id="countdown" style="background-color: #eb2d2d; color: white;">1550</span>  متصفح في الوقت الحالي.</p>
             <script>
 const getRandomInteger = () => {
   return Math.floor(Math.random() * 2040) + 1;
@@ -124,8 +121,8 @@ setInterval(() => {
                 <div class="qty-control__reduce" data-item-id="{{item.item_code}}" data-item-name="{{item.name}} - {{item.item_name}}" data-item-price ="{{item.custom_price}}" data-item-image="{{item.image}}" onclick="setItemToCart(this,'subtraction')">-</div>
                 <div class="qty-control__increase" data-item-id="{{item.item_code}}" data-item-name="{{item.name}} - {{item.item_name}}"  data-item-price ="{{item.custom_price}}" data-item-image="{{item.image}}" onclick="setItemToCart(this,'add')">+</div>
               </div><!-- .qty-control -->
-              <a class="btn btn-outline-primary"  onclick="setItemToCart(this,'add')" data-item-id="{{item.item_code}}" data-item-name="{{item.name}} - {{item.item_name}}"  data-item-price ="{{item.custom_price}}" data-item-image="{{item.image}}" >Add to cart</a>
-              <a href="#billing" class="btn btn-primary btn-addtocart " data-aside="cartDrawer">Buy now</a>
+              <a class="btn btn-outline-primary"  onclick="setItemToCart(this,'add')" data-item-id="{{item.item_code}}" data-item-name="{{item.name}} - {{item.item_name}}"  data-item-price ="{{item.custom_price}}" data-item-image="{{item.image}}" >إضافة إلى السلة</a>
+              <a href="#billing" class="btn btn-primary btn-addtocart fw-bold fs-5 " data-aside="cartDrawer">إشتري الأن</a>
 
             </div>
           </form>
@@ -138,7 +135,7 @@ setInterval(() => {
       <div class="product-single__details-tab">
           <ul class="nav nav-tabs" id="myTab1" role="tablist">
           <li class="nav-item" role="presentation">
-            <a class="nav-link nav-link_underscore active" id="tab-description-tab" data-bs-toggle="tab" href="product2_variable.html#tab-description" role="tab" aria-controls="tab-description" aria-selected="true">Description</a>
+            <a class="nav-link nav-link_underscore active" id="tab-description-tab" data-bs-toggle="tab" href="product2_variable.html#tab-description" role="tab" aria-controls="tab-description" aria-selected="true">الوصـف</a>
           </li>
         </ul>
         <div class="tab-content">
@@ -207,14 +204,14 @@ setInterval(() => {
                     <img loading="lazy" src="{{recommendation.image}}" width="330" height="400" alt="Cropped Faux leather Jacket" class="pc__img">
                     <img loading="lazy" src="{{recommendation.image}}" width="330" height="400" alt="Cropped Faux leather Jacket" class="pc__img pc__img-second">
                   </a>
-                  <button class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium js-add-cart js-open-aside" data-aside="cartDrawer" title="Add To Cart">Add To Cart</button>
+                  <button class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium js-add-cart js-open-aside" data-aside="cartDrawer" title="Add To Cart">إضافة إلى اسلة</button>
                 </div>
 
                 <div class="pc__info position-relative">
                   <p class="pc__category">{{recommendation.item_group}}</p>
                   <h6 class="pc__title"><a href="product1_simple.html">{{recommendation.item_name}}</a></h6>
                   <div class="product-card__price d-flex">
-                    <span class="money price">{{recommendation.custom_price}} DA</span>
+                    <span class="money price">{{recommendation.custom_price}} دج</span>
                   </div>
 
                   <button class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist" title="Add To Wishlist">

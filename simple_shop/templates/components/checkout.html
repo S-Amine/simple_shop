@@ -10,7 +10,7 @@
 <form>
   <div class="checkout-form" id="billing">
     <div class="billing-info__wrapper">
-      <h4 >BILLING DETAILS</h4>
+      <h4 class="fw-bold fs-3 mx-auto" >أدخل معلوماتك</h4>
       <div class="row">
         <div class="col-md-12">
           <div class="form-floating my-3">
@@ -20,21 +20,22 @@
               id="checkout_last_name"
               placeholder="First Name"
             />
-            <label for="checkout_first_name">Full name</label>
+            <label for="checkout_first_name">الإسم الكامل</label>
           </div>
         </div>
         <div class="col-md-12">
           <div class="search-field my-3">
             <div class="form-label-fixed hover-container">
-              <label for="search-dropdown" class="form-label">Wilaya*</label>
+              <label for="search-dropdown" class="form-label" dir="rtl">الولاية*</label>
               <div class="js-hover__open">
                 <input
                   required
                   type="text"
                   class="form-control form-control-lg search-field__actor search-field__arrow-down"
+                  style=" background-position:left 0.9375rem center"
                   id="wilaya-dropdown"
                   name="search-keyword"
-                  placeholder="Enter your wilaya..."
+                  placeholder="أدخل ولايتك...."
                 />
               </div>
               <div class="filters-container js-hidden-content mt-2">
@@ -43,7 +44,7 @@
                     type="text"
                     oninput="filterLiElements(this.value,'wilayaList')"
                     class="search-field__input form-control form-control-sm bg-lighter border-lighter"
-                    placeholder="Enter your city"
+                    placeholder="أدخل ولايتك."
                   />
                 </div>
                 <ul
@@ -69,7 +70,7 @@
                 id="checkout_shipping_type_home"
               />
               <label class="form-check-label" for="checkout_shipping_type_home">
-                Home
+                توصيل إلى المنزل
               </label>
             </div>
             <div class="form-check">
@@ -85,7 +86,7 @@
                 class="form-check-label"
                 for="checkout_shipping_type_office"
               >
-                Office
+                توصيل إلى المكتب
               </label>
             </div>
           </div>
@@ -93,16 +94,18 @@
         <div class="col-md-12">
           <div class="search-field my-3">
             <div class="form-label-fixed hover-container">
-              <label for="search-dropdown" class="form-label">Region*</label>
+              <label for="search-dropdown" class="form-label">البلدية*</label>
               <div class="js-hover__open">
                 <input
                   required
+                  style=" background-position:left 0.9375rem center"
+
                   type="text"
                   class="form-control form-control-lg search-field__actor search-field__arrow-down"
                   id="communs-dropdown"
                   name="search-keyword"
                   readonly=""
-                  placeholder="Enter your city..."
+                  placeholder="أدخل بلديتك"
                 />
               </div>
               <div class="filters-container js-hidden-content mt-2">
@@ -111,7 +114,7 @@
                     type="text"
                     oninput="filterLiElements(this.value,'baladiaList')"
                     class="search-field__input form-control form-control-sm bg-lighter border-lighter"
-                    placeholder="Search"
+                    placeholder="أدخل بلديتك"
                   />
                 </div>
                 <ul
@@ -132,7 +135,7 @@
               id="checkout_input_street_address"
               placeholder="Phone *"
             />
-            <label for="checkout_phone">Street address</label>
+            <label for="checkout_phone">عنوان المنزل</label>
           </div>
         </div>
         <div class="col-md-12">
@@ -144,7 +147,7 @@
               id="checkout_input_phone_field"
               placeholder="Phone *"
             />
-            <label for="checkout_phone">Phone *</label>
+            <label for="checkout_phone">رقم الهاتف *</label>
           </div>
         </div>
       </div>
@@ -157,23 +160,23 @@
             <table class="checkout-totals">
               <tbody>
                 <tr>
-                  <th>SUBTOTAL</th>
+                  <th>السعر</th>
                   <td
                     id="checkout-total-amount"
                     class="sub-total-count"
                     data-subtotal="{{item.custom_price}}"
                   >
-                     {{item.custom_price}} DA
+                     {{item.custom_price}} دج
                   </td>
                 </tr>
                 <tr>
-                  <th>SHIPPING</th>
-                  <td id="shipping_fees" data-shipping-fee="0">0 DA</td>
+                  <th>الشحن</th>
+                  <td id="shipping_fees" data-shipping-fee="0">0 دج</td>
                 </tr>
                 <tr>
-                  <th>TOTAL</th>
+                  <th>المجموع</th>
                   
-                  <td id="total-checkout-amount">{{item.custom_price}} DA</td>
+                  <td id="total-checkout-amount">{{item.custom_price}} دج</td>
                 </tr>
               </tbody>
             </table>
@@ -187,7 +190,7 @@
               border: 2px solid #870404;
             "
           >
-            PLACE ORDER
+            إضغط هنا للطلب
           </button>
         </div>
       </div>
@@ -434,7 +437,7 @@ setNewNumberToCartIcon()
     // Update subtotal and data attributes for each sub-total count element
     subTotalCountElements.forEach((subTotalElement) => {
       const cartTotalPrices = localStorage.getItem("cart-total-prices") || 0;
-      subTotalElement.innerHTML = `DA ${cartTotalPrices} `;
+      subTotalElement.innerHTML = `دج ${cartTotalPrices} `;
       subTotalElement.setAttribute("data-subtotal", getSubTotal());
     });
 
@@ -449,7 +452,7 @@ setNewNumberToCartIcon()
             ${item.name} x ${item.qty}
           </td>
           <td>
-            DA ${item.price * item.qty}
+            دج ${item.price * item.qty}
           </td>
         </tr>
       `;
@@ -479,8 +482,8 @@ setNewNumberToCartIcon()
         checkout_shipping_type_office.setAttribute("data-fee", e.desk_fee);
         shipping_fees.innerHTML =
           getShippingTypeOption() === "checkout_shipping_type_home"
-            ? `${e.home_fee} DA`
-            : `${e.desk_fee} DA`;
+            ? `${e.home_fee} دج`
+            : `${e.desk_fee} دج`;
         shipping_fees.setAttribute(
           "data-shipping-fee",
           getShippingTypeOption() === "checkout_shipping_type_home"
@@ -505,7 +508,7 @@ setNewNumberToCartIcon()
     let totalAmount = document.getElementById("total-checkout-amount");
     totalAmount.innerHTML = `${
       parseFloat(sub_total) + parseFloat(shipping_fees)
-    } DA`;
+    } دج`;
   };
 
 
