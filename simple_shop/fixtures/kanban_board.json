@@ -1,0 +1,80 @@
+[
+ {
+  "columns": [
+   {
+    "column_name": "created",
+    "indicator": "Gray",
+    "order": "[]",
+    "parent": "Wooliz Orders",
+    "parentfield": "columns",
+    "parenttype": "Kanban Board",
+    "status": "Active"
+   },
+   {
+    "column_name": "pending",
+    "indicator": "Yellow",
+    "order": "[\"42ce6a1d17\"]",
+    "parent": "Wooliz Orders",
+    "parentfield": "columns",
+    "parenttype": "Kanban Board",
+    "status": "Active"
+   },
+   {
+    "column_name": "confirmed",
+    "indicator": "Green",
+    "order": "[]",
+    "parent": "Wooliz Orders",
+    "parentfield": "columns",
+    "parenttype": "Kanban Board",
+    "status": "Active"
+   },
+   {
+    "column_name": "cancelled",
+    "indicator": "Red",
+    "order": "[]",
+    "parent": "Wooliz Orders",
+    "parentfield": "columns",
+    "parenttype": "Kanban Board",
+    "status": "Active"
+   },
+   {
+    "column_name": "packed",
+    "indicator": "Blue",
+    "order": "[]",
+    "parent": "Wooliz Orders",
+    "parentfield": "columns",
+    "parenttype": "Kanban Board",
+    "status": "Active"
+   },
+   {
+    "column_name": "delivered",
+    "indicator": "Green",
+    "order": "[]",
+    "parent": "Wooliz Orders",
+    "parentfield": "columns",
+    "parenttype": "Kanban Board",
+    "status": "Active"
+   },
+   {
+    "column_name": "returned",
+    "indicator": "Purple",
+    "order": "[]",
+    "parent": "Wooliz Orders",
+    "parentfield": "columns",
+    "parenttype": "Kanban Board",
+    "status": "Active"
+   }
+  ],
+  "docstatus": 0,
+  "doctype": "Kanban Board",
+  "field_name": "woolize_status",
+  "fields": null,
+  "filters": null,
+  "kanban_board_name": "Wooliz Orders",
+  "modified": "2024-02-28 15:32:16.768986",
+  "name": "Wooliz Orders",
+  "private": 0,
+  "reference_doctype": "Wooliz Order",
+  "show_labels": 0
+ }
+]

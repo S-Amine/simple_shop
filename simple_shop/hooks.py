@@ -14,6 +14,10 @@ website_route_rules = [
 
 ]
 
+fixtures = [
+    {"dt": "Kanban Board", "filters": [["name", "like", "Wooliz Order%"]]},
+]
+
 
 # include js, css files in header of desk.html
 # app_include_css = "/assets/simple_shop/css/simple_shop.css"
