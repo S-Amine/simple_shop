@@ -1,5 +1,5 @@
 import frappe
-from simple_shop.utils import build_variant_data
+from simple_shop.utils import build_variant_data, convert_to_variant_structure, handle_variant_data
 
 def get_context(context):
     item_code = frappe.local.form_dict.get('item_code') or frappe.local.form_dict.get('item_code')
@@ -21,6 +21,9 @@ def get_context(context):
             context.item_variants_values = build_variant_data(item, item_variants)
 
             context.item_variants = item_variants
+            handle_variant=handle_variant_data(item, item_variants)
+            context.handle_variant = handle_variant
+
     else:
         frappe.local.flags.redirect_location = '/'
         raise frappe.Redirect
