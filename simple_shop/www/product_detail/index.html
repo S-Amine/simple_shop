@@ -74,7 +74,7 @@
                   {% for item in item_variants_values %}
                   {% if item.Attribute == 'المقاس' %}
                   {% for value in item.Values %}
-                  <input type="radio" data-item-size="{{ value }}" name="size" id="swatch-size-{{ loop.index }}" {% if loop.first %}checked{% endif %}>
+                  <input type="radio" onclick="handleCheckedVariants('{{item.Attribute}}')" data-item-size="{{ value }}" name="size" id="swatch-size-{{ loop.index }}" {% if loop.first %}checked{% endif %}>
                   <label class="swatch js-swatch" for="swatch-size-{{ loop.index }}" aria-label="{{ value }}" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ value }}">{{ value }}</label>
               {% endfor %}
                   {% endif %}
@@ -88,7 +88,7 @@
                   {% for item in item_variants_values %}
                   {% if item.Attribute == 'اللون' %}
                   {% for value in item.Values %}
-                  <input type="radio" data-item-color="{{ value }}" name="color" id="swatch-{{ loop.index }}" {% if loop.first %}checked{% endif %}>
+                  <input type="radio" onclick="handleCheckedVariants('{{item.Attribute}}')" data-item-color="{{ value }}" name="color" id="swatch-{{ loop.index }}" {% if loop.first %}checked{% endif %}>
                   <label class="swatch swatch-color js-swatch" for="swatch-{{ loop.index }}" aria-label="{{ value }}" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ value }}" style="color: {{ value|lower }}"></label>
               {% endfor %}
                   {% endif %}
@@ -242,6 +242,47 @@ setInterval(() => {
 
 
 <script>
-  localStorage.setItem("item_variants","{{handle_variant}}")
+  // Replace "{{handle_variant}}" with the actual JSON-like string
+localStorage.setItem("item_variants", "{{handle_variant}}");
+
+const handleCheckedVariants = (name) => {
+  // get checked variants
+  let sizeCheckboxes = document.getElementsByName('size');
+  let colorCheckboxes = document.getElementsByName('color');
+
+  let sizecheckedCheckboxes = Array.from(sizeCheckboxes).filter(function(checkbox) {
+    return checkbox.checked;
+  });
+  let colorcheckedCheckboxes = Array.from(colorCheckboxes).filter(function(checkbox) {
+    return checkbox.checked;
+  });
+
+  // Assuming 'data-item-color' and 'data-item-size' attributes are correctly set in your HTML
+  productId = getProductIdBasedOnVariants(colorcheckedCheckboxes[0]?.getAttribute('data-item-color'), sizecheckedCheckboxes[0]?.getAttribute('data-item-size'));
+  console.log(productId);
+  return productId;
+}
+
+const getProductIdBasedOnVariants = (color, size) => {
+  let items = localStorage.getItem("item_variants").toString().replace(/'/g, '"');;
+
+  try {
+    let variants = JSON.parse(items);
+
+    // Find the product ID based on color and size
+    for (let productId in variants) {
+      let variant = variants[productId];
+      if (variant['اللون'] === color && variant['المقاس'] === size) {
+        return productId;
+      }
+    }
+  } catch (error) {
+    console.error("Error parsing JSON:", error);
+  }
+
+  // Return null if no matching product is found or if there's an error
+  return null;
+}
+
 </script>
 {% endblock %}
