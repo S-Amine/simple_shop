@@ -59,16 +59,12 @@
               <h6 class="pc__title"><a href="/product/{{item.item_code}}">{{item.description}}</a></h6>
               <div class="product-card__price d-flex">
                 {% if  item.custom_promo_price %}
-                <del class="money price ">{{item.custom_price}} DA</del>
-                <span class="mx-2 money price fw-bold" style="color: rgba(11, 141, 76, 0.712);">{{item.custom_promo_price}} DA</span>
+                <del class="money price ">{{item.custom_price}} دج</del>
+                <span class="mx-2 money price fw-bold" style="color: rgba(11, 141, 76, 0.712);">{{item.custom_promo_price}} دج</span>
                 {% else %}
-                <span class="money price">{{item.custom_price}} DA</span>
+                <span class="money price">{{item.custom_price}} دج</span>
                 {% endif %}
               </div>
-
-              <button class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist" title="Add To Wishlist">
-                <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><use href="#icon_heart" /></svg>
-              </button>
             </div>
           </div>
           {% endfor %}

@@ -31,10 +31,10 @@
               </div>
             </div>
             <div class="slideshow-text container position-absolute start-50 top-50 translate-middle">
-              <h6 class="text_dash text-uppercase text-red fs-base fw-medium animate animate_fade animate_btt animate_delay-3">Categorie</h6>
-              <h2 class="text-uppercase h1 fw-normal mb-0 animate animate_fade animate_btt animate_delay-5">Découvrez la categorie</h2>
+              <h6 class="text_dash text-uppercase text-red fs-base fw-medium animate animate_fade animate_btt animate_delay-3">الفئات</h6>
+              <h2 class="text-uppercase h1 fw-normal mb-0 animate animate_fade animate_btt animate_delay-5">إستكشف الجديد في</h2>
               <h2 class="text-uppercase h1 fw-bold animate animate_fade animate_btt animate_delay-5">{{category.name}}</h2>
-              <a href="/products/?category={{category.name}}" class="btn-link btn-link_lg default-underline text-uppercase fw-medium animate animate_fade animate_btt animate_delay-7">Discover More</a>
+              <a href="/products/?category={{category.name}}" class="btn-link btn-link_lg default-underline text-uppercase fw-medium animate animate_fade animate_btt animate_delay-7">المزيد</a>
             </div>
           </div>
         </div><!-- /.slideshow-item -->
@@ -92,7 +92,7 @@
 
     <div class="mb-5 pb-1 pb-xl-4"></div>
     <!-- Recently products section -->
-    {% set items,section_name = recent_items,'Recently products' %}
+    {% set items,section_name = recent_items,'المنتجات الجديدة' %}
     {% include "templates/components/category_section.html"  %}
 
     <!-- Other sections which dispalyed in home -->

@@ -16,19 +16,17 @@
       <button class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium js-add-cart js-open-aside" data-aside="cartDrawer" title="Add To Cart"
       data-item-id="{{item.item_code}}" data-item-name="{{item.name}} - {{item.item_name}}" data-item-price ="{{item.custom_price}}" data-item-image="{{item.image}}" 
       onclick="setItemToCartGlobal(this,'add')" 
-      >Add To Cart</button>
+      >إضافة إلى السلة</button>
     </div>
 
     <div class="pc__info position-relative">
       <p class="pc__category">{{item.item_group}}</p>
       <h6 class="pc__title"><a href="product1_simple.html">{{item.item_name}}</a></h6>
       <div class="product-card__price d-flex">
-        <span class="money price price-old">{{item.custom_price}} DA</span>
-        <span class="money price price-sale">{{item.custom_price}} DA</span>
+        <span class="money price price-old">{{item.custom_price}} دج</span>
+        <span class="money price price-sale">{{item.custom_price}} دج</span>
       </div>
-      <button class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist" title="Add To Wishlist">
-        <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><use href="#icon_heart" /></svg>
-      </button>
+
     </div>
 
     <div class="pc-labels position-absolute top-0 start-0 w-100 d-flex justify-content-between">
