@@ -18,7 +18,9 @@ fixtures = [
     {"dt": "Kanban Board", "filters": [["name", "like", "Wooliz Order%"]]},
 ]
 
-
+override_doctype_class = {
+    "Item": "simple_shop.overrides.item.CustomItem",
+}
 # include js, css files in header of desk.html
 # app_include_css = "/assets/simple_shop/css/simple_shop.css"
 # app_include_js = "/assets/simple_shop/js/simple_shop.js"

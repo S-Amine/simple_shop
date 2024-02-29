@@ -105,7 +105,19 @@ class WoolizOrder(Document):
                 else:
                     self.woolize_status = old_status
                     frappe.throw("You can't return a document in '{}' status. You can return a delivered document.".format(old_status))
-        
+    
+    
+    def on_change(self):
+        """
+        Recalculates the actual quantity (QTY) for each item.
+        """
+        for item in self.products:
+            item_doc = frappe.get_doc("Item", item.item)
+            item_doc.db_set('custom_qty', 0, commit=True)
+            item_doc.save(
+                ignore_permissions=True, # ignore write permissions during insert
+            )
+
     def move_stock_to_pending_warehouse(self):
         print("Moving stock to pending warehouse")
         stock_settings = frappe.get_doc("Shop Settings")
