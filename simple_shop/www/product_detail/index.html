@@ -99,6 +99,7 @@
               </div>
               {% endif %}
             {% endfor %}
+            <p class="bg-warning d-none" id="display_not_found">عذرا المنتج غير متوفر بهذه المواصفات</p>
             </div>
             {% endif %}
             <hr>
@@ -242,9 +243,7 @@ setInterval(() => {
 
 
 <script>
-  // Replace "{{handle_variant}}" with the actual JSON-like string
 localStorage.setItem("item_variants", "{{handle_variant}}");
-
 const handleCheckedVariants = (name) => {
   // get checked variants
   let sizeCheckboxes = document.getElementsByName('size');
@@ -264,6 +263,7 @@ const handleCheckedVariants = (name) => {
 }
 
 const getProductIdBasedOnVariants = (color, size) => {
+  let notFoundMsg = document.getElementById('display_not_found')
   let items = localStorage.getItem("item_variants").toString().replace(/'/g, '"');;
 
   try {
@@ -273,13 +273,15 @@ const getProductIdBasedOnVariants = (color, size) => {
     for (let productId in variants) {
       let variant = variants[productId];
       if (variant['اللون'] === color && variant['المقاس'] === size) {
+        notFoundMsg.classList.add('d-none')
+
         return productId;
       }
     }
   } catch (error) {
     console.error("Error parsing JSON:", error);
   }
-
+  notFoundMsg.classList.remove('d-none')
   // Return null if no matching product is found or if there's an error
   return null;
 }
