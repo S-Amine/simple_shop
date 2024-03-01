@@ -1,6 +1,7 @@
 import json
 import re
 import frappe
+import random
 
 @frappe.whitelist()
 def build_variant_data(item, item_variants):
@@ -96,3 +97,19 @@ def convert_to_variant_structure(item_data):
         }
         result.append(variant_structure)
     return result
+
+
+def generate_random_ean():
+    # Generate the first 12 digits randomly
+    random_digits = [random.randint(0, 9) for _ in range(12)]
+
+    # Calculate the checksum (last digit) using the EAN algorithm
+    even_sum = sum(random_digits[::2])
+    odd_sum = sum(random_digits[1::2])
+    total = even_sum * 3 + odd_sum
+    checksum = (10 - (total % 10)) % 10
+
+    # Append the checksum to complete the EAN
+    ean_code = ''.join(map(str, random_digits)) + str(checksum)
+
+    return ean_code
