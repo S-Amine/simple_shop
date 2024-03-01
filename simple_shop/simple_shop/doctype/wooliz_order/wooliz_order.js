@@ -167,3 +167,87 @@ frappe.ui.form.on("Wooliz Order", {
     };
   },
 });
+
+
+frappe.ui.form.on("Wooliz Order", {
+  refresh: function (frm) {
+    // Add a custom button to the toolbar
+    frm.add_custom_button("Scan Barcode", function () {
+      // Create a new Scanner instance
+      const scanner = new frappe.ui.Scanner({
+        dialog: true, // Open camera scanner in a dialog
+        multiple: false, // Stop after scanning one value
+        on_scan(data) {
+          // Handle the scanned barcode
+          handle_scanned_barcode(frm, data.decodedText);
+        }
+      });
+    });
+
+    // Fetch options for the wilaya field
+    renderWilayaView(frm);
+    frm.cscript.wilaya = function (doc, cdt, cdn) {
+      // Get the current value of the wilaya field
+      var wilayaValue = locals[cdt][cdn].wilaya;
+      // Check if the wilaya field has changed
+      if (wilayaValue) {
+        renderCommunView(frm); // render the communs
+        renderCentersView(frm); // render the centers
+      }
+    };
+  },
+});
+
+// Function to handle the scanned barcode
+function handle_scanned_barcode(frm, barcode) {
+  // Get the list of products from the form
+  var products = frm.doc.products || [];
+  var found = false;
+
+  // Iterate through the products to check if barcode matches
+  for (var i = 0; i < products.length; i++) {
+    var product = products[i];
+    if (product.barcode === barcode) {
+      found = true;
+      break;
+    }
+  }
+
+  // Display appropriate message based on barcode match
+  if (found) {
+    frappe.msgprint("Barcode matches a product in the list.");
+  } else {
+    frappe.msgprint("Barcode does not match any product in the list.");
+  }
+}
+
+frappe.ui.form.on("Wooliz Order", {
+  refresh: function(frm) {
+      // Add a custom button to the toolbar
+      frm.add_custom_button("Scan Barcode", function() {
+          // Create a new scanner instance
+          const scanner = new frappe.ui.Scanner({
+              dialog: true, // open camera scanner in a dialog
+              multiple: false, // stop after scanning one value
+              on_scan(data) {
+                  // Get the scanned barcode value
+                  const scannedBarcode = data.decodedText;
+                  
+                  // Get the list of products from the form
+                  const products = frm.doc.products || [];
+                  
+                  // Check if the scanned barcode matches any product
+                  const matchingProduct = products.find(product => product.barcode === scannedBarcode);
+                  
+                  if (matchingProduct) {
+                      // If a matching product is found, display a positive message
+                      frappe.msgprint(`Product ${scannedBarcode} is valid.`);
+                  } else {
+                      // If no matching product is found, display a negative message
+                      frappe.msgprint(`Product ${scannedBarcode} is not found in the list.`);
+                  }
+              }
+          });
+      });
+  }
+});
