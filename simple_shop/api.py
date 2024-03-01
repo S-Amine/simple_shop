@@ -106,7 +106,7 @@ def post_order(**args):
     
     product = get_doc("Item",data['product'])
     print(product)
-    new_order.append("products",{"item": product,"unit_price":product.custom_price,"qty":data['qty'],"total":product.custom_price})
+    new_order.append("products",{"item": product.item_code,"unit_price":product.custom_price,"qty":data['qty'],"total":product.custom_price})
     new_order.save()
     created_sales_order_id = new_order.name
     return {"success": True, "data": {"order_id":created_sales_order_id}}

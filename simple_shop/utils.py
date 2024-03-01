@@ -34,7 +34,7 @@ def handle_variant_data(item, item_variants):
     data={}
     for item_variant in item_variants:
         item_variant_data = {}
-        item_variant = frappe.get_doc('Item', item_variant)
+        item_variant = frappe.get_doc('Item', item_variant.item_code)
         if item_variant.attributes:
             for item_variant_attribute in item_variant.attributes:
                 item_variant_data[item_variant_attribute.attribute]=item_variant_attribute.attribute_value

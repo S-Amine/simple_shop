@@ -18,6 +18,8 @@ def get_order_total_price(order_id):
     calculate_item_total = lambda item: item.unit_price * item.qty
     order_items = order.get_all_children()
     order_total = sum(map(calculate_item_total, order_items))
+    # add shipping charges
+    ...
     return order_total
 
 def get_product_list(order_id):
