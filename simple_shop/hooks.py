@@ -20,6 +20,7 @@ fixtures = [
 
 override_doctype_class = {
     "Item": "simple_shop.overrides.item.CustomItem",
+    "Stock Ledger Entry": "simple_shop.overrides.stock_ledger_entry.CustomStockLedgerEntry",
 }
 # include js, css files in header of desk.html
 # app_include_css = "/assets/simple_shop/css/simple_shop.css"

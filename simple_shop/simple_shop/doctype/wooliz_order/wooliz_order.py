@@ -66,7 +66,9 @@ class WoolizOrder(Document):
                     self.woolize_status = old_status
                     frappe.throw("You can't cancel a document in '{}' status. You can cancel a pending or confirmed document.".format(old_status))
             elif self.woolize_status == "confirmed":
-                if old_status == "pending":
+                if old_status == "returned":
+                    self.move_stock_to_pending_warehouse()
+                if old_status == "pending" or old_status == "returned":
                     self.check_quantity_in_pending_warehouse()
                     # if not self.is_quantity_in_pending_warehouse():
                         # self.move_stock_to_pending_warehouse()
@@ -132,6 +134,7 @@ class WoolizOrder(Document):
         stock_entry.insert(
             ignore_permissions=True,
         )
+        stock_entry.submit()
         print("Done")
 
 
@@ -156,6 +159,7 @@ class WoolizOrder(Document):
         stock_entry.insert(
             ignore_permissions=True,
         )
+        stock_entry.submit()
         print("Done")
     
     def check_quantity_in_pending_warehouse(self):
@@ -181,6 +185,7 @@ class WoolizOrder(Document):
         stock_entry.insert(
             ignore_permissions=True,
         )
+        stock_entry.submit()
         print("Done")
     
     def check_if_delivered(self):
@@ -198,6 +203,7 @@ class WoolizOrder(Document):
         stock_entry.insert(
             ignore_permissions=True,
         )
+        stock_entry.submit()
         print("Done")
         
     def after_delete(self):
