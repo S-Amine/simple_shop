@@ -1,0 +1,56 @@
+{% extends 'templates/shop_base.html' %}
+{% block centent %}
+<section class="container mw-930 lh-30 py-5">
+    <h2 class="section-title text-uppercase fw-bold mb-5">الأسئلة المتكررة</h2>
+    <h3 class="mb-4">الطلبيات</h3>      
+    <div id="faq_accordion" class="faq-accordion accordion mb-5">
+      <div class="accordion-item">
+        <h5 class="accordion-header" id="faq-accordion-heading-1">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq-accordion-collapse-1" aria-expanded="true" aria-controls="faq-accordion-collapse-1">
+            متى يصل لي الطلب؟
+
+            <svg class="accordion-button__icon mx-2" viewBox="0 0 14 14"><g aria-hidden="true" stroke="none" fill-rule="evenodd"><path class="svg-path-vertical" d="M14,6 L14,8 L0,8 L0,6 L14,6"></path><path class="svg-path-horizontal" d="M14,6 L14,8 L0,8 L0,6 L14,6"></path></g></svg>
+          </button>
+        </h5>
+        <div id="faq-accordion-collapse-1" class="accordion-collapse collapse show" aria-labelledby="faq-accordion-heading-1" data-bs-parent="#faq_accordion">
+          <div class="accordion-body">
+            <p>تعتمد على شركة الشحن التي تم إختيارها والمسؤول عن التوصيل، نحن نوفر مجموعة من المسؤولين عن الشحن بمجموعة من المدن الكبرى، وعادة تأخد من يوم إلى 3 أيام من الطلب وتأكيده.
+
+            </p>
+          </div>
+        </div>
+      </div><!-- /.accordion-item -->
+      <div class="accordion-item">
+        <h5 class="accordion-header" id="faq-accordion-heading-2">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-accordion-collapse-2" aria-expanded="false" aria-controls="faq-accordion-collapse-2">
+            هل يوجد توصيل خارج البلد؟
+
+            <svg class="accordion-button__icon mx-2" viewBox="0 0 14 14"><g aria-hidden="true" stroke="none" fill-rule="evenodd"><path class="svg-path-vertical" d="M14,6 L14,8 L0,8 L0,6 L14,6"></path><path class="svg-path-horizontal" d="M14,6 L14,8 L0,8 L0,6 L14,6"></path></g></svg>
+          </button>
+        </h5>
+        <div id="faq-accordion-collapse-2" class="accordion-collapse collapse" aria-labelledby="faq-accordion-heading-2" data-bs-parent="#faq_accordion">
+          <div class="accordion-body">
+            <p>حالياً شركات الشحن المتعاقد معها تقوم بالتوصيل داخل البلد ومجموعة من المدن المحددة في صفحة التوصيل يتم عرض كافة المدن التي يصل لها مندوب شركة الشحن
+
+                يمككك طلب التوصيل خارج البلد من فريق المتجر عبر الواتساب للقيام بمعلومات وزن المنتج وتسعير وكلاء الشحن الدوليين الغير مسجلين حالياً في المتجر .</p>
+          </div>
+        </div>
+      </div><!-- /.accordion-item -->
+      <div class="accordion-item">
+        <h5 class="accordion-header" id="faq-accordion-heading-3">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-accordion-collapse-3" aria-expanded="false" aria-controls="faq-accordion-collapse-3">
+            في حالة وجود عيب مصنعي في المنتج؟
+
+            <svg class="accordion-button__icon mx-2" viewBox="0 0 14 14"><g aria-hidden="true" stroke="none" fill-rule="evenodd"><path class="svg-path-vertical" d="M14,6 L14,8 L0,8 L0,6 L14,6"></path><path class="svg-path-horizontal" d="M14,6 L14,8 L0,8 L0,6 L14,6"></path></g></svg>
+          </button>
+        </h5>
+        <div id="faq-accordion-collapse-3" class="accordion-collapse collapse" aria-labelledby="faq-accordion-heading-3" data-bs-parent="#faq_accordion">
+          <div class="accordion-body">
+            <p>يجب الرجوع وقراءة سياسة الإسترجاع لمعرفة شروط الإسترجاع والإستبدال، وفي حالة وجود عيب مصنعي تم الإتفاق على إرجاعة يتم إحتساب قيمة الشحن للشركة وكذلك إعادة الشحن على العميل أما قيمة المنتج فلا يتم إحتسابة على العميل حسب سياسية الإسترجاع. </p>
+          </div>
+        </div>
+      </div><!-- /.accordion-item -->
+    </div>
+
+  </section>
+{% endblock centent %}

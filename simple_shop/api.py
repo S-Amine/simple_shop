@@ -91,17 +91,21 @@ def get_centers():
 def post_order(**args):
     """Set the order"""
     data = frappe._dict(args)
+    print(data)
     new_order = frappe.new_doc("Wooliz Order")
     new_order.last_name = data['lastName']
     new_order.phone = data['phone']
     new_order.wilaya = data['wilaya']
+    new_order.custom_address = data['address']
+
     new_order.commun = data['commun']
     new_order.custom_stop_desk_bureau = data['is_stop_desk']
     if data['is_stop_desk']:
         new_order.custom_center_id = data['center_id'] # IN YALIDIN this field is required if stop_desk is true
-        new_order.custom_center = data['commun']
+        new_order.custom_center = f"{data['center_id']} - {data['commun']}"
     
     product = get_doc("Item",data['product'])
+    print(product)
     new_order.append("products",{"item": product,"unit_price":product.custom_price,"qty":data['qty'],"total":product.custom_price})
     new_order.save()
     created_sales_order_id = new_order.name

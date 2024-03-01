@@ -28,6 +28,31 @@ def build_variant_data(item, item_variants):
     print(data)
     return data
 
+
+@frappe.whitelist()
+def handle_variant_data(item, item_variants):
+    data={}
+    for item_variant in item_variants:
+        item_variant_data = {}
+        item_variant = frappe.get_doc('Item', item_variant)
+        if item_variant.attributes:
+            for item_variant_attribute in item_variant.attributes:
+                item_variant_data[item_variant_attribute.attribute]=item_variant_attribute.attribute_value
+                item_variant_data["qty"]=item_variant.custom_qty
+
+        data[item_variant.item_code]=item_variant_data
+        
+
+    # Convert sets back to lists
+    #for attribute_data in data:
+    #    attribute_data['Values'] = list(attribute_data['Values'])
+
+    print(data)
+    return data
+
+
+
+
 def calculate_total_price(products):
     try:
         # Parse the JSON string to a Python list of dictionaries
@@ -55,4 +80,19 @@ def rehandling_checkout_products(products):
 def remove_numbers(input_string):
     # Use a regular expression to replace digits with an empty string
     result = re.sub(r'\d', '', input_string)
+    return result
+
+
+def convert_to_variant_structure(item_data):
+    result = []
+    for item in item_data:
+        variant_item_code = item['name']
+        attributes = []
+        for attribute in item['attributes']:
+            attributes.append(attribute['Attribute'])
+        variant_structure = {
+            "Variant_item_code": variant_item_code,
+            "attributes": attributes
+        }
+        result.append(variant_structure)
     return result
