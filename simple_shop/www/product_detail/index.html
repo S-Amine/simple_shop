@@ -70,26 +70,26 @@
               {% if item_variants_value.Attribute != 'اللون' %}
               <div class="product-swatch text-swatches">
                 <label>{{item_variants_value.Attribute}}</label>
-                <div class="swatch-list">
+                <div class="swatch-list" >
                   {% for item in item_variants_values %}
                   {% if item.Attribute == 'المقاس' %}
                   {% for value in item.Values %}
-                  <input type="radio" onclick="handleCheckedVariants('{{item.Attribute}}')" data-item-size="{{ value }}" name="size" id="swatch-size-{{ loop.index }}" {% if loop.first %}checked{% endif %}>
-                  <label class="swatch js-swatch" for="swatch-size-{{ loop.index }}" aria-label="{{ value }}" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ value }}">{{ value }}</label>
+                  <input  type="radio" onclick="handleCheckedVariants('{{item.Attribute}}')" data-item-size="{{ value }}" name="size" id="swatch-size-{{ loop.index }}">
+                  <label style="cursor: pointer !important;"  class="swatch js-swatch" for="swatch-size-{{ loop.index }}" aria-label="{{ value }}" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ value }}">{{ value }}</label>
               {% endfor %}
                   {% endif %}
                   {% endfor %}
                 </div>
               </div>
               {% else %}
-              <div class="product-swatch color-swatches">
+              <div class="product-swatch color-swatches"  >
                 <label>{{item_variants_value.Attribute}}</label>
                 <div class="swatch-list">
                   {% for item in item_variants_values %}
                   {% if item.Attribute == 'اللون' %}
                   {% for value in item.Values %}
-                  <input type="radio" onclick="handleCheckedVariants('{{item.Attribute}}')" data-item-color="{{ value }}" name="color" id="swatch-{{ loop.index }}" {% if loop.first %}checked{% endif %}>
-                  <label class="swatch swatch-color js-swatch" for="swatch-{{ loop.index }}" aria-label="{{ value }}" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ value }}" style="color: {{ value|lower }}"></label>
+                  <input  type="radio" onclick="handleCheckedVariants('{{item.Attribute}}')" data-item-color="{{ value }}" name="color" id="swatch-{{ loop.index }}">
+                  <label class="swatch swatch-color js-swatch" for="swatch-{{ loop.index }}" aria-label="{{ value }}" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ value }}" style="color: {{ value|lower }};cursor: pointer !important;"></label>
               {% endfor %}
                   {% endif %}
 
@@ -99,7 +99,7 @@
               </div>
               {% endif %}
             {% endfor %}
-            <p class="bg-warning d-none" id="display_not_found">عذرا المنتج غير متوفر بهذه المواصفات</p>
+            <p class="bg-warning d-none" id="display_not_found">عذرا المنتج غير متوفر بهذه اللون والمقاس</p>
             </div>
             {% endif %}
             <hr>
@@ -268,13 +268,13 @@ const getProductIdBasedOnVariants = (color, size) => {
 
   try {
     let variants = JSON.parse(items);
-
+    console.log(variants)
     // Find the product ID based on color and size
     for (let productId in variants) {
       let variant = variants[productId];
-      if (variant['اللون'] === color && variant['المقاس'] === size) {
+      if (variant['اللون'] === color && variant['المقاس'] === size && variant['qty'] >0) {
         notFoundMsg.classList.add('d-none')
-
+        localStorage.setItem("selected_item_variant",productId)
         return productId;
       }
     }
@@ -283,6 +283,8 @@ const getProductIdBasedOnVariants = (color, size) => {
   }
   notFoundMsg.classList.remove('d-none')
   // Return null if no matching product is found or if there's an error
+  localStorage.removeItem("selected_item_variant")
+
   return null;
 }
 

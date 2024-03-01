@@ -596,8 +596,9 @@ setNewNumberToCartIcon()
           lastName: lastNameField.value,
           phone: phoneField.value,
           wilaya: wilayaField.value,
+          address: checkoutStreetAddress.value,
           commun: communField.value,
-          product: "{{item.item_code}}",
+          product: localStorage.getItem("selected_item_variant",null),
           is_stop_desk: shippingField.checked,
           qty: 1,
           center_id: localStorage.getItem("currentCenter")
