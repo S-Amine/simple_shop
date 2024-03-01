@@ -97,6 +97,7 @@ def convert_to_variant_structure(item_data):
         }
         result.append(variant_structure)
     return result
+from barcode import EAN13
 
 
 def generate_random_ean():
