@@ -3,7 +3,7 @@
 
 import frappe
 from frappe.model.document import Document
-from simple_shop.yalidine import delete_yalidine_order, extract_first_number, send_yalidin_order, update_yalidine_order
+from simple_shop.yalidine import delete_yalidine_order, extract_first_number, get_shipping_price_by_wilaya, send_yalidin_order, update_yalidine_order
 
 
 class WoolizOrder(Document):
@@ -30,11 +30,11 @@ class WoolizOrder(Document):
         self.total_qty = total_qty
         self.total_price = total
         print("Before saving order................")
-        
+        self.custom_shipping_free=get_shipping_price_by_wilaya(self)
         #extract number from center 
         if self.custom_stop_desk_bureau:
             self.custom_center_id=extract_first_number(self.custom_center)
-        if self.custom_tracking_id in ["",None] and self.custom_status=="En préparation":
+        if self.custom_tracking_id in ["",None] and self.woolize_status=="pending":
             print("send yalidine order ................")
             my_response=send_yalidin_order(self.name)
             print(my_response)

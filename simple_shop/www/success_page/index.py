@@ -1,6 +1,6 @@
 import frappe
 from frappe.model.document import get_doc
-from simple_shop.yalidine import get_order_total_price
+from simple_shop.yalidine import get_order_total_price, get_shipping_price_by_wilaya
 def get_context(context):
     order_id = frappe.local.form_dict.get('id')
     order = get_doc("Wooliz Order", order_id)

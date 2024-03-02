@@ -9,6 +9,16 @@ import requests
 from frappe import _
 
 
+def get_shipping_price_by_wilaya(order):
+    settings = frappe.get_single("Yalidin")
+
+    headers = {"X-API-ID": settings.api_key,"X-API-TOKEN": settings.api_token }
+    url = f"{settings.base_url}deliveryfees/"
+    response=requests.get(url=url,headers=headers)
+    my_response=response.json()
+    data = my_response['data']
+    result = next((item for item in data if item['wilaya_name'] == extract_alpha_chars(order.wilaya)), None)
+    return result['desk_fee'] if order.custom_stop_desk_bureau else result['desk_fee']
 def get_order_total_price(order_id):
     """
     Returns the total price with the shipping fees
@@ -16,10 +26,11 @@ def get_order_total_price(order_id):
     order = get_doc("Wooliz Order", order_id)
     # Calculate order total using lambda function and sum
     calculate_item_total = lambda item: item.unit_price * item.qty
-    order_items = order.get_all_children()
+    order_items = order.products
+    print(order_items)
     order_total = sum(map(calculate_item_total, order_items))
     # add shipping charges
-    ...
+    order_total += order.custom_shipping_free
     return order_total
 
 def get_product_list(order_id):
@@ -58,7 +69,7 @@ def send_yalidin_order(order_id):
             ("familyname", order_obj.last_name),
             ("contact_phone",  order_obj.phone),
             ("address", order_obj.custom_address if order_obj.custom_address is not None else order_obj.commun + order_obj.wilaya),
-            ("to_commune_name", order_obj.commun),
+            ("to_commune_name", order_obj.commun if not order_obj.custom_stop_desk_bureau else extract_alpha_chars(order_obj.wilaya)),
             ("to_wilaya_name", extract_alpha_chars(order_obj.wilaya)),
             ("product_list", str(product_list)),
             ("price", int(get_cart_total)),
@@ -66,6 +77,7 @@ def send_yalidin_order(order_id):
             ("is_stopdesk", order_obj.custom_stop_desk_bureau), 
             ("has_exchange", False),
             ("product_to_collect", str(product_list) if product_list else "product_to_collect does not exist" )])),])
+    print(data)
     response = requests.post(url=url, headers=headers, data=json.dumps((data)))
     my_response=response.json()
 
@@ -105,7 +117,7 @@ def update_yalidine_order(order_id):
         ("has_exchange", 1 ) if order_obj.custom_has_exchange else  ("has_exchange", 0 ) ,
         ("product_to_collect", str(product_list) if product_list else "product_to_collect does not exist")
     ])
-
+    print(data)
     requests.patch(url=url, headers=headers, data=json.dumps((data)))
                    
 
