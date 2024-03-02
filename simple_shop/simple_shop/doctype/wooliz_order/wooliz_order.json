@@ -20,8 +20,12 @@
   "total_qty",
   "column_break_jmiz",
   "total_price",
+  "order_detail_tab",
   "order_items_section",
   "products",
+  "section_break_hcxy",
+  "scan_barcode",
+  "validation",
   "yalidine_tab",
   "details_section",
   "custom_status",
@@ -106,7 +110,8 @@
    "in_list_view": 1,
    "in_preview": 1,
    "in_standard_filter": 1,
-   "label": "Total Price"
+   "label": "Total Price",
+   "read_only": 1
   },
   {
    "fieldname": "total_qty",
@@ -115,7 +120,8 @@
    "in_list_view": 1,
    "in_preview": 1,
    "in_standard_filter": 1,
-   "label": "Total Qty"
+   "label": "Total Qty",
+   "read_only": 1
   },
   {
    "fieldname": "woolize_status",
@@ -257,11 +263,32 @@
    "fieldname": "stock_entries_tab",
    "fieldtype": "Tab Break",
    "label": "Stock Entries"
+  },
+  {
+   "fieldname": "section_break_hcxy",
+   "fieldtype": "Section Break",
+   "label": "Validate Packing"
+  },
+  {
+   "fieldname": "scan_barcode",
+   "fieldtype": "Data",
+   "label": "scan_barcode"
+  },
+  {
+   "fieldname": "validation",
+   "fieldtype": "Table",
+   "label": "Validation",
+   "options": "Validation items"
+  },
+  {
+   "fieldname": "order_detail_tab",
+   "fieldtype": "Tab Break",
+   "label": "Order Detail"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-03-01 17:07:24.637699",
+ "modified": "2024-03-02 12:09:40.013676",
  "modified_by": "Administrator",
  "module": "Simple Shop",
  "name": "Wooliz Order",

@@ -17,6 +17,12 @@ class WoolizOrder(Document):
         total = 0
         total_qty = 0
         for item in self.products:
+            if self.validation == []:
+                self.append("validation", {
+                            "item_code": item.item,
+                            "qty": 0,
+                            "max_qty": item.qty
+                })
             line_total = item.unit_price * item.qty
             item.total = line_total
             total_qty += item.qty
@@ -24,6 +30,7 @@ class WoolizOrder(Document):
         self.total_qty = total_qty
         self.total_price = total
         print("Before saving order................")
+        
         #extract number from center 
         if self.custom_stop_desk_bureau:
             self.custom_center_id=extract_first_number(self.custom_center)
@@ -70,8 +77,6 @@ class WoolizOrder(Document):
                     self.move_stock_to_pending_warehouse()
                 if old_status == "pending" or old_status == "returned":
                     self.check_quantity_in_pending_warehouse()
-                    # if not self.is_quantity_in_pending_warehouse():
-                        # self.move_stock_to_pending_warehouse()
                     self.submit_sales_order()
                 else:
                     self.woolize_status = old_status
@@ -79,8 +84,6 @@ class WoolizOrder(Document):
             elif self.woolize_status == "packed":
                 if old_status == "confirmed":
                     self.check_quantity_in_pending_warehouse()
-                    # if not self.is_quantity_in_pending_warehouse():
-                        # self.move_stock_to_pending_warehouse()
                     self.submit_sales_order()
                 else:
                     self.woolize_status = old_status
@@ -88,8 +91,6 @@ class WoolizOrder(Document):
             elif self.woolize_status == "delivered":
                 if old_status == "packed":
                     self.check_quantity_in_pending_warehouse()
-                    #if not self.is_quantity_in_pending_warehouse():
-                        #self.move_stock_to_pending_warehouse()
                     self.create_delivery_note()
                 else:
                     self.woolize_status = old_status
