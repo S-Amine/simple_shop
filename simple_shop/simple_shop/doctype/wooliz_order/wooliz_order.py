@@ -55,7 +55,7 @@ class WoolizOrder(Document):
                     self.woolize_status = old_status
                     frappe.throw("You can't change the status to 'created' because this document is already created.")
             elif self.woolize_status == "pending":
-                if old_status is None or old_status == "created" or old_status == "cancelled":
+                if old_status is None or old_status == "created" or old_status == "cancelled" or old_status == None:
                     print(self.products)
                     self.move_stock_to_pending_warehouse()
                     self.create_raw_sales_order()
