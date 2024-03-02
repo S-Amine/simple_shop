@@ -90,6 +90,9 @@ class WoolizOrder(Document):
                     frappe.throw("You can't pack a document in '{}' status. You can pack a confirmed document.".format(old_status))
             elif self.woolize_status == "delivered":
                 if old_status == "packed":
+                    for validation_item in self.validation :
+                        if validation_item.qty != validation_item.max_qty:
+                            frappe.throw(f"Prior to delivery, it is imperative to validate items using a barcode scanner, camera, or by completing the validation table with accurate quantities. The quantity of {validation_item.item} must precisely match {validation_item.max_qty} units before proceeding with delivery. Kindly note: 'You have the option to remove validation items and re-save your document to regenerate them.'")
                     self.check_quantity_in_pending_warehouse()
                     self.create_delivery_note()
                 else:
