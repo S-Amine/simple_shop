@@ -9,7 +9,7 @@ class CustomItem(Item):
         if self.barcodes == []:
             barcode_number = generate_random_ean()
             barcode_svg = get_svg_content(barcode_number)
-            self.custom_barcode_svg = barcode_svg
+            self.custom_bar = barcode_svg
             self.append("barcodes", 
                         {"barcode": barcode_number, 
                         "barcode_type": "EAN-12"

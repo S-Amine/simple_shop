@@ -222,6 +222,19 @@ function handle_scanned_barcode(frm, barcode) {
 }
 
 frappe.ui.form.on("Wooliz Order", {
+  scan_barcode: (frm) => {
+		const opts = {
+			frm,
+			items_table_name: 'products',
+			qty_field: 'qty',
+			max_qty_field: 'qty',
+			dont_allow_new_row: true,
+			prompt_qty: frm.doc.prompt_qty,
+			serial_no_field: "not_supported",  // doesn't make sense for picklist without a separate field.
+		};
+		const barcode_scanner = new erpnext.utils.BarcodeScanner(opts);
+		barcode_scanner.process_scan();
+	},
   refresh: function(frm) {
       // Add a custom button to the toolbar
       frm.add_custom_button("Scan Barcode", function() {
@@ -251,3 +264,7 @@ frappe.ui.form.on("Wooliz Order", {
       });
   }
 });
+
+
+
+

@@ -16,6 +16,7 @@ website_route_rules = [
 
 fixtures = [
     {"dt": "Kanban Board", "filters": [["name", "like", "Wooliz Order%"]]},
+    {"dt": "Print Format", "filters": [["name", "like", "Item Barcode"]]},
 ]
 
 override_doctype_class = {

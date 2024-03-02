@@ -3,7 +3,9 @@ import re
 import frappe
 import random
 import barcode
+from barcode import EAN13
 from barcode.writer import SVGWriter
+from io import BytesIO
 
 @frappe.whitelist()
 def build_variant_data(item, item_variants):
@@ -116,10 +118,6 @@ def generate_random_ean():
 
     return ean_code
 
-from barcode import EAN13
-from barcode.writer import SVGWriter
-from io import BytesIO
-
 def get_svg_content(barcode_value):
     # Generate the barcode object
     barcode_instance = EAN13(str(barcode_value), writer=SVGWriter())
@@ -131,6 +129,8 @@ def get_svg_content(barcode_value):
 
     # Convert byte string to UTF-8 encoded string
     barcode_svg_string = barcode_svg_bytes.decode('utf-8')
-
+    barcode_svg_lines = barcode_svg_string.split('\n')[4:]
+    barcode_svg_modified = ''.join(barcode_svg_lines)
+    barcode_svg_string = barcode_svg_modified.replace("        ", "").replace("        ", "").replace('xmlns="http://www.w3.org/2000/svg"', f'xmlns="http://www.w3.org/2000/svg" data-barcode-value="{barcode_value}" ')
     return barcode_svg_string
 

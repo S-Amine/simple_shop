@@ -1,0 +1,33 @@
+[
+ {
+  "absolute_value": 0,
+  "align_labels_right": 0,
+  "css": "label {\n    display: none !important;\n}",
+  "custom_format": 0,
+  "default_print_language": null,
+  "disabled": 0,
+  "doc_type": "Item",
+  "docstatus": 0,
+  "doctype": "Print Format",
+  "font": null,
+  "font_size": 14,
+  "format_data": "[{\"fieldname\": \"print_heading_template\", \"fieldtype\": \"Custom HTML\", \"options\": \"<div class=\\\"print-heading\\\" style=\\\"text-align:center\\\">\\t\\t\\t\\t<h2><div>{{doc.item_name}}</div><br>  <small class=\\\"sub-heading\\\">{{ doc.name }}</small>\\t\\t\\t\\t</h2></div>\"}, {\"fieldtype\": \"Section Break\", \"label\": \"\"}, {\"fieldtype\": \"Column Break\"}, {\"fieldname\": \"custom_bar\", \"print_hide\": 0, \"align\": \"left\", \"label\": \" \"}, {\"fieldname\": \"custom_bar\", \"print_hide\": 0, \"align\": \"left\", \"label\": \" \"}, {\"fieldname\": \"custom_bar\", \"print_hide\": 0, \"align\": \"left\", \"label\": \" \"}, {\"fieldname\": \"custom_bar\", \"print_hide\": 0, \"align\": \"left\", \"label\": \" \"}, {\"fieldname\": \"custom_bar\", \"print_hide\": 0, \"align\": \"left\", \"label\": \" \"}, {\"fieldname\": \"custom_bar\", \"print_hide\": 0, \"align\": \"left\", \"label\": \" \"}, {\"fieldname\": \"custom_bar\", \"print_hide\": 0, \"align\": \"left\", \"label\": \" \"}, {\"fieldname\": \"custom_bar\", \"print_hide\": 0, \"align\": \"left\", \"label\": \" \"}, {\"fieldtype\": \"Column Break\"}, {\"fieldname\": \"custom_bar\", \"print_hide\": 0, \"align\": \"left\", \"label\": \" \"}, {\"fieldname\": \"custom_bar\", \"print_hide\": 0, \"align\": \"left\", \"label\": \" \"}, {\"fieldname\": \"custom_bar\", \"print_hide\": 0, \"align\": \"left\", \"label\": \" \"}, {\"fieldname\": \"custom_bar\", \"print_hide\": 0, \"align\": \"left\", \"label\": \" \"}, {\"fieldname\": \"custom_bar\", \"print_hide\": 0, \"align\": \"left\", \"label\": \" \"}, {\"fieldname\": \"custom_bar\", \"print_hide\": 0, \"align\": \"left\", \"label\": \" \"}, {\"fieldname\": \"custom_bar\", \"print_hide\": 0, \"align\": \"left\", \"label\": \" \"}, {\"fieldname\": \"custom_bar\", \"print_hide\": 0, \"align\": \"left\", \"label\": \" \"}, {\"fieldtype\": \"Column Break\"}, {\"fieldname\": \"custom_bar\", \"print_hide\": 0, \"align\": \"left\", \"label\": \" \"}, {\"fieldname\": \"custom_bar\", \"print_hide\": 0, \"align\": \"left\", \"label\": \" \"}, {\"fieldname\": \"custom_bar\", \"print_hide\": 0, \"align\": \"left\", \"label\": \" \"}, {\"fieldname\": \"custom_bar\", \"print_hide\": 0, \"align\": \"left\", \"label\": \" \"}, {\"fieldname\": \"custom_bar\", \"print_hide\": 0, \"align\": \"left\", \"label\": \" \"}, {\"fieldname\": \"custom_bar\", \"print_hide\": 0, \"align\": \"left\", \"label\": \" \"}, {\"fieldname\": \"custom_bar\", \"print_hide\": 0, \"align\": \"left\", \"label\": \" \"}, {\"fieldname\": \"custom_bar\", \"print_hide\": 0, \"align\": \"left\", \"label\": \" \"}, {\"fieldtype\": \"Column Break\"}, {\"fieldname\": \"custom_bar\", \"print_hide\": 0, \"align\": \"left\", \"label\": \" \"}, {\"fieldname\": \"custom_bar\", \"print_hide\": 0, \"align\": \"left\", \"label\": \" \"}, {\"fieldname\": \"custom_bar\", \"print_hide\": 0, \"align\": \"left\", \"label\": \" \"}, {\"fieldname\": \"custom_bar\", \"print_hide\": 0, \"align\": \"left\", \"label\": \" \"}, {\"fieldname\": \"custom_bar\", \"print_hide\": 0, \"align\": \"left\", \"label\": \" \"}, {\"fieldname\": \"custom_bar\", \"print_hide\": 0, \"align\": \"left\", \"label\": \" \"}, {\"fieldname\": \"custom_bar\", \"print_hide\": 0, \"align\": \"left\", \"label\": \" \"}, {\"fieldname\": \"custom_bar\", \"print_hide\": 0, \"align\": \"left\", \"label\": \" \"}]",
+  "html": null,
+  "line_breaks": 0,
+  "margin_bottom": 15.0,
+  "margin_left": 15.0,
+  "margin_right": 15.0,
+  "margin_top": 15.0,
+  "modified": "2024-03-02 11:12:05.469355",
+  "module": "Stock",
+  "name": "Item Barcode",
+  "page_number": "Hide",
+  "print_format_builder": 1,
+  "print_format_builder_beta": 0,
+  "print_format_type": "Jinja",
+  "raw_commands": null,
+  "raw_printing": 0,
+  "show_section_headings": 0,
+  "standard": "No"
+ }
+]
