@@ -5,6 +5,7 @@ from frappe.model.document import get_doc
 from simple_shop.utils import rehandling_checkout_products, remove_numbers
 
 @frappe.whitelist(allow_guest=True)
+
 def get_data():
     """Returns all yalidin wilaya"""
     # Check if data is already in the cache
@@ -12,16 +13,19 @@ def get_data():
 
     if cached_data:
         # Return cached data if available
+        print("get_data from cache")
         return cached_data
 
     settings = frappe.get_single("Yalidin")
     headers = {"X-API-ID": settings.api_key, "X-API-TOKEN": settings.api_token}
+    
+    # Fetch data from the API
     response = requests.get(settings.base_url + "wilayas/", headers=headers)
     wilayas = response.json()
     result = wilayas.get('data', None)
 
-    # Cache the result for future use (valid for 1 hour, adjust as needed)
-    frappe.cache().set_value("yalidin_wilayas", result, expires_in_sec=36000)
+    # Cache the result for 30 days
+    frappe.cache().set_value("yalidin_wilayas", result, expires_in_sec=30 * 24 * 60 * 60)
 
     return result
 
@@ -31,6 +35,9 @@ def get_communs_true():
     """
     Get desk stop yalidin communs
     """
+    settings = frappe.get_single("Yalidin")
+    headers = {"X-API-ID": settings.api_key, "X-API-TOKEN": settings.api_token }
+
     # Check if data is already in the cache
     cached_data = frappe.cache().get_value("yalidin_communs_true")
 
@@ -38,50 +45,20 @@ def get_communs_true():
         # Return cached data if available
         return cached_data
 
-    settings = frappe.get_single("Yalidin")
-    headers = {"X-API-ID": settings.api_key, "X-API-TOKEN": settings.api_token }
-
     try:
         response = requests.get(settings.base_url + "communes/?has_stop_desk=true&page_size=2000", headers=headers)
-        response_delivery = requests.get(settings.base_url + "deliveryfees/", headers=headers)
+        response_delevery = requests.get(settings.base_url + "deliveryfees/", headers=headers)
+        communs = response.json()
+        deliveryfees = response_delevery.json()
+        result = communs.get('data', None)
+        result_2 = deliveryfees.get('data', None)
+    except:
+        result, result_2 = {}, {}
 
-        communes_data = response.json().get('data', None)
-        deliveryfees_data = response_delivery.json().get('data', None)
-    except Exception as e:
-        # Handle exceptions, log the error, or take appropriate action
-        print(f"Error fetching data: {str(e)}")
-        communes_data, deliveryfees_data = {}, {}
+    # Cache the result for 30 days
+    frappe.cache().set_value("yalidin_communs_true", {"communs": result, "deliveryfees": result_2}, expires_in_sec=30 * 24 * 60 * 60)
 
-    # Cache the result for future use (valid for 1 hour, adjust as needed)
-    result = {"communs": communes_data, "deliveryfees": deliveryfees_data}
-    frappe.cache().set_value("yalidin_communs_true", result, expires_in_sec=36000)
-
-    return result
-
-
-def fetch_data(api_url, headers):
-    data = []
-    next_page = True
-    index = 1
-
-    try:
-        while next_page:
-            response = requests.get(f"{api_url}?page={index}", headers=headers)
-            api_data = response.json()
-            result = api_data.get('data', None)
-            next_page = api_data.get('links', {}).get('next', None)
-
-            if result:
-                data.extend(result)
-
-            index += 1
-
-    except Exception as e:
-        # Handle exceptions, log the error, or take appropriate action
-        print(f"Error fetching data: {str(e)}")
-        data = []
-
-    return data
+    return {"communs": result, "deliveryfees": result_2}
 
 @frappe.whitelist(allow_guest=True)
 def get_communs():
@@ -89,28 +66,43 @@ def get_communs():
     Get all yalidine communs
     """
     settings = frappe.get_single("Yalidin")
-    headers = {"X-API-ID": settings.api_key, "X-API-TOKEN": settings.api_token}
-    
+    headers = {"X-API-ID": settings.api_key, "X-API-TOKEN": settings.api_token }
+
     # Check if data is already in the cache
     cached_data = frappe.cache().get_value("yalidin_communs")
 
     if cached_data:
+        print("get_communs from cache")
         # Return cached data if available
         return {"communs": cached_data}
 
-    # Fetch data from the API
-    communs_data = fetch_data(f"{settings.base_url}communes/?fields=wilaya_name,name,wilaya_id", headers)
+    data = []
+    next = True
+    index = 1
+    try:
+        while next:
+            response = requests.get(settings.base_url + f"communes/?fields=wilaya_name,name,wilaya_id&page={index}", headers=headers)
+            communs = response.json()
+            result = communs.get('data', None)
+            next = communs.get('links', {}).get('next', None)
+            for commun in result:
+                data.append(commun)
+            index += 1
 
-    # Cache the result for future use (valid for 1 hour, adjust as needed)
-    frappe.cache().set_value("yalidin_communs", communs_data, expires_in_sec=36000)
+    except Exception as e:
+        print(e)
+        data = {}
 
-    return {"communs": communs_data}
+    # Cache the result for 30 days
+    frappe.cache().set_value("yalidin_communs", data, expires_in_sec=30 * 24 * 60 * 60)
+
+    return {"communs": data}
 
 @frappe.whitelist(allow_guest=True)
 def get_centers():
     settings = frappe.get_single("Yalidin")
-    headers = {"X-API-ID": settings.api_key, "X-API-TOKEN": settings.api_token}
-    
+    headers = {"X-API-ID": settings.api_key, "X-API-TOKEN": settings.api_token }
+
     # Check if data is already in the cache
     cached_data = frappe.cache().get_value("yalidin_centers")
 
@@ -118,16 +110,25 @@ def get_centers():
         # Return cached data if available
         return {"centers": cached_data}
 
-    # Fetch data from the API
-    centers_data = fetch_data(f"{settings.base_url}centers/", headers)
+    data = []
+    next = True
+    index = 1
+    try:
+        while next:
+            response = requests.get(f"{settings.base_url}centers/?page={index}", headers=headers)
+            communs = response.json()
+            result = communs.get('data', None)
+            next = communs.get('links', {}).get('next', None)
+            for commun in result:
+                data.append(commun)
+            index += 1
+    except:
+        result = {}
 
-    # Cache the result for future use (valid for 1 hour, adjust as needed)
-    frappe.cache().set_value("yalidin_centers", centers_data, expires_in_sec=36000)
+    # Cache the result for 30 days
+    frappe.cache().set_value("yalidin_centers", data, expires_in_sec=30 * 24 * 60 * 60)
 
-    return {"centers": centers_data}
-
-
-
+    return {"centers": data}
 @frappe.whitelist(allow_guest=True)
 def post_order(**args):
     """Set the order"""
