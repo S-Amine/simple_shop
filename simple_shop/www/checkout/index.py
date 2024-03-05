@@ -9,7 +9,8 @@ def get_context(context):
                                   filters={'show_in_website': True}
                                   )
     context.categories = categories
-
+    shop_settings = frappe.get_single("Shop Settings")
+    context.shop_settings=shop_settings
     if frappe.request.method == "POST":
         # Get the post request data
         post_data = frappe.local.form_dict

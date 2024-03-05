@@ -3,6 +3,7 @@ import frappe
 def get_context(context):
     # Get the search query and item_group from the form data
     query = frappe.local.form_dict.get('query')
+    print(query)
     item_group = frappe.local.form_dict.get('category')
 
     # Specify filters for the search using logical OR
@@ -42,3 +43,6 @@ def get_context(context):
                                   filters={'show_in_website': True}
                                   )
     context.categories = categories
+
+    shop_settings = frappe.get_single("Shop Settings")
+    context.shop_settings=shop_settings

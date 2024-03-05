@@ -37,7 +37,12 @@ override_doctype_class = {
 # include js, css files in header of web form
 # webform_include_js = {"doctype": "public/js/doctype.js"}
 # webform_include_css = {"doctype": "public/css/doctype.css"}
-
+def get_website_user_home_page(context):
+    return {
+        "hide_signup": 1,
+        "disable_signup": 1,
+        "login_required": 0
+    }
 # include js in page
 # page_js = {"page" : "public/js/file.js"}
 

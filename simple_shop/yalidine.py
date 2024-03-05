@@ -9,16 +9,50 @@ import requests
 from frappe import _
 
 
-def get_shipping_price_by_wilaya(order):
-    settings = frappe.get_single("Yalidin")
 
-    headers = {"X-API-ID": settings.api_key,"X-API-TOKEN": settings.api_token }
+
+
+def fetch_shipping_data():
+    # Define a cache key
+    cache_key = "shipping_data"
+
+    # Try to get the data from the cache
+    cached_data = frappe.cache().get_value(cache_key)
+
+    if cached_data:
+        return cached_data
+
+    # If not in the cache, fetch the data from the API
+    settings = frappe.get_single("Yalidin")
+    headers = {"X-API-ID": settings.api_key, "X-API-TOKEN": settings.api_token}
     url = f"{settings.base_url}deliveryfees/"
-    response=requests.get(url=url,headers=headers)
-    my_response=response.json()
-    data = my_response['data']
-    result = next((item for item in data if item['wilaya_name'] == extract_alpha_chars(order.wilaya)), None)
-    return result['desk_fee'] if order.custom_stop_desk_bureau else result['desk_fee']
+    response = requests.get(url=url, headers=headers)
+
+    if response.status_code == 200:
+        data = response.json()['data']
+
+        # Store the data in the cache with a specific expiration time (e.g., 3600 seconds = 1 hour)
+        frappe.cache().set_value(cache_key, data, expires_in_sec=10000)
+
+        return data
+    else:
+        # Handle the case where the API request fails
+        return None
+
+def get_shipping_price_by_wilaya(order):
+    data = fetch_shipping_data()
+    
+    if data:
+        result = next((item for item in data if item['wilaya_name'] == extract_alpha_chars(order.wilaya)), None)
+        
+        if result:
+            return result['desk_fee'] if order.custom_stop_desk_bureau else result['desk_fee']
+    
+    # Handle the case where data is not available or wilaya is not found
+    return None
+
+
+
 def get_order_total_price(order_id):
     """
     Returns the total price with the shipping fees
@@ -33,6 +67,7 @@ def get_order_total_price(order_id):
     order_total += order.custom_shipping_free
     return order_total
 
+
 def get_product_list(order_id):
     """
     function for get product list
@@ -45,6 +80,7 @@ def get_product_list(order_id):
         product_list.append(f'{product.item_name} X {item.qty}')
     return product_list
 
+
 def get_yalidine_order(order_id):
     settings = frappe.get_single("Yalidin")
     order_obj = get_doc("Wooliz Order",order_id)
@@ -53,6 +89,8 @@ def get_yalidine_order(order_id):
     response=requests.get(url=url,headers=headers)
     my_response=response.json()
     return my_response
+
+
 def send_yalidin_order(order_id):
     settings = frappe.get_single("Yalidin")
     headers = {"X-API-ID": settings.api_key,"X-API-TOKEN": settings.api_token }
@@ -80,8 +118,9 @@ def send_yalidin_order(order_id):
     print(data)
     response = requests.post(url=url, headers=headers, data=json.dumps((data)))
     my_response=response.json()
-
     return my_response
+
+
 
 def delete_yalidine_order(tracking_id):
     """Delete order"""
@@ -154,7 +193,6 @@ def verify_signature(secret_key, payload, received_signature):
 
 
 @frappe.whitelist(allow_guest=True)
-
 def yalidine_webhook(**args):
     # Get the webhook secret key from your site's configuration
     settings = frappe.get_single("Yalidin")

@@ -181,6 +181,12 @@
               </tbody>
             </table>
           </div>
+          <div
+            id="validators-checkout"
+            class="alert alert-danger d-none"
+            role="alert">
+          </div>
+          
           <button
             class="btn btn-primary btn-checkout fw-bold"
             id="place_order"
@@ -535,19 +541,29 @@ setNewNumberToCartIcon()
 
 
   const verifyOrderInputs = (orderData) => {
-    const { lastName, phone, wilaya, commun } = orderData;
+    const { lastName, phone, wilaya, commun,product } = orderData;
 
     const isEmpty = (value) => value.trim().length < 1;
-
     if (isEmpty(lastName.value)) {
-      handleInvalidInput(lastName, "full name must be filled");
-    } else if (isEmpty(phone.value) || phone.value.trim().length < 10) {
-      handleInvalidInput(phone, "Phone number must be at least 10 characters");
+      handleInvalidInput(lastName, "يجب ملء الاسم الكامل");
+
+    } 
+    else if(product == null){
+      let validatorCheckout = document.getElementById("validators-checkout")
+      validatorCheckout.textContent =  "يجب اختيار اللون والمقاس للمنتج"
+      validatorCheckout.classList.remove("d-none")
+    }
+    else if (isEmpty(phone.value) || phone.value.trim().length < 10) {
+      handleValidInput(lastName)
+      handleInvalidInput(phone, "يجب أن يكون رقم الهاتف 10 أحرف على الأقل");
     } else if (!wilaya.value.trim() || !commun.value.trim()) {
-      handleInvalidInput(wilaya, "State and city must be provided");
+      handleValidInput(lastName)
+      handleValidInput(phone)
+
+      handleInvalidInput(wilaya, "يجب توفير الدولة والمدينة");
     } else {
-      handleValidInput([lastName, phone, wilaya, commun]);
-      return [true, "order sent successfully"];
+      handleValidInputs([lastName, phone, wilaya, commun]);
+      return [true, "تم إرسال الطلب بنجاح"];
     }
 
     return [false, ""]; // Return a default error message for invalid cases
@@ -555,14 +571,21 @@ setNewNumberToCartIcon()
     function handleInvalidInput(element, errorMessage) {
       element.classList.add("is-invalid");
       element.classList.remove("is-valid");
+      let validatorCheckout = document.getElementById("validators-checkout")
+      validatorCheckout.textContent = errorMessage
+      validatorCheckout.classList.remove("d-none")
       return [false, errorMessage];
     }
 
-    function handleValidInput(elements) {
+    function handleValidInputs(elements) {
       elements.forEach((element) => {
         element.classList.remove("is-invalid");
         element.classList.add("is-valid");
       });
+    }
+    function handleValidInput(element) {
+        element.classList.remove("is-invalid");
+        element.classList.add("is-valid");
     }
   };
 
@@ -588,8 +611,11 @@ setNewNumberToCartIcon()
         phone: phoneField,
         wilaya: wilayaField,
         commun: communField,
+        product: localStorage.getItem("selected_item_variant",null),
+
       };
       const [success, msg] = verifyOrderInputs(orderData);
+      
       console.log(success, msg);
       if (success) {
         orderData = {
@@ -604,6 +630,9 @@ setNewNumberToCartIcon()
           center_id: localStorage.getItem("currentCenter")
         };
         sendRequest("/api/method/simple_shop.api.post_order",orderData);
+      }
+      else{
+
       }
     }
   };

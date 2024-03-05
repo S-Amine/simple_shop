@@ -5,9 +5,19 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
+  "stock_section",
   "default_warehouse",
   "pending_warehouse",
-  "resturn_warehouse"
+  "resturn_warehouse",
+  "global_tab",
+  "logo",
+  "site_name",
+  "description",
+  "email",
+  "phone",
+  "pixel_tab",
+  "pixel_id",
+  "google_script"
  ],
  "fields": [
   {
@@ -27,12 +37,62 @@
    "fieldtype": "Link",
    "label": "Resturn Warehouse",
    "options": "Warehouse"
+  },
+  {
+   "fieldname": "stock_section",
+   "fieldtype": "Section Break",
+   "label": "Stock"
+  },
+  {
+   "fieldname": "global_tab",
+   "fieldtype": "Tab Break",
+   "label": "Global"
+  },
+  {
+   "fieldname": "logo",
+   "fieldtype": "Attach Image",
+   "label": "Logo"
+  },
+  {
+   "fieldname": "site_name",
+   "fieldtype": "Data",
+   "label": "Site name"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Text",
+   "label": "Description"
+  },
+  {
+   "fieldname": "pixel_tab",
+   "fieldtype": "Tab Break",
+   "label": "Pixel"
+  },
+  {
+   "fieldname": "pixel_id",
+   "fieldtype": "Data",
+   "label": "Facebook pixel id"
+  },
+  {
+   "fieldname": "google_script",
+   "fieldtype": "HTML",
+   "label": "Google analytics script"
+  },
+  {
+   "fieldname": "email",
+   "fieldtype": "Data",
+   "label": "Email"
+  },
+  {
+   "fieldname": "phone",
+   "fieldtype": "Data",
+   "label": "Phone number"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-02-27 21:02:58.803798",
+ "modified": "2024-03-04 15:21:39.943140",
  "modified_by": "Administrator",
  "module": "Simple Shop",
  "name": "Shop Settings",

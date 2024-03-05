@@ -10,3 +10,5 @@ def get_context(context):
     # Add the order and order_total to the context
     context.order = order
     context.order_total = order_total
+    shop_settings = frappe.get_single("Shop Settings")
+    context.shop_settings=shop_settings

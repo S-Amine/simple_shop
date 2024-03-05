@@ -16,3 +16,5 @@ def get_context(context):
     # context.collections = collections
     context.categories = categories
     context.recent_items = recent_items
+    shop_settings = frappe.get_single("Shop Settings")
+    context.shop_settings=shop_settings

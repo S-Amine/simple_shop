@@ -3,6 +3,8 @@ from simple_shop.utils import build_variant_data, convert_to_variant_structure, 
 
 def get_context(context):
     item_code = frappe.local.form_dict.get('item_code') or frappe.local.form_dict.get('item_code')
+    shop_settings = frappe.get_single("Shop Settings")
+    context.shop_settings=shop_settings
 
     if item_code:
         item = frappe.get_doc('Item', item_code)

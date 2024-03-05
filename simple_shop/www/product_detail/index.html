@@ -1,4 +1,37 @@
 {% extends 'templates/shop_base.html' %}
+{% block head %}
+  <!-- Facebook Pixel Code -->
+<script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '555839889591329');
+  fbq('track', 'PageView');
+</script>
+<noscript>
+  <img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=555839889591329&ev=PageView&noscript=1"/>
+</noscript>
+<!-- End Facebook Pixel Code -->
+<meta name="description" content="{{item.description}}">
+<meta property="product:brand" content="Top Vêtement DZ">
+<meta property="product:availability" content="in stock">
+<meta property="product:condition" content="new">
+<meta property="product:price:amount" content="{{item.custom_price}}">
+<meta property="product:price:currency" content="DZD">
+<meta property="product:retailer_item_id" content="{{item.name}}">
+<meta property="og:title" content="{{item.item_name}}" />
+<meta property="og:description" content="{{item.description}}" />
+<meta property="og:url" content="{{ frappe.get_url() }}/products/{{item.name}}" />
+<meta property="og:price:amount" content="{{item.custom_price}}" />
+<meta property="og:price:currency" content="DZD" />
+<meta property="og:image" content="{{frappe.get_url() }}{{item.image}}" />
+{% endblock head %}
 {% block centent %}
 
 <div class="mb-md-1 pb-md-3"></div>
