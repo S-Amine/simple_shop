@@ -325,33 +325,29 @@ setNewNumberToCartIcon()
       });
   }
 
-  const getAllCommunsList = () => {
-    let storedData = localStorage.getItem("allCommunsList");
-    if (storedData) {
-      let communs = JSON.parse(storedData);
-      return communs
-    }
-    // If data is not in localStorage, fetch it from the API
-    return fetch("/api/method/simple_shop.api.get_communs", {
-      // Include any headers if needed
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        let communs = data["message"]["communs"];
-        // Store the data in localStorage for future use
-        localStorage.setItem("allCommunsList", JSON.stringify(communs));
-        return communs;
-      })
-      .catch((error) => {
-        console.error("Error fetching or storing data:", error);
-        throw error;
-      });
-
+  const getAllCommunsList = async () => {
+  let storedData = localStorage.getItem("allCommunsList");
+  if (storedData) {
+    let communs = JSON.parse(storedData);
+    return communs;
   }
 
+  try {
+    const response = await fetch("/api/method/simple_shop.api.get_communs");
+    const data = await response.json();
+    let communs = data["message"]["communs"];
+    localStorage.setItem("allCommunsList", JSON.stringify(communs));
+    return communs;
+  } catch (error) {
+    console.error("Error fetching or storing data:", error);
+    throw error;
+  }
+};
 
-  const renderCommunsView = (element) => {
-    let communs = getAllCommunsList();
+const renderCommunsView = async (element) => {
+  try {
+    let communs = await getAllCommunsList();
+    console.log(communs);
     let baladiaUlList = document.getElementById("baladiaList");
     let wilayaID = element.getAttribute("data-wilaya");
     let homeShipping = document.getElementById("checkout_shipping_type_home");
@@ -360,14 +356,19 @@ setNewNumberToCartIcon()
     homeShipping.setAttribute("data-wilaya", wilayaID);
     document.getElementById("communs-dropdown").value = "";
     let htmlContent = "";
+    
     // Loop through the data and create li elements
     communs.forEach((item) => {
       if (item.wilaya_id == wilayaID)
         htmlContent += `<li class="search-suggestion__item js-search-select"  data-item-name="${item.name}" onclick="removeContentVisibleClass(this,'baladiaList')">${item.name}</li>`;
     });
+    
     baladiaUlList.innerHTML = htmlContent;
+  } catch (error) {
+    // Handle error as needed
+    console.error("Error rendering communs view:", error);
   }
-
+};
 
 </script>
 
