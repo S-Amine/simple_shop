@@ -162,12 +162,13 @@ def update_yalidine_order(order_id):
 
 def extract_alpha_chars(input_string):
     # Remove numbers from the string
-    result_string = ''.join(char for char in input_string if not char.isdigit())
+    if input_string:
+        result_string = ''.join(char for char in input_string if not char.isdigit())
 
-    # Remove the first whitespace
-    result_string = result_string.lstrip()
+        # Remove the first whitespace
+        result_string = result_string.lstrip()
 
-    return result_string
+        return result_string
 
 def extract_first_number(input_string):
     # Using regular expression to find the first number

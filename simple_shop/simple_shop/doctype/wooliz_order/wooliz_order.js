@@ -1,68 +1,30 @@
 // Copyright (c) 2024, The Zoldycks and contributors
 // For license information, please see license.txt
-const getAllCommuns = () => {
-  const storedCommunsAll = localStorage.getItem("communs_all");
-  if (storedCommunsAll) {
-    let communs = JSON.parse(storedCommunsAll);
-    return { communs: communs };
-  } else {
-    // If data is not in localStorage, fetch it from the API
-    return fetch("/api/method/simple_shop.api.get_communs", {
-      // Include any headers if needed
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        let communs = data["message"]["communs"];
+const getAllCommuns = async () => {
+  let storedData = localStorage.getItem("allCommunsList");
+  
+  if (storedData) {
+    let communs = JSON.parse(storedData);
+    return communs;
+  }
 
-        // Store the data in localStorage for future use
-        localStorage.setItem("communs_all", JSON.stringify(communs));
-
-        // Return the fetched data
-        return { communs: communs };
-      })
-      .catch((error) => {
-        console.error("Error fetching or storing data:", error);
-        throw error;
-      });
+  try {
+    // Fetch data from the local JSON file
+    const response = await fetch("/assets/simple_shop/js/communes.json");
+    const data = await response.json();
+    
+    let communs = data;
+    
+    // Store the data in localStorage for future use
+    localStorage.setItem("allCommunsList", JSON.stringify(communs));
+    
+    return communs;
+  } catch (error) {
+    console.error("Error fetching or storing data:", error);
+    throw error;
   }
 };
-const getCommunsList = (has_stop_desk, wilaya) => {
-  // Check if data is already in localStorage
-  if (has_stop_desk) {
-    const storedData = localStorage.getItem("communsList");
-    const storeddeleveryFeesData = localStorage.getItem("deleveryFees");
 
-    if (storedData && storeddeleveryFeesData) {
-      let communs = JSON.parse(storedData);
-      let deleveryFees = JSON.parse(storeddeleveryFeesData);
-      return { communs: communs, deliveryfees: deleveryFees };
-    }
-
-    // If data is not in localStorage, fetch it from the API
-    return fetch("/api/method/simple_shop.api.get_communs_true", {
-      // Include any headers if needed
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        let communs = data["message"]["communs"];
-        let deleveryFees = data["message"]["deliveryfees"];
-
-        // Store the data in localStorage for future use
-        localStorage.setItem("communsList", JSON.stringify(communs));
-        localStorage.setItem("deleveryFees", JSON.stringify(deleveryFees));
-
-        // Return the fetched data
-        return { communs: communs, deliveryfees: deleveryFees };
-      })
-      .catch((error) => {
-        console.error("Error fetching or storing data:", error);
-        throw error;
-      });
-  } else {
-    return getAllCommuns();
-  }
-};
 const getCentersList = () => {
   // Check if data is already in localStorage
 
@@ -123,13 +85,14 @@ const renderWilayaView = (frm) => {
 
 /*** renderCommunView to render communs in select options ***/
 
-const renderCommunView = (frm) => {
+const renderCommunView =async (frm) => {
   var filteredCommuns = [];
   frm.set_df_property("commun", "options", ["loading..."]);
-  let communs = getCommunsList((has_stop_desk = false))["communs"];
+  let communs = await getAllCommuns();
+  console.log(communs);
   communs.forEach((e) => {
-    if (e.wilaya_name === frm.selected_doc.wilaya.replace(/\d/g, '').trim()) {
-      filteredCommuns.push(e.name);
+    if (e.wilaya_id === frm.selected_doc.wilaya.replace(/\D/g, "").trim()) {
+      filteredCommuns.push(e.nom);
     }
   });
   frm.set_df_property("commun", "options", filteredCommuns);
