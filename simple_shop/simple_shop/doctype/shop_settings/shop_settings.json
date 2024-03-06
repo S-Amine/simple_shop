@@ -17,7 +17,13 @@
   "phone",
   "pixel_tab",
   "pixel_id",
-  "google_script"
+  "google_script",
+  "social_media_tab",
+  "social_media_section",
+  "facebook",
+  "instagram",
+  "tiktok",
+  "youtube"
  ],
  "fields": [
   {
@@ -87,12 +93,42 @@
    "fieldname": "phone",
    "fieldtype": "Data",
    "label": "Phone number"
+  },
+  {
+   "fieldname": "social_media_tab",
+   "fieldtype": "Tab Break",
+   "label": "Social media"
+  },
+  {
+   "fieldname": "social_media_section",
+   "fieldtype": "Section Break",
+   "label": "Social media"
+  },
+  {
+   "fieldname": "facebook",
+   "fieldtype": "Data",
+   "label": "Facebook"
+  },
+  {
+   "fieldname": "instagram",
+   "fieldtype": "Data",
+   "label": "Instagram"
+  },
+  {
+   "fieldname": "tiktok",
+   "fieldtype": "Data",
+   "label": "TikTok"
+  },
+  {
+   "fieldname": "youtube",
+   "fieldtype": "Data",
+   "label": "Youtube"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-03-04 15:21:39.943140",
+ "modified": "2024-03-06 19:13:45.753480",
  "modified_by": "Administrator",
  "module": "Simple Shop",
  "name": "Shop Settings",
