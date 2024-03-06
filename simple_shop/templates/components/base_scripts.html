@@ -153,6 +153,7 @@ const sendRequest = (url,rawData) => {
           // remove cart items after successful processing
           localStorage.removeItem("cartItems");
           // Redirect to success page with order_id
+          fbq('track', 'Purchase', {currency: 'DZD', value: rawData.total})
           window.location.href = `/success_page/?id=${orderId}`;
         } else {
           // Handle other cases where success is not true if needed

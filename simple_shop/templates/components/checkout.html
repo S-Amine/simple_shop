@@ -1,6 +1,7 @@
 <style>
   .billing-info__wrapper {
-    padding: 20px;
+    padding: 10px;
+    margin: 0;
     border: 7px solid #990d0d;
     box-shadow: 0px 1px 18px 9px #0000001f;
     border-radius: 25px;
@@ -638,6 +639,7 @@ const renderCentersListView = async (element) => {
           product: localStorage.getItem("selected_item_variant",null),
           is_stop_desk: shippingField.checked,
           qty: 1,
+          total: {{item.custom_price}},
           center_id: localStorage.getItem("currentCenter")
         };
         sendRequest("/api/method/simple_shop.api.post_order",orderData);
