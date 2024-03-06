@@ -61,44 +61,7 @@ def get_communs_true():
 
     return {"communs": result, "deliveryfees": result_2}
 
-@frappe.whitelist(allow_guest=True)
-def get_communs():
-    """
-    Get all yalidine communs
-    """
-    settings = frappe.get_single("Yalidin")
-    headers = {"X-API-ID": settings.api_key, "X-API-TOKEN": settings.api_token }
 
-    # Check if data is already in the cache
-    cached_data = frappe.cache().get_value("yalidin_communs")
-
-    if cached_data:
-        print("get_communs from cache")
-        # Return cached data if available
-        return {"communs": cached_data}
-
-    data = []
-    next = True
-    index = 1
-    try:
-        while next:
-            response = requests.get(settings.base_url + f"communes/?fields=wilaya_name,name,wilaya_id&page={index}", headers=headers)
-            print(response.text)
-            communs = response.json()
-            result = communs.get('data', None)
-            next = communs.get('links', {}).get('next', None)
-            for commun in result:
-                data.append(commun)
-            index += 1
-
-    except Exception as e:
-        print(e)
-        data = {}
-
-    # Cache the result for 30 days
-    frappe.cache().set_value("yalidin_communs", data, expires_in_sec=36000)
-
-    return {"communs": data}
 
 @frappe.whitelist(allow_guest=True)
 def get_centers():
