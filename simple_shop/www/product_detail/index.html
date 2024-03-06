@@ -144,7 +144,7 @@ setInterval(() => {
                 <div class="qty-control__reduce" data-item-id="{{item.item_code}}" data-item-name="{{item.name}} - {{item.item_name}}" data-item-price ="{{item.custom_price}}" data-item-image="{{item.image}}" onclick="setItemToCart(this,'subtraction')">-</div>
                 <div class="qty-control__increase" data-item-id="{{item.item_code}}" data-item-name="{{item.name}} - {{item.item_name}}"  data-item-price ="{{item.custom_price}}" data-item-image="{{item.image}}" onclick="setItemToCart(this,'add')">+</div>
               </div><!-- .qty-control -->
-              <a class="btn btn-outline-primary"  onclick="setItemToCart(this,'add')" data-item-id="{{item.item_code}}" data-item-name="{{item.name}} - {{item.item_name}}"  data-item-price ="{{item.custom_price}}" data-item-image="{{item.image}}" >إضافة إلى السلة</a>
+              <a class="btn btn-outline-primary js-add-cart js-open-aside" data-aside="cartDrawer"  onclick="setItemToCart(this,'add')" data-item-id="{{item.item_code}}" data-item-name="{{item.name}} - {{item.item_name}}"  data-item-price ="{{item.custom_price}}" data-item-image="{{item.image}}" >إضافة إلى السلة</a>
               <a href="#billing" class="btn btn-primary btn-addtocart fw-bold fs-5 " data-aside="cartDrawer">إشتري الأن</a>
 
             </div>

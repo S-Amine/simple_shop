@@ -145,7 +145,7 @@ def update_yalidine_order(order_id):
         ("familyname", order_obj.last_name),
         ("contact_phone", order_obj.phone),
         ("address", order_obj.custom_address if order_obj.custom_address is not None else order_obj.commun + order_obj.wilaya),
-        ("to_commune_name", order_obj.commun),
+        ("to_commune_name", order_obj.commun if not order_obj.custom_stop_desk_bureau else extract_alpha_chars(order_obj.wilaya)),
         ("to_wilaya_name", extract_alpha_chars(order_obj.wilaya)),
         ("product_list", str(product_list)),
         ("price", int(get_cart_total)),
