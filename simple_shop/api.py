@@ -10,7 +10,7 @@ def get_data():
     """Returns all yalidin wilaya"""
     # Check if data is already in the cache
     cached_data = frappe.cache().get_value("yalidin_wilayas")
-
+    print(cached_data)
     if cached_data:
         # Return cached data if available
         print("get_data from cache")
@@ -25,7 +25,7 @@ def get_data():
     result = wilayas.get('data', None)
 
     # Cache the result for 30 days
-    frappe.cache().set_value("yalidin_wilayas", result, expires_in_sec=30 * 24 * 60 * 60)
+    frappe.cache().set_value("yalidin_wilayas", result, expires_in_sec=36000 )
 
     return result
 
@@ -43,6 +43,7 @@ def get_communs_true():
 
     if cached_data:
         # Return cached data if available
+        print("yalidin_communs_true from cache")
         return cached_data
 
     try:
@@ -56,7 +57,7 @@ def get_communs_true():
         result, result_2 = {}, {}
 
     # Cache the result for 30 days
-    frappe.cache().set_value("yalidin_communs_true", {"communs": result, "deliveryfees": result_2}, expires_in_sec=30 * 24 * 60 * 60)
+    frappe.cache().set_value("yalidin_communs_true", {"communs": result, "deliveryfees": result_2}, expires_in_sec=36000)
 
     return {"communs": result, "deliveryfees": result_2}
 
@@ -82,6 +83,7 @@ def get_communs():
     try:
         while next:
             response = requests.get(settings.base_url + f"communes/?fields=wilaya_name,name,wilaya_id&page={index}", headers=headers)
+            print(response.text)
             communs = response.json()
             result = communs.get('data', None)
             next = communs.get('links', {}).get('next', None)
@@ -94,7 +96,7 @@ def get_communs():
         data = {}
 
     # Cache the result for 30 days
-    frappe.cache().set_value("yalidin_communs", data, expires_in_sec=30 * 24 * 60 * 60)
+    frappe.cache().set_value("yalidin_communs", data, expires_in_sec=36000)
 
     return {"communs": data}
 

@@ -358,7 +358,7 @@ const renderCommunsView = async (element) => {
     let htmlContent = "";
     
     // Loop through the data and create li elements
-    communs["communs"].forEach((item) => {
+    communs.forEach((item) => {
       if (item.wilaya_id == wilayaID)
         htmlContent += `<li class="search-suggestion__item js-search-select"  data-item-name="${item.name}" onclick="removeContentVisibleClass(this,'baladiaList')">${item.name}</li>`;
     });
