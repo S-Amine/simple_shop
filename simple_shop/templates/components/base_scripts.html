@@ -81,24 +81,20 @@ const fillCartItem = () =>{
     })
 existingCartItems.forEach(item => {
     htmlInnerContent +=`
-    <div class="cart-drawer-item d-flex position-relative" data-item-id="${item.id}" data-item-name="${item.name}" data-item-color="${item.color}" data-item-size="${item.size}">
+    <div class="cart-drawer-item d-flex position-relative" style="max-height:unset" data-item-id="${item.id}" data-item-name="${item.name}" data-item-color="${item.color}" data-item-size="${item.size}">
             <div class="position-relative">
               <img loading="lazy" class="cart-drawer-item__img" src="${item.image}" alt="">
             </div>
-            <div class="cart-drawer-item__info flex-grow-1">
-              <h6 class="cart-drawer-item__title fw-normal">${item.name}</h6>
-              <p class="cart-drawer-item__option text-secondary">Color: ${item.color}</p>
-              <p class="cart-drawer-item__option text-secondary">Size: ${item.size}</p>
+            <div class="cart-drawer-item__info flex-grow-1 px-2">
+              <h6 class="cart-drawer-item__title fw-normal">${item.name} <span style="color:red">X (${item.qty})</span></h6>
+              <p class="cart-drawer-item__option text-secondary">اللون: ${item.color}</p>
+              <p class="cart-drawer-item__option text-secondary">المقاس: ${item.size}</p>
               <div class="d-flex align-items-center justify-content-between mt-1">
-                <div class="qty-control position-relative">
-                  <input type="number" name="quantity" value="${item.qty}" min="1" class="qty-control__number border-0 text-center">
-                  <div class="qty-control__reduce text-start">-</div>
-                  <div class="qty-control__increase text-end">+</div>
-                </div><!-- .qty-control -->
-            <span class="cart-drawer-item__price money price item-sub-price" data-price="${item.price*item.qty}">${item.price*item.qty} DA</span>
+
+            <span class="cart-drawer-item__price money price item-sub-price" data-price="${item.price*item.qty}">${item.price*item.qty} دج</span>
               </div>
             </div>
-            <button class="btn-close-xs position-absolute top-0 end-0 js-cart-item-remove" onclick="removeItemFromCart(this)"></button>
+            <button class="btn-close-xs position-absolute top-0  js-cart-item-remove" style = "left:0" onclick="removeItemFromCart(this)"></button>
           </div>
           <hr class="cart-drawer-divider">
 
@@ -108,7 +104,7 @@ parentCartItems.innerHTML = htmlInnerContent
 
 
 subTotalCount.forEach(e=>{
-  e.innerHTML = `${localStorage.getItem('cart-total-prices',0)} DA`
+  e.innerHTML = `${localStorage.getItem('cart-total-prices',0)} دج`
   e.setAttribute('data-subtotal',getSubTotal())
 
 })
@@ -169,5 +165,5 @@ const sendRequest = (url,rawData) => {
 
 
 
-  
+
     </script>

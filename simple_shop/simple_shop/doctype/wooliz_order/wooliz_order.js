@@ -91,7 +91,7 @@ const renderCommunView =async (frm) => {
   let communs = await getAllCommuns();
   console.log(communs);
   communs.forEach((e) => {
-    if (e.wilaya_id === frm.selected_doc.wilaya.replace(/\D/g, "").trim()) {
+    if (e.wilaya_name === frm.selected_doc.wilaya.replace(/\d/g, '').trim()) {
       filteredCommuns.push(e.name);
     }
   });
