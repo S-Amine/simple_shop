@@ -10,7 +10,6 @@ def get_data():
     """Returns all yalidin wilaya"""
     # Check if data is already in the cache
     cached_data = frappe.cache().get_value("yalidin_wilayas")
-    print(cached_data)
     if cached_data:
         # Return cached data if available
         print("get_data from cache")
