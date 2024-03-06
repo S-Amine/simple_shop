@@ -44,8 +44,11 @@ class WoolizOrder(Document):
             self.custom_bordereau=label
         elif self.custom_tracking_id is not None:
             print("Update yalidine order ................")
-            update_yalidine_order(self.name)
-        
+            success,msg=update_yalidine_order(self.name)
+            if not success:
+                frappe.throw(str(msg),title="Error syncronizing yalidine order")
+            else:
+                print(msg)
         if self.woolize_status != old_status :
             print(f"The previous status was: {old_status}")
             if self.woolize_status == "created":

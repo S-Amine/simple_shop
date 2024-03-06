@@ -92,7 +92,7 @@ const renderCommunView =async (frm) => {
   console.log(communs);
   communs.forEach((e) => {
     if (e.wilaya_id === frm.selected_doc.wilaya.replace(/\D/g, "").trim()) {
-      filteredCommuns.push(e.nom);
+      filteredCommuns.push(e.name);
     }
   });
   frm.set_df_property("commun", "options", filteredCommuns);

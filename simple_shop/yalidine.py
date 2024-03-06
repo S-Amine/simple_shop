@@ -157,8 +157,11 @@ def update_yalidine_order(order_id):
         ("product_to_collect", str(product_list) if product_list else "product_to_collect does not exist")
     ])
     print(data)
-    requests.patch(url=url, headers=headers, data=json.dumps((data)))
-                   
+    patched=requests.patch(url=url, headers=headers, data=json.dumps((data)))
+    if patched.json().get("tracking"):
+        return True , "Order updated and synchronized successfully with Yalidin"
+    else:
+        return False,patched.json().get("error")
 
 def extract_alpha_chars(input_string):
     # Remove numbers from the string
