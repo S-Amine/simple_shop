@@ -4,7 +4,7 @@ import time
 import frappe
 import requests
 from frappe.model.document import get_doc
-from simple_shop.utils import rehandling_checkout_products, remove_numbers
+from simple_shop.utils import rehandling_checkout_products, rehandling_checkout_validation_products, remove_numbers
 
 @frappe.whitelist(allow_guest=True)
 
@@ -137,9 +137,12 @@ def post_order_checkout(**args):
         new_order.custom_center = f"{data['center_id']} - {data['commun']}"
         new_order.commun = remove_numbers(data['wilaya']).lstrip()
     items = rehandling_checkout_products(products)
+    #items_=rehandling_checkout_validation_products(products)
+    #print(items_)
     for item in items:
-
         new_order.append("products",item)
+
+        
     new_order.save()
     created_sales_order_id = new_order.name
     return {"success": True, "data": {"order_id":created_sales_order_id}}

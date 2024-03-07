@@ -14589,7 +14589,7 @@ button.js-add-wishlist.active .flaticon.flaticon-heart, a.add-to-wishlist.active
             margin: 0; } }
       .shopping-cart .cart-table tbody td .remove-cart {
         position: absolute;
-        right: 0;
+        left: 0;
         top: 1rem; }
         @media (min-width: 768px) {
           .shopping-cart .cart-table tbody td .remove-cart {

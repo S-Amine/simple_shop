@@ -77,10 +77,25 @@ def rehandling_checkout_products(products):
     products_array = json.loads(products)
     for product in products_array:
         product_obj =  frappe.get_doc("Item",product['id'])
-        item = {"item": product_obj,"unit_price":product['price'],"qty":product['qty'],"total":product_obj.custom_price,"custom_color":product['color'],"custom_size":product['size']}
+        item = {"item": product_obj.item_code,"unit_price":product['price'],"qty":product['qty'],"total":product_obj.custom_price,"custom_color":product['color'],"custom_size":product['size']}
         items.append(item)
     return items
 
+def rehandling_checkout_validation_products(products):
+    items = []
+    products_array = json.loads(products)
+    total = 0
+    total_qty = 0
+
+    for product in products_array:
+        product_obj = frappe.get_doc("Item", product['id'])
+        item_qty = min(product_obj.stock_qty, product['qty'])  # Use the available stock if it's less than requested qty
+        total += product_obj.rate * item_qty
+        total_qty += item_qty
+
+        item = {"item": product_obj.item_code, "qty": item_qty, "max_qty": product['qty']}
+        items.append(item)
+    return items#,total,total_qty
 
 def remove_numbers(input_string):
     # Use a regular expression to replace digits with an empty string

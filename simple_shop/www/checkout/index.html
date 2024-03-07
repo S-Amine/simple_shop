@@ -2,7 +2,7 @@
 {% block centent %}
 {% set csrf_token = frappe.session.csrf_token %}
 <section class="shop-checkout container">
-  <h2 class="page-title">Cart</h2>
+  <h2 class="page-title">إكمال الطلبية</h2>
   <div class="checkout-steps">
     <a href="/cart/" class="checkout-steps__item ">
       <span class="checkout-steps__item-number">01</span>
@@ -466,7 +466,7 @@ setNewNumberToCartIcon()
     // Update subtotal and data attributes for each sub-total count element
     subTotalCountElements.forEach((subTotalElement) => {
       const cartTotalPrices = localStorage.getItem("cart-total-prices") || 0;
-      subTotalElement.innerHTML = `DA ${cartTotalPrices} `;
+      subTotalElement.innerHTML = `دج ${cartTotalPrices} `;
       subTotalElement.setAttribute("data-subtotal", getTotalOfItems());
     });
 
@@ -481,7 +481,7 @@ setNewNumberToCartIcon()
             ${item.name} x ${item.qty}
           </td>
           <td>
-             ${item.price * item.qty} DA
+             ${item.price * item.qty} دج
           </td>
         </tr>
       `;
@@ -511,8 +511,8 @@ setNewNumberToCartIcon()
         checkout_shipping_type_office.setAttribute("data-fee", e.desk_fee);
         shipping_fees.innerHTML =
           getShippingTypeOption() === "checkout_shipping_type_home"
-            ? `${e.home_fee} DA`
-            : `${e.desk_fee} DA`;
+            ? `${e.home_fee} دج`
+            : `${e.desk_fee} دج`;
         shipping_fees.setAttribute(
           "data-shipping-fee",
           getShippingTypeOption() === "checkout_shipping_type_home"
@@ -639,8 +639,9 @@ setNewNumberToCartIcon()
   document.getElementById("place_order").addEventListener("click", (e) => {
     placeOrderItems(e, "product");
   });
-  //fillCheckoutItems();
-  //setCheckoutTotal();
+
+  resetCartTotal([document.getElementById('sub-total-count')])
+
   document.addEventListener("DOMContentLoaded",e=>{
 fillCheckoutItems()
 

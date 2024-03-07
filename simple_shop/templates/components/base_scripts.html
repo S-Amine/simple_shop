@@ -1,6 +1,12 @@
 
 <script>
 
+const resetCartTotal = (elements) =>{
+  elements.forEach(item =>{
+    item.innerHTML = `${getTotalOfItems()} دج`
+  })
+}
+
     const setItemToCartGlobal = (item, operation) => {
         // Get item ID
         let itemID = item.getAttribute("data-item-id");

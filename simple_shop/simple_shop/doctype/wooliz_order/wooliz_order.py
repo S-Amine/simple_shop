@@ -5,6 +5,22 @@ import frappe
 from frappe.model.document import Document
 from simple_shop.yalidine import delete_yalidine_order, extract_first_number, get_shipping_price_by_wilaya, send_yalidin_order, update_yalidine_order
 
+def get_total_qty_and_price(order):
+    total = 0
+    total_qty = 0
+    for item in order.products:
+        print(item.item)
+        if order.validation == []:
+            order.append("validation", {
+                        "item_code": item.item,
+                        "qty": 0,
+                        "max_qty": item.qty
+            })
+        line_total = float(item.unit_price) * int(item.qty)
+        item.total = line_total
+        total_qty += item.qty
+        total += line_total
+        return total_qty, total
 
 class WoolizOrder(Document):
 
@@ -14,19 +30,7 @@ class WoolizOrder(Document):
         else:
             old_doc = frappe.get_doc(self.doctype, self.name)
             old_status = old_doc.woolize_status
-        total = 0
-        total_qty = 0
-        for item in self.products:
-            if self.validation == []:
-                self.append("validation", {
-                            "item_code": item.item,
-                            "qty": 0,
-                            "max_qty": item.qty
-                })
-            line_total = item.unit_price * item.qty
-            item.total = line_total
-            total_qty += item.qty
-            total += line_total
+        total_qty,total=get_total_qty_and_price(self)
         self.total_qty = total_qty
         self.total_price = total
         print("Before saving order................")

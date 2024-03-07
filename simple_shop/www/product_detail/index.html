@@ -181,7 +181,7 @@ setInterval(() => {
  {% if recommendations %}
    
     <section class="products-carousel container">
-      <h2 class="h3 text-uppercase mb-4 pb-xl-2 mb-xl-4">Related <strong>Products</strong></h2>
+      <h2 class="h3 text-uppercase mb-4 pb-xl-2 mb-xl-4">المنتجات ذات الصلة <strong></strong></h2>
 
       <div id="related_products" class="position-relative">
           <div class="swiper-container js-swiper-slider"
@@ -236,10 +236,6 @@ setInterval(() => {
                   <div class="product-card__price d-flex">
                     <span class="money price">{{recommendation.custom_price}} دج</span>
                   </div>
-
-                  <button class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist" title="Add To Wishlist">
-                    <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><use href="#icon_heart" /></svg>
-                  </button>
                 </div>
               </div>
               {% endfor %}
