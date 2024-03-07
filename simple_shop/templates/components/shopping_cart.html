@@ -36,35 +36,6 @@ fillCartItem()
 })
 
 
-const removeItemFromCart = (element) => {
-    // Get the closest parent with class 'cart-drawer-item'
-    const parentItem = element.closest('.cart-drawer-item');
-
-    if (parentItem) {
-        // Get data attributes from the parent item
-        const itemId = parentItem.getAttribute('data-item-id');
-        const itemName = parentItem.getAttribute('data-item-name');
-        const itemColor = parentItem.getAttribute('data-item-color');
-        const itemSize = parentItem.getAttribute('data-item-size');
-
-        // Remove the item from localStorage
-        let existingCartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-        existingCartItems = existingCartItems.filter(item => (
-            item.id !== itemId ||
-            item.name !== itemName ||
-            item.color !== itemColor ||
-            item.size !== itemSize
-        ));
-        // Update localStorage with the modified cart items array
-        localStorage.setItem('cartItems', JSON.stringify(existingCartItems));
-        // Remove the item's HTML from the DOM
-        parentItem.remove();
-        resetCartTotal([document.getElementById('sub-total-count')])
-        console.log('Item removed from cart:', itemId);
-    } else {
-        console.log('Unable to find parent cart item');
-    }
-};
 
 
 const setItemToCart = (item, operation) => {
@@ -145,7 +116,7 @@ const setItemToCart = (item, operation) => {
       setItemToCartGlobal(item, operation);
     }
     fillCartItem();
-    setCheckoutTotal();
+    //setCheckoutTotal();
     resetCartTotal([document.getElementById('sub-total-count')])
 
   };

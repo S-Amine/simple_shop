@@ -137,12 +137,12 @@ setInterval(() => {
   document.getElementById("countdown").textContent = getRandomInteger().toString();
 }, 2000); //
             </script>
-            {% include "templates/components/countdown.html" %}
+         {# {% include "templates/components/countdown.html" %} #}   
             <div class="product-single__addtocart">
               <div class="qty-control position-relative">
                 <input type="number" name="quantity" value="1" min="1" id="qty" class="qty-control__number text-center">
-                <div class="qty-control__reduce" data-item-id="{{item.item_code}}" data-item-name="{{item.name}} - {{item.item_name}}" data-item-price ="{{item.custom_price}}" data-item-image="{{item.image}}" onclick="setItemToCart(this,'subtraction')">-</div>
-                <div class="qty-control__increase" data-item-id="{{item.item_code}}" data-item-name="{{item.name}} - {{item.item_name}}"  data-item-price ="{{item.custom_price}}" data-item-image="{{item.image}}" onclick="setItemToCart(this,'add')">+</div>
+                <div class="qty-control__reduce" data-item-id="{{item.item_code}}" data-item-name="{{item.name}} - {{item.item_name}}" data-item-price ="{{item.custom_price}}" data-item-image="{{item.image}}" onclick="setItemToCart(this,'subtraction');renderProductTotalPrice({{item.custom_price}})">-</div>
+                <div class="qty-control__increase" data-item-id="{{item.item_code}}" data-item-name="{{item.name}} - {{item.item_name}}"  data-item-price ="{{item.custom_price}}" data-item-image="{{item.image}}" onclick="setItemToCart(this,'add');renderProductTotalPrice({{item.custom_price}})">+</div>
               </div><!-- .qty-control -->
               <a class="btn btn-outline-primary js-add-cart js-open-aside" data-aside="cartDrawer"  onclick="setItemToCart(this,'add')" data-item-id="{{item.item_code}}" data-item-name="{{item.name}} - {{item.item_name}}"  data-item-price ="{{item.custom_price}}" data-item-image="{{item.image}}" >إضافة إلى السلة</a>
               <a href="#billing" class="btn btn-primary btn-addtocart fw-bold fs-5 " data-aside="cartDrawer">إشتري الأن</a>
@@ -304,6 +304,17 @@ const getProductIdBasedOnVariants = (color, size) => {
   localStorage.removeItem("selected_item_variant")
 
   return null;
+}
+
+const renderProductTotalPrice = (price) =>{
+let productTotalPrice = document.querySelectorAll("sub-total-count");
+let qtyDisplay = document.getElementById("checkout-qty");
+let total = document.getElementById("total-checkout-amount");
+let shippingFees = parseInt(document.getElementById("shipping_fees").getAttribute("data-shipping-fee")) || 0;
+const currentQtyValue = document.getElementById("qty").value || 1;
+qtyDisplay.textContent =currentQtyValue;
+total.innerHTML = `${price*currentQtyValue+shippingFees} دج`;
+
 }
 
 </script>

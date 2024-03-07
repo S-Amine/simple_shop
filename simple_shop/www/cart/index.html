@@ -1,5 +1,13 @@
 {% extends 'templates/shop_base.html' %}
 {% block centent %}
+<style>
+  @media (max-width:800px) {
+    .shopping-cart .cart-table .qty-control{
+      margin: 0.5rem 8em;
+
+    }
+  }
+</style>
 <section class="shop-checkout container">
     <h2 class="page-title">عربة التسوق</h2>
     <div class="checkout-steps">
@@ -74,7 +82,7 @@
     })
 existingCartItems.forEach(item => {
     htmlInnerContent +=`
-  <tr>
+  <tr class="cart-drawer-item" data-item-id="${item.id}" data-item-name="${item.name}" data-item-color="${item.color}" data-item-size="${item.size}">
     <td>
       <div class="shopping-cart__product-item">
         <img loading="lazy" src="${item.image}" width="120" height="120" alt="">

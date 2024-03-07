@@ -163,11 +163,17 @@
                 <tr>
                   <th>السعر</th>
                   <td
-                    id="checkout-total-amount"
-                    class="sub-total-count"
-                    data-subtotal="{{item.custom_price}}"
                   >
                      {{item.custom_price}} دج
+                  </td>
+                </tr>
+                <tr>
+                  <th>الكمية</th>
+                  <td
+                    id="checkout-qty"
+                    class="qty"
+                  >
+                     1
                   </td>
                 </tr>
                 <tr>
@@ -511,7 +517,7 @@ const renderCentersListView = async (element) => {
       }
     });
 
-    setCheckoutTotal();
+    renderProductTotalPrice({{item.custom_price}})
   };
 
 
@@ -638,7 +644,7 @@ const renderCentersListView = async (element) => {
           commun: communField.value,
           product: localStorage.getItem("selected_item_variant",null),
           is_stop_desk: shippingField.checked,
-          qty: 1,
+          qty:parseInt(document.getElementById("qty").value),
           total: {{item.custom_price}},
           center_id: localStorage.getItem("currentCenter")
         };
