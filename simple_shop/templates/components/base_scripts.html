@@ -140,7 +140,7 @@ const sendRequest = (url,rawData) => {
     let myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("X-Frappe-CSRF-Token", frappe.csrf_token);
-
+  console.log(myHeaders);
     let requestOptions = {
       method: "POST",
       headers: myHeaders,
