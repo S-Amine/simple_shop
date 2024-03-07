@@ -43,6 +43,8 @@
                 <tr>
                     <td>
                     {% set product = frappe.get_doc('Item', item) %}
+                    {% set product = frappe.get_doc('Item', product.item_code) %}
+
                       {{product.item_name}} x {{item.qty}}
                     </td>
                     <td>

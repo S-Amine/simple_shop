@@ -620,6 +620,7 @@ const renderCentersListView = async (element) => {
   const placeOrderItems = (element, orderType) => {
     element.preventDefault();
 
+
     // OrderType may be 'product' or 'cart' depending on the order type
     if (orderType === "product") {
       const checkoutStreetAddress = document.getElementById(
@@ -645,6 +646,8 @@ const renderCentersListView = async (element) => {
       
       console.log(success, msg);
       if (success) {
+        document.getElementById("place_order").textContent = "جاري إرسال الطلب ..."
+    document.getElementById("place_order").classList.add("disabled");
         orderData = {
           lastName: lastNameField.value,
           phone: phoneField.value,
