@@ -136,37 +136,46 @@ const getTotalOfItems = () => {
   return totalPrice;
 };
 
-const sendRequest = (url,rawData) => {
-    let myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    myHeaders.append("X-Frappe-CSRF-Token", frappe.csrf_token);
-  console.log(myHeaders.values);
-    let requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: JSON.stringify(rawData),
-    };
+const sendRequest = (url, rawData) => {
+  // Check if CSRF token is available
+  if (!frappe.csrf_token) {
+    console.error("CSRF token is not available.");
+    return Promise.reject(new Error("CSRF token is not available."));
+  }
 
-    return fetch(url, requestOptions)
-      .then((response) => response.json()) // Parse JSON response
-      .then((data) => {
-        if (data.message.success) {
-          const orderId = data.message.data.order_id;
-          // remove cart items after successful processing
-          localStorage.removeItem("cartItems");
-          // Redirect to success page with order_id
-          fbq('track', 'Purchase', {currency: 'DZD', value: rawData.total})
-          window.location.href = `/success_page/?id=${orderId}`;
-        } else {
-          // Handle other cases where success is not true if needed
-          console.log("Request was not successful:", data);
-        }
-      })
-      .catch((error) => {
-        console.log("error", error);
-        throw error; // Rethrow the error to be caught by the caller if needed
-      });
+  // Create headers using a plain JavaScript object
+  let headers = {
+    "Content-Type": "application/json",
+    "X-Frappe-CSRF-Token": frappe.csrf_token,
   };
+
+  // Debugging: Log headers to console
+  console.log("Headers:", headers);
+
+  let requestOptions = {
+    method: "POST",
+    headers: headers,
+    body: JSON.stringify(rawData),
+  };
+
+  return fetch(url, requestOptions)
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.message && data.message.success) {
+        const orderId = data.message.data.order_id;
+        localStorage.removeItem("cartItems");
+        fbq('track', 'Purchase', { currency: 'DZD', value: rawData.total });
+        window.location.href = `/success_page/?id=${orderId}`;
+      } else {
+        console.log("Request was not successful:", data);
+        return Promise.reject(new Error("Request was not successful."));
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      return Promise.reject(error);
+    });
+};
 
   const removeItemFromCart = (element) => {
     // Get the closest parent with class 'cart-drawer-item'
