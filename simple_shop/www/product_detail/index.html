@@ -24,7 +24,7 @@
 {% block centent %}
 
 <div class="mb-md-1 pb-md-3"></div>
-    <section class="product-single container">
+    <section class="product-single">
       <div class="row">
         <div class="col-lg-7">
           <div class="product-single__media" data-media-type="vertical-thumbnail">
@@ -111,7 +111,8 @@
                   {% if item.Attribute == 'اللون' %}
                   {% for value in item.Values %}
                   <input  type="radio" onclick="handleCheckedVariants('{{item.Attribute}}')" data-item-color="{{ value }}" name="color" id="swatch-{{ loop.index }}">
-                  <label class="swatch swatch-color js-swatch" for="swatch-{{ loop.index }}" aria-label="{{ value }}" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ value }}" style="color: {{ value|lower }};cursor: pointer !important;"></label>
+                  <label class="swatch swatch-color js-swatch" for="swatch-{{ loop.index }}" aria-label="{{ value }}" data-bs-toggle="tooltip" data-bs-placement="top" 
+                  title="{{ value }}" style="color: {{ value|lower }};cursor: pointer !important; border-color:#9d9d9d"></label>
               {% endfor %}
                   {% endif %}
 
@@ -144,8 +145,9 @@ setInterval(() => {
                 <div class="qty-control__reduce" data-item-id="{{item.item_code}}" data-item-name="{{item.name}} - {{item.item_name}}" data-item-price ="{{item.custom_price}}" data-item-image="{{item.image}}" onclick="setItemToCart(this,'subtraction');renderProductTotalPrice({{item.custom_price}})">-</div>
                 <div class="qty-control__increase" data-item-id="{{item.item_code}}" data-item-name="{{item.name}} - {{item.item_name}}"  data-item-price ="{{item.custom_price}}" data-item-image="{{item.image}}" onclick="setItemToCart(this,'add');renderProductTotalPrice({{item.custom_price}})">+</div>
               </div><!-- .qty-control -->
-              <a class="btn btn-outline-primary js-add-cart js-open-aside" data-aside="cartDrawer"  onclick="setItemToCart(this,'add')" data-item-id="{{item.item_code}}" data-item-name="{{item.name}} - {{item.item_name}}"  data-item-price ="{{item.custom_price}}" data-item-image="{{item.image}}" >إضافة إلى السلة</a>
-              <a href="#billing" class="btn btn-primary btn-addtocart fw-bold fs-5 " data-aside="cartDrawer">إشتري الأن</a>
+              <a class="btn btn-outline-primary js-add-cart js-open-aside " data-aside="cartDrawer"
+                onclick="setItemToCart(this,'add')" data-item-id="{{item.item_code}}" data-item-name="{{item.name}} - {{item.item_name}}"  data-item-price ="{{item.custom_price}}" data-item-image="{{item.image}}" ><i class="fa-solid fa-cart-plus"></i></a>
+              <a href="#billing" class="btn btn-addtocart fw-bold fs-5 text-white " style="background-color: #8f0000; border-radius: 10px;" data-aside="cartDrawer"><i class="fa-solid fa-cart-shopping px-2 fa-beat	"></i> إشتري الأن</a>
 
             </div>
           </form>

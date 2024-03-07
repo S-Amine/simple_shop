@@ -14095,7 +14095,10 @@ textarea.form-control-lg {
     .product-single__swatches .product-swatch.color-swatches .swatch-color.swatch_active, .product-single__swatches .product-swatch.color-swatches .swatch-color:hover {
       border-color: #222222; }
   .product-single__swatches .product-swatch.color-swatches input[type="radio"]:checked + label.swatch-color {
-    border-color: #222222; }
+    border-color: #ff0303 !important;
+    border-width: 10px;
+  
+  }
   .product-single__swatches .product-swatch.color-swatches .swatch-image {
     width: 3.875rem;
     height: 3.875rem;
