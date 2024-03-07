@@ -1,7 +1,6 @@
 
 <script>
-
-const resetCartTotal = (elements) =>{
+  const resetCartTotal = (elements) =>{
   elements.forEach(item =>{
     item.innerHTML = `${getTotalOfItems()} دج`
   })
@@ -146,7 +145,7 @@ const sendRequest = (url, rawData) => {
   // Create headers using a plain JavaScript object
   let headers = {
     "Content-Type": "application/json",
-    "X-Frappe-CSRF-Token": frappe.csrf_token,
+    "X-Frappe-CSRF-Token": "{{frappe.session.csrf_token }}",
   };
 
   // Debugging: Log headers to console
@@ -206,6 +205,7 @@ const sendRequest = (url, rawData) => {
         console.log('Unable to find parent cart item');
     }
 };
+
 
 
 
