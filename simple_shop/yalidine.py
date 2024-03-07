@@ -57,11 +57,10 @@ def get_shipping_price_by_wilaya(order):
 
 
 
-def get_order_total_price(order_id):
+def get_order_total_price(order):
     """
     Returns the total price with the shipping fees
     """
-    order = get_doc("Wooliz Order", order_id)
     # Calculate order total using lambda function and sum
     calculate_item_total = lambda item: item.unit_price * item.qty
     order_items = order.products
@@ -72,12 +71,11 @@ def get_order_total_price(order_id):
     return order_total
 
 
-def get_product_list(order_id):
+def get_product_list(order_obj):
     """
     function for get product list
     """
     product_list = []
-    order_obj = get_doc("Wooliz Order",order_id)
     orders_items = order_obj.get_all_children()
     for item in orders_items:
         product = get_doc('Item', item)
@@ -99,8 +97,8 @@ def send_yalidin_order(order_obj):
     settings = frappe.get_single("Yalidin")
     headers = {"X-API-ID": settings.api_key,"X-API-TOKEN": settings.api_token }
     url = settings.base_url+"parcels/"
-    get_cart_total=get_order_total_price(order_obj.name)
-    product_list=get_product_list(order_obj.name)
+    get_cart_total=get_order_total_price(order_obj)
+    product_list=get_product_list(order_obj)
     print(extract_alpha_chars(order_obj.wilaya))
     data = OrderedDict(
         [(0,
@@ -136,8 +134,8 @@ def delete_yalidine_order(tracking_id):
 def update_yalidine_order(order_obj):
     """Update the order"""
     settings = frappe.get_single("Yalidin")
-    product_list=get_product_list(order_obj.name)
-    get_cart_total=get_order_total_price(order_obj.name)
+    product_list=get_product_list(order_obj)
+    get_cart_total=get_order_total_price(order_obj)
     tracking_id=order_obj.custom_tracking_id
     headers = {"X-API-ID": settings.api_key,"X-API-TOKEN": settings.api_token }
     url = f"{settings.base_url}parcels/{tracking_id}"
