@@ -143,12 +143,19 @@
         <div class="col-md-12 col-xl-6">
           <div class="form-floating my-3">
             <input
-              maxlength="10"
-              type="text"
-              class="form-control"
-              id="checkout_input_phone_field"
-              placeholder="Phone *"
-            />
+            type="number"
+            class="form-control"
+            id="checkout_input_phone_field"
+            placeholder="Phone *"
+            oninput="restrictLength(this, 10)"
+          />
+          <script>
+            function restrictLength(element, maxLength) {
+              if (element.value.length > maxLength) {
+                element.value = element.value.slice(0, maxLength);
+              }
+            }
+            </script>
             <label for="checkout_phone">رقم الهاتف *</label>
           </div>
         </div>
