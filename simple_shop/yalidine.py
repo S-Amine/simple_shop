@@ -10,7 +10,11 @@ from frappe import _
 
 
 
-
+def get_random_commun_name(wilaya):
+    if wilaya == "16 Alger":
+        return "Alger Center"
+    else:
+        return extract_alpha_chars(wilaya)
 
 def fetch_shipping_data():
     # Define a cache key
@@ -91,13 +95,12 @@ def get_yalidine_order(order_id):
     return my_response
 
 
-def send_yalidin_order(order_id):
+def send_yalidin_order(order_obj):
     settings = frappe.get_single("Yalidin")
     headers = {"X-API-ID": settings.api_key,"X-API-TOKEN": settings.api_token }
     url = settings.base_url+"parcels/"
-    order_obj = get_doc("Wooliz Order",order_id)
-    get_cart_total=get_order_total_price(order_id)
-    product_list=get_product_list(order_id)
+    get_cart_total=get_order_total_price(order_obj.name)
+    product_list=get_product_list(order_obj.name)
     print(extract_alpha_chars(order_obj.wilaya))
     data = OrderedDict(
         [(0,
@@ -107,7 +110,7 @@ def send_yalidin_order(order_id):
             ("familyname", order_obj.last_name),
             ("contact_phone",  order_obj.phone),
             ("address", order_obj.custom_address if order_obj.custom_address is not None else order_obj.commun + order_obj.wilaya),
-            ("to_commune_name", order_obj.commun if not order_obj.custom_stop_desk_bureau else extract_alpha_chars(order_obj.wilaya)),
+            ("to_commune_name", order_obj.commun if not order_obj.custom_stop_desk_bureau else get_random_commun_name(order_obj.wilaya)),
             ("to_wilaya_name", extract_alpha_chars(order_obj.wilaya)),
             ("product_list", str(product_list)),
             ("price", int(get_cart_total)),
@@ -130,12 +133,11 @@ def delete_yalidine_order(tracking_id):
     response = requests.delete(url=url, headers=headers)
     return response
 
-def update_yalidine_order(order_id):
+def update_yalidine_order(order_obj):
     """Update the order"""
     settings = frappe.get_single("Yalidin")
-    order_obj = get_doc("Wooliz Order",order_id)
-    product_list=get_product_list(order_id)
-    get_cart_total=get_order_total_price(order_id)
+    product_list=get_product_list(order_obj.name)
+    get_cart_total=get_order_total_price(order_obj.name)
     tracking_id=order_obj.custom_tracking_id
     headers = {"X-API-ID": settings.api_key,"X-API-TOKEN": settings.api_token }
     url = f"{settings.base_url}parcels/{tracking_id}"
@@ -145,7 +147,7 @@ def update_yalidine_order(order_id):
         ("familyname", order_obj.last_name),
         ("contact_phone", order_obj.phone),
         ("address", order_obj.custom_address if order_obj.custom_address is not None else order_obj.commun + order_obj.wilaya),
-        ("to_commune_name", order_obj.commun if not order_obj.custom_stop_desk_bureau else extract_alpha_chars(order_obj.wilaya)),
+        ("to_commune_name", order_obj.commun if not order_obj.custom_stop_desk_bureau else get_random_commun_name(order_obj.wilaya)),
         ("to_wilaya_name", extract_alpha_chars(order_obj.wilaya)),
         ("product_list", str(product_list)),
         ("price", int(get_cart_total)),

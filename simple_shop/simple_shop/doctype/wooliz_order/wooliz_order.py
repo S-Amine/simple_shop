@@ -34,9 +34,10 @@ class WoolizOrder(Document):
         #extract number from center 
         if self.custom_stop_desk_bureau:
             self.custom_center_id=extract_first_number(self.custom_center)
+            print( self.custom_center_id)
         if self.custom_tracking_id in ["",None] and self.woolize_status=="pending":
             print("send yalidine order ................")
-            my_response=send_yalidin_order(self.name)
+            my_response=send_yalidin_order(self)
             print(my_response)
             tracking=my_response[self.name]['tracking']
             label=my_response[self.name]['label']
@@ -44,7 +45,7 @@ class WoolizOrder(Document):
             self.custom_bordereau=label
         elif self.custom_tracking_id is not None:
             print("Update yalidine order ................")
-            success,msg=update_yalidine_order(self.name)
+            success,msg=update_yalidine_order(self)
             if not success:
                 frappe.throw(str(msg),title="Error syncronizing yalidine order")
             else:
@@ -115,7 +116,7 @@ class WoolizOrder(Document):
                     self.woolize_status = old_status
                     frappe.throw("You can't return a document in '{}' status. You can return a delivered document.".format(old_status))
     
-    
+
     def on_change(self):
         """
         Recalculates the actual quantity (QTY) for each item.
@@ -126,6 +127,8 @@ class WoolizOrder(Document):
             item_doc.save(
                 ignore_permissions=True, # ignore write permissions during insert
             )
+        print("After saving...")
+
 
     def move_stock_to_pending_warehouse(self):
         print("Moving stock to pending warehouse")
