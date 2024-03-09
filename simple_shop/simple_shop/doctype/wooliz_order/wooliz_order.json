@@ -33,6 +33,7 @@
   "custom_stop_desk_bureau",
   "custom_stop_desk_id",
   "custom_has_exchange",
+  "free_shipping",
   "column_break_xaxx",
   "custom_center_id",
   "custom_center",
@@ -284,11 +285,17 @@
    "fieldname": "order_detail_tab",
    "fieldtype": "Tab Break",
    "label": "Order Detail"
+  },
+  {
+   "default": "0",
+   "fieldname": "free_shipping",
+   "fieldtype": "Check",
+   "label": "Free Shipping"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-03-02 12:09:40.013676",
+ "modified": "2024-03-09 15:59:46.384334",
  "modified_by": "Administrator",
  "module": "Simple Shop",
  "name": "Wooliz Order",

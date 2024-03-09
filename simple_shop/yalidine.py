@@ -112,7 +112,7 @@ def send_yalidin_order(order_obj):
             ("to_wilaya_name", extract_alpha_chars(order_obj.wilaya)),
             ("product_list", str(product_list)),
             ("price", int(get_cart_total)),
-            ("freeshipping", False), 
+            ("freeshipping", order_obj.free_shipping), 
             ("is_stopdesk", order_obj.custom_stop_desk_bureau), 
             ("has_exchange", False),
             ("product_to_collect", str(product_list) if product_list else "product_to_collect does not exist" )])),])
@@ -149,7 +149,7 @@ def update_yalidine_order(order_obj):
         ("to_wilaya_name", extract_alpha_chars(order_obj.wilaya)),
         ("product_list", str(product_list)),
         ("price", int(get_cart_total)),
-        ("freeshipping", False),
+        ("freeshipping", order_obj.free_shipping), 
         ("do_insurance", 1) if order_obj.custom_insurance else ("do_insurance",0), 
         ("is_stopdesk", 1) if order_obj.custom_stop_desk_bureau else ("is_stopdesk",0),
         ("stopdesk_id", order_obj.custom_center_id) if order_obj.custom_stop_desk_bureau is not None else ("stopdesk_id", None),  # Assuming 'None' if condition is not met
