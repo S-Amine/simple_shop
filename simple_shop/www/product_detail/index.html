@@ -151,10 +151,17 @@ setInterval(() => {
       </div>
       
 
+<div class="row">
+  <div class="col-md-6">
+  </div>
+  <div class="col-12 col-md-6">
+    <div class="pb-5">
+      {% include "templates/components/checkout.html"%}
+    </div>
+  </div>
 
-      <div class="pb-5">
-        {% include "templates/components/checkout.html"%}
-      </div>
+</div>
+
       {% if  item.description %}
       <div class="product-single__details-tab">
           <ul class="nav nav-tabs" id="myTab1" role="tablist">
