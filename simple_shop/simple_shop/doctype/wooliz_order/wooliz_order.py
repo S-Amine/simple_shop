@@ -32,10 +32,11 @@ class WoolizOrder(Document):
             old_status = old_doc.woolize_status
         total_qty,total=get_total_qty_and_price(self)
         self.total_qty = total_qty
-        self.total_price = total
         print("Before saving order................")
         self.custom_shipping_free=get_shipping_price_by_wilaya(self)
         #extract number from center 
+        self.total_price = total+self.custom_shipping_free
+
         if self.custom_stop_desk_bureau:
             self.custom_center_id=extract_first_number(self.custom_center)
             print( self.custom_center_id)
