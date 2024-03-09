@@ -150,6 +150,11 @@ setInterval(() => {
         </div>
       </div>
       
+
+
+      <div class="pb-5">
+        {% include "templates/components/checkout.html"%}
+      </div>
       {% if  item.description %}
       <div class="product-single__details-tab">
           <ul class="nav nav-tabs" id="myTab1" role="tablist">
@@ -169,10 +174,6 @@ setInterval(() => {
       {% else %}
       <div class="py-5"></div>
       {% endif %}
-
-      <div class="pb-5">
-        {% include "templates/components/checkout.html"%}
-      </div>
     </section>
  {% if recommendations %}
    

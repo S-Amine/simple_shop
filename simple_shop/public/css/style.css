@@ -9527,7 +9527,7 @@ img {
   color: #222222;
   background-color: #fff;
   background-clip: padding-box;
-  border: 0.125rem solid #e4e4e4;
+  border: 0.125rem solid #000;
   appearance: none;
   border-radius: 0;
   box-shadow: none;
@@ -14708,9 +14708,7 @@ button.js-add-wishlist.active .flaticon.flaticon-heart, a.add-to-wishlist.active
 
 .checkout__totals {
   border: 1px solid #222;
-  margin-bottom: 1.25rem;
-  padding: 2.5rem 2.5rem 0.5rem;
-  width: 26.25rem; }
+ }
   @media (max-width: 1199.98px) {
     .checkout__totals {
       width: 100%; } }
