@@ -45,10 +45,8 @@ def fetch_shipping_data():
 
 def get_shipping_price_by_wilaya(order):
     data = fetch_shipping_data()
-    
     if data:
         result = next((item for item in data if item['wilaya_name'] == extract_alpha_chars(order.wilaya)), None)
-        
         if result:
             return result['desk_fee'] if order.custom_stop_desk_bureau else result['desk_fee']
     
