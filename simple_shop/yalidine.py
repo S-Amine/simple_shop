@@ -48,7 +48,7 @@ def get_shipping_price_by_wilaya(order):
     if data:
         result = next((item for item in data if item['wilaya_name'] == extract_alpha_chars(order.wilaya)), None)
         if result:
-            return result['desk_fee'] if order.custom_stop_desk_bureau else result['desk_fee']
+            return result['desk_fee'] if order.custom_stop_desk_bureau else result['home_fee']
     
     # Handle the case where data is not available or wilaya is not found
     return None
