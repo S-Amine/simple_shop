@@ -20,41 +20,8 @@ def get_total_qty_and_price(order):
         item.total = line_total
         total_qty += item.qty
         total += line_total
-        return total_qty, total
-
-class WoolizOrder(Document):
-
-    def before_save(self):
-        if self.is_new():
-            old_status = None  # No old value for new documents
-        else:
-            old_doc = frappe.get_doc(self.doctype, self.name)
-            old_status = old_doc.woolize_status
-        total_qty,total=get_total_qty_and_price(self)
-        self.total_qty = total_qty
-        print("Before saving order................")
-        self.custom_shipping_free=get_shipping_price_by_wilaya(self)
-        #extract number from center 
-        self.total_price = total+self.custom_shipping_free
-
-        if self.custom_stop_desk_bureau:
-            self.custom_center_id=extract_first_number(self.custom_center)
-            print( self.custom_center_id)
-        if self.custom_tracking_id in ["",None] and self.woolize_status=="pending":
-            print("send yalidine order ................")
-            my_response=send_yalidin_order(self)
-            print(my_response)
-            tracking=my_response[self.name]['tracking']
-            label=my_response[self.name]['label']
-            self.custom_tracking_id=tracking
-            self.custom_bordereau=label
-        elif self.custom_tracking_id is not None:
-            print("Update yalidine order ................")
-            success,msg=update_yalidine_order(self)
-            if not success:
-                frappe.throw(str(msg),title="Error syncronizing yalidine order")
-            else:
-                print(msg)
+    return total_qty, total
+def handle_order_status(self, old_status):
         if self.woolize_status != old_status :
             print(f"The previous status was: {old_status}")
             if self.woolize_status == "created":
@@ -121,6 +88,43 @@ class WoolizOrder(Document):
                     self.woolize_status = old_status
                     frappe.throw("You can't return a document in '{}' status. You can return a delivered document.".format(old_status))
     
+class WoolizOrder(Document):
+
+    def before_save(self):
+        if self.is_new():
+            old_status = None  # No old value for new documents
+        else:
+            old_doc = frappe.get_doc(self.doctype, self.name)
+            old_status = old_doc.woolize_status
+        self.custom_shipping_free=get_shipping_price_by_wilaya(self)
+
+        total_qty,total=get_total_qty_and_price(self)
+        self.total_qty = total_qty
+        print("Before saving order................")
+        #extract number from center 
+        self.total_price = total+self.custom_shipping_free
+
+        if self.custom_stop_desk_bureau:
+            self.custom_center_id=extract_first_number(self.custom_center)
+            print( self.custom_center_id)
+        if self.custom_tracking_id in ["",None] and self.woolize_status=="pending":
+            print("send yalidine order ................")
+            my_response=send_yalidin_order(self)
+            print(my_response)
+            tracking=my_response[self.name]['tracking']
+            label=my_response[self.name]['label']
+            self.custom_tracking_id=tracking
+            self.custom_bordereau=label
+        elif self.custom_tracking_id is not None:
+            print("Update yalidine order ................")
+            success,msg=update_yalidine_order(self)
+            if not success:
+                frappe.throw(str(msg),title="Error syncronizing yalidine order")
+            else:
+                print(msg)
+
+        handle_order_status(self, old_status)
+
 
     def on_change(self):
         """
