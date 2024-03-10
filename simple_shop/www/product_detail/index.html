@@ -31,26 +31,35 @@
             <div class="product-single__image">
               <div class="swiper-container">
                 <div class="swiper-wrapper">
-
+                  {% set item_attachments = frappe.get_all('File', filters={'attached_to_doctype': 'Item', 'attached_to_name': item.name}, fields=['file_name', 'file_url']) %}
+                  {%- for attachment in item_attachments -%}
 
                   <div class="swiper-slide product-single__image-item">
-                    <img loading="lazy" class="h-auto" src="{{item.image}}" width="674" height="674" alt="">
+                    <img loading="lazy" class="h-auto" src="{{ attachment.file_url }}" width="300" height="300" alt="">
                     <a data-fancybox="gallery" href="{{item.image}}" data-bs-toggle="tooltip" data-bs-placement="left" title="Zoom">
                       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><use href="#icon_zoom" /></svg>
                     </a>
                   </div>
-
+                  {%- endfor -%}
 
                 </div>
-                <div class="swiper-button-prev"><svg width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg"><use href="#icon_prev_sm" /></svg></div>
-                <div class="swiper-button-next"><svg width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg"><use href="#icon_next_sm" /></svg></div>
+                <div class="swiper-button-prev" style="right: unset;">
+                  <svg width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg"><use href="#icon_prev_sm" /></svg></div>
+                <div class="swiper-button-next" style="left: unset;">
+                  <svg width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg"><use href="#icon_next_sm" /></svg></div>
               </div>
             </div>
             <div class="product-single__thumbnail">
               <div class="swiper-container">
                 <div class="swiper-wrapper">
-                  <div class="swiper-slide product-single__image-item"><img loading="lazy" class="h-auto" src="{{item.image}}" width="104" height="104" alt=""></div>
+                  {% set item_attachments = frappe.get_all('File', filters={'attached_to_doctype': 'Item', 'attached_to_name': item.name}, fields=['file_name', 'file_url']) %}
+                  {%- for attachment in item_attachments -%}
+                  <div class="swiper-slide product-single__image-item"><img loading="lazy" class="h-auto" src="{{ attachment.file_url }}" width="104" height="104" alt=""></div>
+
+                  {%- endfor -%}
+                  
                 </div>
+                
               </div>
             </div>
           </div>
