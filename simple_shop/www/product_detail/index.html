@@ -225,7 +225,7 @@ setInterval(() => {
               {% for recommendation in recommendations %}
               <div class="swiper-slide product-card">
                 <div class="pc__img-wrapper">
-                  <a href="product1_simple.html">
+                  <a href="/product/{{recommendation.item_code}}">
                     <img loading="lazy" src="{{recommendation.image}}" width="330" height="400" alt="Cropped Faux leather Jacket" class="pc__img">
                     <img loading="lazy" src="{{recommendation.image}}" width="330" height="400" alt="Cropped Faux leather Jacket" class="pc__img pc__img-second">
                   </a>
@@ -234,7 +234,7 @@ setInterval(() => {
 
                 <div class="pc__info position-relative">
                   <p class="pc__category">{{recommendation.item_group}}</p>
-                  <h6 class="pc__title"><a href="product1_simple.html">{{recommendation.item_name}}</a></h6>
+                  <h6 class="pc__title"><a href="/product/{{recommendation.item_code}}">{{recommendation.item_name}}</a></h6>
                   <div class="product-card__price d-flex">
                     <span class="money price">{{recommendation.custom_price}} دج</span>
                   </div>
