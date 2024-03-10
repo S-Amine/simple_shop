@@ -99,6 +99,7 @@ def get_centers():
 def post_order(**args):
     """Set the order"""
     data = frappe._dict(args)
+    csrf_token = frappe.session.cs
     print(data)
     new_order = frappe.new_doc("Wooliz Order")
     new_order.last_name = data['lastName']

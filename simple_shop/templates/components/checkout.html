@@ -193,18 +193,39 @@
             role="alert">
           </div>
           
+          <style>
+            @keyframes backgroundAnimation {
+              0% {
+                background-position: 0 0;
+              }
+              100% {
+                background-position: 100% 0;
+              }
+            }
+          
+            .btn-checkout {
+              background: linear-gradient(90deg, #870404, #eb3e3e);
+              background-size: 200% 100%;
+              animation: backgroundAnimation 0.5s ease infinite;
+              transition: color 0.5s ease;
+            }
+          
+            .btn-checkout:hover {
+              color: #ffffff;
+            }
+          </style>
+          
           <button
             class="btn btn-primary btn-checkout fw-bold fs-4"
             id="place_order"
             style="
               border-radius: 30px;
-              background: #870404;
               border: 2px solid #870404;
               width: 100%;
             "
           >
-          تأكيد الطلب
-            <i class="fa-solid fa-cart-shopping px-2 fa-beat "></i>
+            تأكيد الطلب
+            <i class="fa-solid fa-cart-shopping px-2 fa-beat"></i>
           </button>
         </div>
       </div>
