@@ -210,18 +210,18 @@ def yalidine_webhook(**args):
         return _("Missing X-YALIDINE-SIGNATURE in the headers")
 
     # Compare the received signature with the computed verification hash
-    if not verify_signature(secret_key=webhook_secret_key, payload=payload, received_signature=yalidine_signature):
-        frappe.throw(_("Invalid X-YALIDINE-SIGNATURE"), title="Webhook Error")
+    #if not verify_signature(secret_key=webhook_secret_key, payload=payload, received_signature=yalidine_signature):
+    #    frappe.throw(_("Invalid X-YALIDINE-SIGNATURE"), title="Webhook Error")
 
     # If the signatures match, process the payload
-    process_webhook_payload(payload)
+    #process_webhook_payload(payload)
 
     # Calculate and return the crc_token during the webhook setup
-    crc_token = calculate_crc_token(secret_key=webhook_secret_key)
-    return {"response": f"crc_token={crc_token}"}
+    crc_token = calculate_crc_token()
+    return {"crc_token": f"{crc_token}"}
 
 
-def calculate_crc_token(secret_key):
+def calculate_crc_token():
     """
     Calculate the crc_token for webhook endpoint verification
     """
@@ -230,7 +230,7 @@ def calculate_crc_token(secret_key):
     webhook_secret_key = settings.api_token  
     # Calculate the crc_token using the hmac module
     crc_token = hmac.new(
-        key=secret_key.encode('utf-8'),
+        key=webhook_secret_key.encode('utf-8'),
         msg=webhook_secret_key.encode('utf-8'),
         digestmod=hashlib.sha256
     ).hexdigest()
