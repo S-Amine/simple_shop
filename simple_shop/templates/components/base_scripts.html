@@ -176,6 +176,45 @@ const sendRequest = (url, rawData) => {
     });
 };
 
+const sendGetRequest = (url, rawData) => {
+  // Check if CSRF token is available
+  if (!frappe.csrf_token) {
+    console.error("CSRF token is not available.");
+    return Promise.reject(new Error("CSRF token is not available."));
+  }
+
+  // Construct URL with parameters
+  let params = new URLSearchParams(rawData);
+  let getUrl = `${url}?${params.toString()}`;
+console.log(getUrl);
+  // Debugging: Log URL to console
+  console.log("GET URL:", getUrl);
+
+
+
+  let requestOptions = {
+    method: "GET", // Change method to GET
+  };
+
+  return fetch(getUrl, requestOptions)
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.message && data.message.success) {
+        const orderId = data.message.data.order_id;
+        localStorage.removeItem("cartItems");
+        fbq('track', 'Purchase', { currency: 'DZD', value: rawData.total });
+        window.location.href = `/success_page/?id=${orderId}`;
+      } else {
+        console.log("Request was not successful:", data);
+        return Promise.reject(new Error("Request was not successful."));
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      return Promise.reject(error);
+    });
+};
+
   const removeItemFromCart = (element) => {
     // Get the closest parent with class 'cart-drawer-item'
     const parentItem = element.closest('.cart-drawer-item');

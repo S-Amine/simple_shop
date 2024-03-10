@@ -673,7 +673,9 @@ const renderCentersListView = async (element) => {
           total: {{item.custom_price}},
           center_id: localStorage.getItem("currentCenter")
         };
-        sendRequest("/api/method/simple_shop.api.post_order",orderData);
+       // sendRequest(`/api/method/simple_shop.api.post_order?lastName=${lastName}`,orderData);
+        sendGetRequest(`/api/method/simple_shop.api.post_order`,orderData);
+
       }
 
     }

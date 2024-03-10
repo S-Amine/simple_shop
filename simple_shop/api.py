@@ -99,7 +99,6 @@ def get_centers():
 def post_order(**args):
     """Set the order"""
     data = frappe._dict(args)
-    csrf_token = frappe.session.cs
     print(data)
     new_order = frappe.new_doc("Wooliz Order")
     new_order.last_name = data['lastName']
@@ -115,7 +114,7 @@ def post_order(**args):
     
     product = get_doc("Item",data['product'])
     print(product)
-    new_order.append("products",{"item": product.item_code,"unit_price":product.custom_price,"qty":data['qty'],"total":product.custom_price})
+    new_order.append("products",{"item": product.item_code,"unit_price":product.custom_price,"qty":int(data['qty']),"total":product.custom_price})
     new_order.save()
     created_sales_order_id = new_order.name
     return {"success": True, "data": {"order_id":created_sales_order_id}}
