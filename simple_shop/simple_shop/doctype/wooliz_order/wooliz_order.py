@@ -93,6 +93,7 @@ class WoolizOrder(Document):
     def before_save(self):
         if self.is_new():
             old_status = None  # No old value for new documents
+            
         else:
             old_doc = frappe.get_doc(self.doctype, self.name)
             old_status = old_doc.woolize_status

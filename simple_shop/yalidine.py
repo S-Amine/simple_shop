@@ -204,6 +204,7 @@ def yalidine_webhook(**args):
     payload = frappe._dict(args)
     print(payload)
     yalidine_signature = frappe.get_request_header("HTTP_X_YALIDINE_SIGNATURE")
+    
     # Verify if the signature is present in the headers
     if not yalidine_signature:
         return _("Missing X-YALIDINE-SIGNATURE in the headers")
@@ -215,7 +216,26 @@ def yalidine_webhook(**args):
     # If the signatures match, process the payload
     process_webhook_payload(payload)
 
-    return _("Webhook processed successfully")
+    # Calculate and return the crc_token during the webhook setup
+    crc_token = calculate_crc_token(secret_key=webhook_secret_key)
+    return {"response": f"crc_token={crc_token}"}
+
+
+def calculate_crc_token(secret_key):
+    """
+    Calculate the crc_token for webhook endpoint verification
+    """
+    # Generate a random string (use your own logic to generate a random string)
+    random_string = "your_random_string"
+    
+    # Calculate the crc_token using the hmac module
+    crc_token = hmac.new(
+        key=secret_key.encode('utf-8'),
+        msg=random_string.encode('utf-8'),
+        digestmod=hashlib.sha256
+    ).hexdigest()
+    
+    return crc_token
 
 
 def process_webhook_payload(payload):
