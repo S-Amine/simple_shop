@@ -226,12 +226,12 @@ def calculate_crc_token(secret_key):
     Calculate the crc_token for webhook endpoint verification
     """
     # Generate a random string (use your own logic to generate a random string)
-    random_string = "your_random_string"
-    
+    settings = frappe.get_single("Yalidin")
+    webhook_secret_key = settings.api_token  
     # Calculate the crc_token using the hmac module
     crc_token = hmac.new(
         key=secret_key.encode('utf-8'),
-        msg=random_string.encode('utf-8'),
+        msg=webhook_secret_key.encode('utf-8'),
         digestmod=hashlib.sha256
     ).hexdigest()
     
