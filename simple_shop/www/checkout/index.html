@@ -19,7 +19,7 @@
       </span>
     </a>
   </div>
-  <form class="my-3">
+  <form class="my-3 py-4 w-100 px-0 mx-0">
     <div class="checkout-form" id="billing">
       <div class="billing-info__wrapper">
         <h4 class="fw-bold fs-3 mx-auto" >أدخل معلوماتك</h4>
@@ -199,16 +199,39 @@
               role="alert">
             </div>
             
+            <style>
+              @keyframes backgroundAnimation {
+                0% {
+                  background-position: 0 0;
+                }
+                100% {
+                  background-position: 100% 0;
+                }
+              }
+            
+              .btn-checkout {
+                background: linear-gradient(90deg, #870404, #eb3e3e);
+                background-size: 200% 100%;
+                animation: backgroundAnimation 0.5s ease infinite;
+                transition: color 0.5s ease;
+              }
+            
+              .btn-checkout:hover {
+                color: #ffffff;
+              }
+            </style>
+            
             <button
-              class="btn btn-primary btn-checkout fw-bold"
+              class="btn btn-primary btn-checkout fw-bold fs-4"
               id="place_order"
               style="
                 border-radius: 30px;
-                background: #870404;
                 border: 2px solid #870404;
+                width: 100%;
               "
             >
-              إضغط هنا للطلب
+              تأكيد الطلب
+              <i class="fa-solid fa-cart-shopping px-2 fa-beat"></i>
             </button>
           </div>
         </div>
@@ -522,7 +545,7 @@ setNewNumberToCartIcon()
       }
     });
 
-    //setCheckoutTotal();
+    renderProductTotalPrice()
   };
 
 
@@ -629,7 +652,7 @@ setNewNumberToCartIcon()
           is_stop_desk: shippingField.checked,
           center_id: localStorage.getItem("currentCenter")
         };
-        sendRequest("/api/method/simple_shop.api.post_order_checkout",orderData);
+        sendGetRequest("/api/method/simple_shop.api.post_order_checkout",orderData);
       }
     }
   };
@@ -640,12 +663,27 @@ setNewNumberToCartIcon()
     placeOrderItems(e, "product");
   });
 
-  resetCartTotal([document.getElementById('sub-total-count')])
+//  resetCartTotal([document.getElementById('sub-total-count')])
 
   document.addEventListener("DOMContentLoaded",e=>{
-fillCheckoutItems()
+//fillCheckoutItems()
 
   })
+
+const renderProductTotalPrice = () =>{
+let SubTotalPayment = document.querySelectorAll(".sub-total-count");
+let qtyDisplay = document.getElementById("checkout-qty");
+let total = document.getElementById("total-checkout-amount");
+let shippingFees = parseInt(document.getElementById("shipping_fees").getAttribute("data-shipping-fee")) || 0;
+SubTotalPayment.forEach(e=>{
+  let subTot = parseInt(e.getAttribute('data-subtotal'));
+  total.innerHTML = `${subTot+shippingFees} دج`;
+
+})
+
+
+
+}
 </script>
 
 {% endblock %}

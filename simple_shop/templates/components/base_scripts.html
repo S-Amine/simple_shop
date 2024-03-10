@@ -111,6 +111,14 @@ parentCartItems.innerHTML = htmlInnerContent
 subTotalCount.forEach(e=>{
   e.innerHTML = `${localStorage.getItem('cart-total-prices',0)} دج`
   e.setAttribute('data-subtotal',getTotalOfItems())
+  try{
+    renderProductTotalPrice()
+
+  }
+  catch(e){
+    console.log(e.message)
+  }
+
 
 })
 localStorage.setItem('cart-total-prices', getTotalOfItems());
