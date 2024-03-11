@@ -19,7 +19,7 @@
       } else {
 
         let SubTotalPayment = document.querySelectorAll(".sub-total-count");
-        let qtyDisplay = document.getElementById("checkout-qty");
+        console.log(SubTotalPayment)
         let total = document.getElementById("total-checkout-amount");
         let shippingFees = parseInt(document.getElementById("shipping_fees").getAttribute("data-shipping-fee")) || 0;
         SubTotalPayment.forEach(e => {
@@ -144,18 +144,15 @@
 
 
 
-
-
-
     subTotalCount.forEach(e => {
       e.innerHTML = `${localStorage.getItem('cart-total-prices', 0)} دج`
       e.setAttribute('data-subtotal', getTotalOfItems())
       try {
-        renderProductTotalPrice()
+        renderCheckoutCartTotalPrice()
 
       }
       catch (e) {
-        console.log(e.message)
+        console.log(e)
       }
 
 

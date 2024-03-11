@@ -74,7 +74,7 @@
                 <input
                   class="form-check-input form-check-input_fill"
                   type="radio"
-                  onchange="setDeleveryFees();ToggleStreetInput('display');renderCommunsView(this);"
+                  onchange="setDeleveryFees();ToggleStreetInput('display');renderCommunsView(this);renderCheckoutCartTotalPrice()"
                   name="checkout_shipping_type"
                   checked
                   data-wilaya="16"
@@ -87,7 +87,7 @@
               </div>
               <div class="form-check">
                 <input
-                  onchange="setDeleveryFees();ToggleStreetInput('hidden');renderCentersListView(this)"
+                  onchange="setDeleveryFees();ToggleStreetInput('hidden');renderCentersListView(this);renderCheckoutCartTotalPrice()"
                   class="form-check-input form-check-input_fill"
                   type="radio"
                   data-wilaya="16"
@@ -155,6 +155,7 @@
               <input
                 maxlength="10"
                 type="text"
+                onchange="renderCheckoutCartTotalPrice()"
                 class="form-control"
                 id="checkout_input_phone_field"
                 placeholder="Phone *"
@@ -174,7 +175,7 @@
                   <tr>
                     <th>السعر</th>
                     <td
-                      id="checkout-total-amount"
+                      id="sub-total-count"
                       class="sub-total-count"
                       data-subtotal="0"
                     >
@@ -545,7 +546,7 @@ setNewNumberToCartIcon()
       }
     });
 
-    renderProductTotalPrice()
+    renderCheckoutCartTotalPrice()
   };
 
 
