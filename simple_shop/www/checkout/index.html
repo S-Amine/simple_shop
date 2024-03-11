@@ -670,20 +670,7 @@ setNewNumberToCartIcon()
 
   })
 
-const renderProductTotalPrice = () =>{
-let SubTotalPayment = document.querySelectorAll(".sub-total-count");
-let qtyDisplay = document.getElementById("checkout-qty");
-let total = document.getElementById("total-checkout-amount");
-let shippingFees = parseInt(document.getElementById("shipping_fees").getAttribute("data-shipping-fee")) || 0;
-SubTotalPayment.forEach(e=>{
-  let subTot = parseInt(e.getAttribute('data-subtotal'));
-  total.innerHTML = `${subTot+shippingFees} دج`;
 
-})
-
-
-
-}
 </script>
 
 {% endblock %}

@@ -169,10 +169,10 @@
             <table class="checkout-totals p-0 m-0">
               <tbody>
                 <tr>
-                  <th>السعر</th>
+                  <th id="data-product-price" data-product-price="{% if item.custom_promo_price %}{{item.custom_promo_price}}{% else %}{{item.custom_price}}{% endif %}">السعر</th>
                   <td
                   >
-                    {{item.custom_price}} دج <span style="color: #990d0d;" >------ X <span id="checkout-qty" class="qty">1</span> ------</span> 
+                  {% if item.custom_promo_price %}{{item.custom_promo_price}}{% else %}{{item.custom_price}}{% endif %} دج <span style="color: #990d0d;" >------ X <span id="checkout-qty" class="qty">1</span> ------</span> 
                   </td>
                 </tr>
                 <tr>
@@ -182,7 +182,7 @@
                 <tr>
                   <th>المجموع</th>
                   
-                  <td id="total-checkout-amount">{{item.custom_price}} دج</td>
+                  <td id="total-checkout-amount">{% if item.custom_promo_price %}{{item.custom_promo_price}}{% else %}{{item.custom_price}}{% endif %} دج</td>
                 </tr>
               </tbody>
             </table>
@@ -539,7 +539,7 @@ const renderCentersListView = async (element) => {
       }
     });
 
-    renderProductTotalPrice({{item.custom_price}})
+    renderCheckoutCartTotalPrice()
   };
 
 
