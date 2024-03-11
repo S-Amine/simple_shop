@@ -107,7 +107,7 @@ def post_order(**args):
     new_order.custom_address = data['address']
 
     new_order.commun = data['commun']
-    new_order.custom_stop_desk_bureau = data['is_stop_desk']
+    new_order.custom_stop_desk_bureau = True if data['is_stop_desk'] == 'true' else False
     if data['is_stop_desk']:
         new_order.custom_center_id = data['center_id'] # IN YALIDIN this field is required if stop_desk is true
         new_order.custom_center = f"{data['center_id']} - {data['commun']}"
@@ -130,7 +130,8 @@ def post_order_checkout(**args):
     new_order.phone = data['phone']
     new_order.wilaya = data['wilaya']
     new_order.commun = data['commun']
-    new_order.custom_stop_desk_bureau = data['is_stop_desk']
+    new_order.custom_stop_desk_bureau = True if data['is_stop_desk'] == 'true' else False
+
     products = data['products']
     if data['is_stop_desk']:
         new_order.custom_center_id = data['center_id'] # IN YALIDIN this field is required if stop_desk is true
