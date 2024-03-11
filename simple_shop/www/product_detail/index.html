@@ -238,8 +238,9 @@ setInterval(() => {
                     <img loading="lazy" src="{{recommendation.image}}" width="330" height="400" alt="Cropped Faux leather Jacket" class="pc__img">
                     <img loading="lazy" src="{{recommendation.image}}" width="330" height="400" alt="Cropped Faux leather Jacket" class="pc__img pc__img-second">
                   </a>
-                  <button class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium js-add-cart js-open-aside" data-aside="cartDrawer" title="Add To Cart">إضافة إلى اسلة</button>
-                </div>
+                  <a href="/product/{{item.item_code}}" class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium" data-aside="cartDrawer" title="إشتري اﻷن"
+                  data-item-id="{{item.item_code}}" data-item-name="{{item.name}} - {{item.item_name}}" data-item-price ="{{item.custom_price}}" data-item-image="{{item.image}}" 
+                  > إشتري الأن </a>                </div>
 
                 <div class="pc__info position-relative">
                   <p class="pc__category">{{recommendation.item_group}}</p>
