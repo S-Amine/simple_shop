@@ -232,7 +232,7 @@ def validate_webhook(**args):
     # Check if the required parameters are present in the request
     if payload.get('subscribe') and payload.get('crc_token'):
         # Set the response content type
-        data = {"crc_token": payload['crc_token']}
+        data =  payload['crc_token']
         response = Response(json.dumps(data), content_type='application/json')
         response.status_code = 200
         return response        # Use frappe.respond_as_webhook to set the response
