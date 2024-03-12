@@ -8,6 +8,7 @@ from frappe.model.document import get_doc
 import requests
 from frappe import _
 
+from werkzeug.wrappers import Response
 
 
 def get_random_commun_name(wilaya):
@@ -219,6 +220,25 @@ def yalidine_webhook(**args):
     # Calculate and return the crc_token during the webhook setup
     crc_token = calculate_crc_token()
     return {"crc_token": f"{crc_token}"}
+
+
+@frappe.whitelist(allow_guest=True)
+def validate_webhook(**args):
+    # Access the request object
+    request = frappe.request
+    # Get the payload and signature from the request
+    payload = frappe._dict(args)
+    print(payload)
+    # Check if the required parameters are present in the request
+    if payload.get('subscribe') and payload.get('crc_token'):
+        # Set the response content type
+        data = {"crc_token": payload['crc_token']}
+        response = Response(json.dumps(data), content_type='application/json')
+        response.status_code = 200
+        return response        # Use frappe.respond_as_webhook to set the response
+
+    # If parameters are not present, return an error message
+    return _('Invalid request')
 
 
 def calculate_crc_token():
